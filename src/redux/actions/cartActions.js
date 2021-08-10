@@ -21,20 +21,22 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, u
             let param;
             let response;
             let message;
+            
             console.log("Item " + cartId + " quantity " + quantityCount);
             if (selectedProductOptions !== undefined) {
-                param = { attributes: selectedProductOptions, product: item.id, quantity: quantityCount };
+                param = { attributes: selectedProductOptions, product: item.id, quantity: quantityCount, store: process.env.REACT_APP_APP_MERCHANT };
             } else {
-                param = { product: item.id, quantity: quantityCount };
+                param = { product: item.id, quantity: quantityCount, store: process.env.REACT_APP_APP_MERCHANT };
             }
             console.log("Cart parameters " + JSON.stringify(param));
             if (cartId) {
                 message = "Updated Cart";
-                action = constant.ACTION.CART + cartId + "?store=" + process.env.REACT_APP_APP_MERCHANT;
+                action = constant.ACTION.CART + constant.ACTION.UPDATECART;
+                param.cartId = cartId;
                 response = await WebService.put(action, param);
             } else {
                 message = "Added Cart";
-                action = constant.ACTION.CART + "?store=" + process.env.REACT_APP_APP_MERCHANT;
+                action = constant.ACTION.CART + constant.ACTION.NEWCART;
                 response = await WebService.post(action, param);
             }
 

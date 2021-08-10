@@ -320,7 +320,6 @@ const MyAccount = ({
         try {
             let response = await WebService.get(action);
             if (response) {
-                console.log("response: ============ ", response);
                 setAccountValue("username", response.userName);
                 setAccountValue("email", response.emailAddress);
                 getState(response.billing.country);
@@ -522,7 +521,6 @@ const MyAccount = ({
         }
     };
     const onUpdateDelivery = async (data) => {
-        console.log("onUpdateDelivery: ========== ", data);
         setLoader(true);
         try {
             const curCountry = countryData.filter((r) => {

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 // import { getDiscountPrice } from "../../helpers/product";
 // import Rating from "./sub-components/ProductRating";
@@ -26,14 +26,14 @@ const ProductGridListSingle = ({
 }) => {
     const [modalShow, setModalShow] = useState(false);
     const { addToast } = useToasts();
-
+    const history = useHistory();
     // const discountedPrice = getDiscountPrice(product.price, product.discount);
     const finalProductPrice = product.originalPrice;
     const finalDiscountedPrice = product.finalPrice;
     const onClickProductDetails = (id) => {
         setProductID(id);
     };
-console.log('product: ======== ', product, cartItem, sliderClassName)
+
     return (
         <Fragment>
             <div className={`col-xl-4 col-sm-6 ${sliderClassName ? sliderClassName : ""}`}>
@@ -59,11 +59,11 @@ console.log('product: ======== ', product, cartItem, sliderClassName)
                                 </Link>
                             </div>
                             <div className="pro-same-action pro-cart">
-                                {product.available && product.canBePurchased && product.visible && product.quantity > 0 ? (
+                                {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 ? (
                                     <button
                                         onClick={() => {
-                                            console.log("cartItem:::::::", cartItem);
-                                            addToCart(product, addToast, cartItem, 1, defaultStore, userData);
+                                            if (!userData) history.push("/login");
+                                            else addToCart(product, addToast, cartItem, 1, defaultStore, userData);
                                         }}
                                         // className="active"
                                         // disabled={cartItem !== undefined && cartItem.quantity > 0}
@@ -169,10 +169,13 @@ console.log('product: ======== ', product, cartItem, sliderClassName)
                                 <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
                                 <div className="shop-list-actions d-flex align-items-center">
                                     <div className="shop-list-btn btn-hover">
-                                        {product.available && product.canBePurchased && product.visible && product.quantity > 0 ? (
+                                        {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 ? (
                                             // product, addToast, cartItem, 1, defaultStore
                                             <button
-                                                onClick={() => addToCart(product, addToast, cartItem, 1, defaultStore, userData)}
+                                                onClick={() => {
+                                                    if (!userData) history.push("/login");
+                                                    else addToCart(product, addToast, cartItem, 1, defaultStore, userData);
+                                                }}
                                                 title={strings["Add to cart"]}
                                             >
                                                 <i className="pe-7s-cart"></i> {strings["Add to cart"]}

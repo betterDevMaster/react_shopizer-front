@@ -99,7 +99,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     const getProductList = async (categoryid, size, manufacture) => {
         setLoader(true);
         // setProductData([]);
-        let action = constant.ACTION.PRODUCT + constant.ACTION.PRODUCTDETAIL;
+        let action = constant.ACTION.PRODUCT + constant.ACTION.PRODUCTLIST;
         let param = {
             store: defaultStore,
             lang: currentLanguageCode,

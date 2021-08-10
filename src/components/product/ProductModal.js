@@ -15,6 +15,7 @@ import WebService from "../../util/webService";
 import constant from "../../util/constant";
 import { setLoader } from "../../redux/actions/loaderActions";
 import StarRatings from "react-star-ratings";
+import { useHistory } from "react-router-dom";
 function ProductModal(props, strings) {
     const { product, cartData, defaultStore, userData, finalproductprice, finaldiscountedprice, setLoader } = props;
 
@@ -30,7 +31,7 @@ function ProductModal(props, strings) {
     const [currentImage, setCurrentImage] = useState(defaultImage(product));
     // const wishlistItem = props.wishlistitem;
     // const compareItem = props.compareitem;
-
+    const history = useHistory();
     const addToCart = props.addtocart;
     // const addToWishlist = props.addtowishlist;
     // const addToCompare = props.addtocompare;
@@ -392,25 +393,28 @@ function ProductModal(props, strings) {
                                             </button>
                                         </div>
                                         <div className="pro-details-cart btn-hover">
-                                            {product.available && product.canBePurchased && product.visible && product.quantity > 0 ? (
+                                            {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 ? (
                                                 <button
                                                     onClick={() => {
-                                                        let options = [];
-                                                        selectedProductColor.forEach((a) => {
-                                                            options.push({ id: a.id });
-                                                        });
-                                                        addToCart(
-                                                            product,
-                                                            addToast,
-                                                            cartData,
-                                                            quantityCount,
-                                                            defaultStore,
-                                                            userData,
-                                                            options,
-                                                            strings
-                                                            // selectedProductColor,
-                                                            // selectedProductSize
-                                                        );
+                                                        if (!userData) history.push("/login");
+                                                        else {
+                                                            let options = [];
+                                                            selectedProductColor.forEach((a) => {
+                                                                options.push({ id: a.id });
+                                                            });
+                                                            addToCart(
+                                                                product,
+                                                                addToast,
+                                                                cartData,
+                                                                quantityCount,
+                                                                defaultStore,
+                                                                userData,
+                                                                options,
+                                                                strings
+                                                                // selectedProductColor,
+                                                                // selectedProductSize
+                                                            );
+                                                        }
                                                     }}
                                                 >
                                                     {/* {strings["Add to cart"]} */} Add to cart

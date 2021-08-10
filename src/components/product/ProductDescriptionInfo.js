@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 // import { getProductCartQuantity } from "../../helpers/product";
 import { isValidObject } from "../../util/helper";
@@ -36,6 +36,7 @@ const ProductDescriptionInfo = ({
     const [isDiscount, setIsDiscount] = useState(product.discounted);
     const [selectedProductColor, setSelectedProductColor] = useState([]);
     const [quantityCount, setQuantityCount] = useState(1);
+    const history = useHistory();
     useEffect(() => {
         // console.log(strings);
         getDefualtsOption();
@@ -86,8 +87,8 @@ const ProductDescriptionInfo = ({
     };
     const getPrice = async (tempSelectedOptions) => {
         setLoader(true);
-        let action = constant.ACTION.PRODUCT + productID + "/" + constant.ACTION.PRICE;
-        let param = { options: tempSelectedOptions };
+        let action = constant.ACTION.PRODUCT + constant.ACTION.PRICE;
+        let param = { id: productID, options: tempSelectedOptions };
         try {
             let response = await WebService.post(action, param);
             if (response) {
@@ -279,15 +280,18 @@ const ProductDescriptionInfo = ({
                         </button>
                     </div>
                     <div className="pro-details-cart btn-hover">
-                        {product.available && product.canBePurchased && product.visible && product.quantity > 0 ? (
+                        {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 ? (
                             <button
                                 onClick={() => {
-                                    let options = [];
-                                    selectedProductColor.forEach((a) => {
-                                        options.push({ id: a.id });
-                                    });
+                                    if (!userData) history.push("/login");
+                                    else {
+                                        let options = [];
+                                        selectedProductColor.forEach((a) => {
+                                            options.push({ id: a.id });
+                                        });
 
-                                    addToCart(product, addToast, cartItems, quantityCount, defaultStore, userData, options);
+                                        addToCart(product, addToast, cartItems, quantityCount, defaultStore, userData, options);
+                                    }
                                 }}
                             >
                                 {strings["Add to cart"]}

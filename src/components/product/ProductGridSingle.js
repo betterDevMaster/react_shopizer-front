@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
 // import { getDiscountPrice } from "../../helpers/product";
@@ -25,7 +25,7 @@ const ProductGridSingleTwo = ({
 }) => {
     const [modalShow, setModalShow] = useState(false);
     const { addToast } = useToasts();
-
+    const history = useHistory();
     // const discountedPrice = getDiscountPrice(product.price, product.discount);
     const finalProductPrice = product.originalPrice;
     const finalDiscountedPrice = product.finalPrice;
@@ -74,11 +74,11 @@ const ProductGridSingleTwo = ({
                             <Link to={`product/${product.description.friendlyUrl}`} onClick={() => onClickProductDetails(product.id)} title="Select options">
                                 <i className="fa fa-cog"></i>
                             </Link>
-                            {product.available && product.canBePurchased && product.visible && product.quantity > 0 && (
+                            {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 && (
                                 <button
                                     onClick={() => {
-                                        console.log("product grid single: ========= ", cartData);
-                                        addToCart(product, addToast, cartData, 1, defaultStore, userData);
+                                        if (!userData) history.push("/login");
+                                        else addToCart(product, addToast, cartData, 1, defaultStore, userData);
                                     }}
                                     className="active"
                                     // disabled={cartItem !== undefined && cartItem.quantity > 0}
