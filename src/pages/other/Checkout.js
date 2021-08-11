@@ -9,7 +9,7 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 // import Nav from "react-bootstrap/Nav";
 import Layout from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import { isValidObject, setLocalData } from "../../util/helper";
+import { isValidObject, setLocalData, getLocalData } from "../../util/helper";
 import constant from "../../util/constant";
 import WebService from "../../util/webService";
 import { getCountry, getState } from "../../redux/actions/userAction";
@@ -299,8 +299,15 @@ const Checkout = ({
 
     const getSummaryOrder = async () => {
         setLoader(true);
-        console.log("GET SUMMARY");
-        let action = constant.ACTION.CART + cartID + "?store=" + defaultStore;
+        let action =
+            constant.ACTION.CART +
+            constant.ACTION.GETUSERCART +
+            "?code=" +
+            cartID +
+            "&store=" +
+            defaultStore +
+            "&lang=" +
+            JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
         try {
             let response = await WebService.get(action);
             // console.log(JSON.stringify(response));
@@ -329,7 +336,7 @@ const Checkout = ({
         }
     };
     const getProfile = async () => {
-        let action = constant.ACTION.AUTH + constant.ACTION.CUSTOMER + constant.ACTION.PROFILE;
+        let action = constant.ACTION.USER + constant.ACTION.PROFILE + "?id=" + userData.id;
         try {
             let response = await WebService.get(action);
             if (response) {
@@ -339,11 +346,9 @@ const Checkout = ({
                 setValue("lastName", response.billing.lastName);
                 setValue("company", response.billing.company);
                 setValue("address", response.billing.address);
-                setValue("country", response.billing.country);
+                setValue("country", response.billing.countryCode);
                 setValue("city", response.billing.city);
-                setTimeout(() => {
-                    setValue("stateProvince", response.billing.zone);
-                }, 1000);
+                setValue("stateProvince", response.billing.stateProvince);
                 setValue("postalCode", response.billing.postalCode);
                 setValue("phone", response.billing.phone);
                 setValue("email", response.emailAddress);
@@ -369,7 +374,7 @@ const Checkout = ({
         } catch (error) {}
     };
     const getConfig = async () => {
-        let action = constant.ACTION.CONFIG;
+        let action = constant.ACTION.USER + constant.ACTION.CONFIG;
         try {
             let response = await WebService.get(action);
             if (response) {
@@ -394,9 +399,7 @@ const Checkout = ({
                     setValue("shipAddress", deliveryData.address);
                     setValue("shipCountry", deliveryData.country);
                     setValue("shipCity", deliveryData.city);
-                    setTimeout(() => {
-                        setValue("shipStateProvince", deliveryData.zone);
-                    }, 1000);
+                    setValue("shipStateProvince", deliveryData.stateProvince);
                     // setValue('shipStateProvince', response.delivery.stateProvince)
                     setValue("shipPostalCode", deliveryData.postalCode);
                 }
@@ -472,15 +475,13 @@ const Checkout = ({
         });
     };
     const onChangeShipping = async () => {
-        let action = constant.ACTION.CART + cartID + "/" + constant.ACTION.SHIPPING;
+        let action = constant.ACTION.CART + constant.ACTION.SHIPPING;
         let param = {};
 
-        //console.log('CHANGE SHIPPING');
-
         if (isShipping) {
-            param = { postalCode: watch("shipPostalCode"), countryCode: watch("shipCountry") };
+            param = { postalCode: watch("shipPostalCode"), countryCode: watch("shipCountry"), code: cartID };
         } else {
-            param = { postalCode: watch("postalCode"), countryCode: watch("country"), zpneCode: watch("shipStateProvince") };
+            param = { postalCode: watch("postalCode"), countryCode: watch("country"), zpneCode: watch("shipStateProvince"), code: cartID };
         }
         try {
             let response = await WebService.post(action, param);
@@ -501,14 +502,13 @@ const Checkout = ({
         //console.log('SHIPPING QUOTE CHANGED');
 
         if (quoteID) {
-            action = constant.ACTION.CART + cartID + "/" + constant.ACTION.TOTAL + "?quote=" + quoteID;
+            action = constant.ACTION.CART + constant.ACTION.TOTAL + "?code=" + cartID + "&quote=" + quoteID;
         } else {
-            action = constant.ACTION.CART + cartID + "/" + constant.ACTION.TOTAL;
+            action = constant.ACTION.CART + constant.ACTION.TOTAL + "?code=" + cartID;
         }
         // console.log('Shipping action ' +action);
         try {
             let response = await WebService.get(action);
-            // console.log('Order total response ' + JSON.stringify(response));
             if (response) {
                 setShippingQuote(response.totals);
             }
@@ -813,7 +813,6 @@ const Checkout = ({
                                                 <div className="col-lg-12">
                                                     <div className="billing-select mb-20">
                                                         <label>{strings["Country"]}</label>
-
                                                         <Controller
                                                             name={paymentForm.country.name}
                                                             control={control}
@@ -823,16 +822,12 @@ const Checkout = ({
                                                                     <select
                                                                         onChange={(e) => {
                                                                             props.onChange(e.target.value);
-                                                                            getState(e.target.value);
-                                                                            onChangeShipping();
+                                                                            // getState(e.target.value);
                                                                         }}
                                                                         value={props.value}
                                                                     >
                                                                         <option>{strings["Select a country"]}</option>
                                                                         {countryData.map((data, i) => {
-                                                                            //getCountry(currentLanguageCode).map((data, i) => {
-                                                                            // countryData.map((data, i) => {
-
                                                                             return (
                                                                                 <option key={i} value={data.code}>
                                                                                     {data.name}
@@ -843,7 +838,6 @@ const Checkout = ({
                                                                 );
                                                             }}
                                                         />
-
                                                         {errors[paymentForm.country.name] && (
                                                             <p className="error-msg">{errors[paymentForm.country.name].message}</p>
                                                         )}
@@ -857,7 +851,7 @@ const Checkout = ({
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-6 col-md-6">
-                                                    <div className="billing-select mb-20">
+                                                    <div className="billing-info mb-20">
                                                         <label>{strings["State"]}</label>
                                                         {stateData && stateData.length > 0 ? (
                                                             <Controller
@@ -867,11 +861,13 @@ const Checkout = ({
                                                                 render={(props) => {
                                                                     return (
                                                                         <select
-                                                                            onBlur={changeAddress()}
-                                                                            onChange={(e) => props.onChange(e.target.value)}
+                                                                            onChange={(e) => {
+                                                                                props.onChange(e.target.value);
+                                                                                // getState(e.target.value);
+                                                                            }}
                                                                             value={props.value}
                                                                         >
-                                                                            <option>{strings["State / province"]}</option>
+                                                                            <option>{strings["Select a state"]}</option>
                                                                             {stateData.map((data, i) => {
                                                                                 return (
                                                                                     <option key={i} value={data.code}>
@@ -888,6 +884,7 @@ const Checkout = ({
                                                                 type="text"
                                                                 name={paymentForm.stateProvince.name}
                                                                 ref={register(paymentForm.stateProvince.validate)}
+                                                                placeholder={strings["State"]}
                                                             />
                                                         )}
                                                         {errors[paymentForm.stateProvince.name] && (
@@ -944,7 +941,6 @@ const Checkout = ({
                                             {isAccount && (
                                                 <div>
                                                     <p className="main-color">
-                                                        {" "}
                                                         Create an account by entering the information below.If you are a returning customer please login using
                                                         the link at the top of the page.
                                                     </p>
@@ -1192,7 +1188,7 @@ const Checkout = ({
                                                                     <li key={key}>
                                                                         <span className="order-middle-left" style={{ width: 220 }}>
                                                                             {cartItem.description.name}
-                                                                        </span>{" "}
+                                                                        </span>
                                                                         <span>X {cartItem.quantity}</span>
                                                                         <span className="order-price">{cartItem.finalPrice}</span>
                                                                     </li>
@@ -1220,7 +1216,6 @@ const Checkout = ({
                                                                     <ul>
                                                                         <li className="your-order-shipping">Shipping Fees</li>
                                                                     </ul>
-
                                                                     <ul>
                                                                         {shippingOptions.map((value, i) => {
                                                                             return (
@@ -1243,7 +1238,6 @@ const Checkout = ({
                                                                             );
                                                                         })}
                                                                         <li style={{ textAlign: "center", fontSize: 12, color: "grey" }}>
-                                                                            {" "}
                                                                             This option let you reserve you order items through the online system and pick up
                                                                             your order by yourself at the store. this option is also offered when no other
                                                                             shipping option is available for your region.

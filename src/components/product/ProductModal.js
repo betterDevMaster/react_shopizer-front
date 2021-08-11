@@ -408,8 +408,8 @@ function ProductModal(props, strings) {
                                                                 cartData,
                                                                 quantityCount,
                                                                 defaultStore,
-                                                                userData,
                                                                 options,
+                                                                userData,
                                                                 strings
                                                                 // selectedProductColor,
                                                                 // selectedProductSize

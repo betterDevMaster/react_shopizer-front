@@ -77,7 +77,6 @@ export const getCurrentLocation = () => {
 };
 export const getCurrentAddress = (lat, long) => {
     return async (dispatch) => {
-        console.log('getCurrentAddress: =========== ', lat, long)
         Geocode.fromLatLng(lat, long).then(
             (response) => {
                 // const address = response.results[0].formatted_address;

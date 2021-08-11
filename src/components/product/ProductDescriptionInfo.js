@@ -290,7 +290,7 @@ const ProductDescriptionInfo = ({
                                             options.push({ id: a.id });
                                         });
 
-                                        addToCart(product, addToast, cartItems, quantityCount, defaultStore, userData, options);
+                                        addToCart(product, addToast, cartItems, quantityCount, defaultStore, options, userData);
                                     }
                                 }}
                             >
@@ -445,8 +445,8 @@ const mapDispatchToProps = (dispatch) => {
                     cartItem.code,
                     index === -1 ? quantityCount : cartItem.products[index].quantity + quantityCount,
                     defaultStore,
+                    selectedProductColor,
                     userData,
-                    selectedProductColor
                 )
             );
         },

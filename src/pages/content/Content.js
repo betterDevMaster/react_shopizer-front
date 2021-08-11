@@ -24,7 +24,6 @@ const Content = ({ strings, contentID, setLoader, currentLanguageCode }) => {
         try {
             let response = await WebService.post(action, param);
             if (response) {
-                console.log(response);
                 setContentDetail(response);
             }
             setLoader(false);

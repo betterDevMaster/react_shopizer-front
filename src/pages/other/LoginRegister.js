@@ -153,7 +153,7 @@ const LoginRegister = ({
     cartItems,
     addToCart,
     defaultStore,
-    currentLanguageCode
+    currentLanguageCode,
 }) => {
     const { pathname } = location;
     const { addToast } = useToasts();
@@ -175,7 +175,7 @@ const LoginRegister = ({
             setLoginValue("username", getLocalData("loginEmail"));
             // setLoginValue('loginPassword', '')
         }
-        getGender('M');
+        getGender("M");
         getCountry(currentLanguageCode);
         setDefualtsValue();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -237,7 +237,7 @@ const LoginRegister = ({
             if (response) {
                 setTimeout(() => {
                     cartItems.products.forEach((element) => {
-                        addToCart(element, "", response, element.quantity, defaultStore, data);
+                        addToCart(element, "", response, element.quantity, defaultStore, undefined, data);
                     });
                 }, 2000);
             }
@@ -262,9 +262,9 @@ const LoginRegister = ({
         }
     };
     const onRegister = async (data) => {
-        const curCountry = countryData.filter(r=> {
-            return r.code === data.country
-        })
+        const curCountry = countryData.filter((r) => {
+            return r.code === data.country;
+        });
         setLoader(true);
         try {
             let action = constant.ACTION.USER + constant.ACTION.REGISTER;
@@ -276,7 +276,7 @@ const LoginRegister = ({
                 language: currentLanguageCode,
                 postalCode: data.postalCode,
                 billing: {
-                    country: curCountry[0]['name'],
+                    country: curCountry[0]["name"],
                     countryCode: data.country,
                     stateProvince: data.stateProvince,
                     firstName: data.firstName,
@@ -596,9 +596,9 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        addToCart: (item, addToast, cartItem, quantityCount, defaultStore, userData, selectedProductColor) => {
+        addToCart: (item, addToast, cartItem, quantityCount, defaultStore, selectedProductColor, userData) => {
             // let index = isValidObject(cartItem) ? cartItem.products.findIndex(cart => cart.id === item.id) : -1;
-            dispatch(addToCart(item, addToast, cartItem.code, quantityCount, defaultStore, userData, selectedProductColor));
+            dispatch(addToCart(item, addToast, cartItem.code, quantityCount, defaultStore, selectedProductColor, userData));
         },
         setLoader: (value) => {
             dispatch(setLoader(value));
@@ -607,7 +607,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(setUser(data));
         },
         getCountry: (lang) => {
-          dispatch(getCountry(lang));
+            dispatch(getCountry(lang));
         },
         getGender: (gender) => {
             dispatch(getGender(gender));

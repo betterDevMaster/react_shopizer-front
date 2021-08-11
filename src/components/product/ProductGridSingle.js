@@ -78,7 +78,7 @@ const ProductGridSingleTwo = ({
                                 <button
                                     onClick={() => {
                                         if (!userData) history.push("/login");
-                                        else addToCart(product, addToast, cartData, 1, defaultStore, userData);
+                                        else addToCart(product, addToast, cartData, 1, defaultStore, undefined, userData);
                                     }}
                                     className="active"
                                     // disabled={cartItem !== undefined && cartItem.quantity > 0}

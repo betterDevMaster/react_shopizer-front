@@ -13,7 +13,7 @@ export const DELETE_FROM_CART = "DELETE_FROM_CART";
 export const DELETE_ALL_FROM_CART = "DELETE_ALL_FROM_CART";
 
 //add to cart
-export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, userData, selectedProductOptions) => {
+export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, selectedProductOptions, userData) => {
     return async (dispatch) => {
         dispatch(setLoader(true));
         try {
@@ -21,27 +21,30 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, u
             let param;
             let response;
             let message;
-            
-            console.log("Item " + cartId + " quantity " + quantityCount);
+
             if (selectedProductOptions !== undefined) {
-                param = { attributes: selectedProductOptions, product: item.id, quantity: quantityCount, store: process.env.REACT_APP_APP_MERCHANT };
+                param = {
+                    attributes: selectedProductOptions,
+                    productId: item.id,
+                    quantity: quantityCount,
+                    customerId: userData.id,
+                    store: process.env.REACT_APP_APP_MERCHANT,
+                };
             } else {
-                param = { product: item.id, quantity: quantityCount, store: process.env.REACT_APP_APP_MERCHANT };
+                param = { productId: item.id, quantity: quantityCount, customerId: userData.id, store: process.env.REACT_APP_APP_MERCHANT };
             }
-            console.log("Cart parameters " + JSON.stringify(param));
             if (cartId) {
                 message = "Updated Cart";
-                action = constant.ACTION.CART + constant.ACTION.UPDATECART;
-                param.cartId = cartId;
-                response = await WebService.put(action, param);
+                action = constant.ACTION.CART + constant.ACTION.ADDCART;
+                param.code = cartId;
+                response = await WebService.post(action, param);
             } else {
                 message = "Added Cart";
-                action = constant.ACTION.CART + constant.ACTION.NEWCART;
+                action = constant.ACTION.CART + constant.ACTION.ADDCART;
                 response = await WebService.post(action, param);
             }
 
             //refresh cart
-            // console.log('Cart response' + JSON.stringify(response));
             if (response) {
                 dispatch(setShopizerCartID(response.code));
                 dispatch(setLoader(false));
@@ -63,34 +66,20 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, u
 };
 
 //Get cart
-
 export const getCart = (cartID, userData) => {
     return async (dispatch) => {
-        // if (cartID) {
         try {
             let action;
-            if (userData) {
-                if (cartID) {
-                    action =
-                        constant.ACTION.AUTH +
-                        constant.ACTION.CUSTOMER +
-                        constant.ACTION.CARTS +
-                        "?cart=" +
-                        cartID +
-                        "&lang=" +
-                        JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
-                } else {
-                    action =
-                        constant.ACTION.AUTH +
-                        constant.ACTION.CUSTOMER +
-                        constant.ACTION.CARTS +
-                        "?&lang=" +
-                        JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
-                }
-            } else {
-                if (cartID) {
-                    action = constant.ACTION.CART + cartID + "?lang=" + JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
-                }
+            if (userData && cartID) {
+                action =
+                    constant.ACTION.CART +
+                    constant.ACTION.GETUSERCART +
+                    "?code=" +
+                    cartID +
+                    "&store=" +
+                    process.env.REACT_APP_APP_MERCHANT +
+                    "&lang=" +
+                    JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
             }
 
             let response = await WebService.get(action);
@@ -106,6 +95,7 @@ export const getCart = (cartID, userData) => {
     };
     // }
 };
+
 export const setShopizerCartID = (id) => {
     //set local data
     // set cart id in cookie
@@ -164,7 +154,15 @@ export const deleteFromCart = (cartID, item, defaultStore, addToast) => {
     return async (dispatch) => {
         dispatch(setLoader(true));
         try {
-            let action = constant.ACTION.CART + cartID + "/" + constant.ACTION.PRODUCT + item.id + "?store=" + process.env.REACT_APP_APP_MERCHANT;
+            let action =
+                constant.ACTION.CART +
+                constant.ACTION.DELETECART +
+                "?code=" +
+                cartID +
+                "&productId=" +
+                item.id +
+                "&store=" +
+                process.env.REACT_APP_APP_MERCHANT;
             await WebService.delete(action);
 
             dispatch({

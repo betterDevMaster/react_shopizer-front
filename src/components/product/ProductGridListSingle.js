@@ -63,7 +63,7 @@ const ProductGridListSingle = ({
                                     <button
                                         onClick={() => {
                                             if (!userData) history.push("/login");
-                                            else addToCart(product, addToast, cartItem, 1, defaultStore, userData);
+                                            else addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
                                         }}
                                         // className="active"
                                         // disabled={cartItem !== undefined && cartItem.quantity > 0}
@@ -174,7 +174,7 @@ const ProductGridListSingle = ({
                                             <button
                                                 onClick={() => {
                                                     if (!userData) history.push("/login");
-                                                    else addToCart(product, addToast, cartItem, 1, defaultStore, userData);
+                                                    else addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
                                                 }}
                                                 title={strings["Add to cart"]}
                                             >

@@ -8,7 +8,7 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 // import { Redirect } from 'react-router-dom';
 import { connect } from "react-redux";
 // import { getDiscountPrice } from "../../helpers/product";
-import { isValidObject } from "../../util/helper";
+import { isValidObject, getLocalData } from "../../util/helper";
 import { useForm } from "react-hook-form";
 import { getState } from "../../redux/actions/userAction";
 import { setLoader } from "../../redux/actions/loaderActions";
@@ -86,6 +86,7 @@ const Cart = ({
     isLoading,
     setLoader,
     cartCount,
+    userData,
     // deleteAllFromCart,
 }) => {
     const { addToast } = useToasts();
@@ -108,9 +109,16 @@ const Cart = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useEffect(() => {
-        console.log("cartCount: ===========", cartCount);
         async function fetchData() {
-            let action = constant.ACTION.CART + cartID + "?store=" + defaultStore;
+            let action =
+                constant.ACTION.CART +
+                constant.ACTION.GETUSERCART +
+                "?code=" +
+                cartID +
+                "&store=" +
+                defaultStore +
+                "&lang=" +
+                JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
             try {
                 let response = await WebService.get(action);
                 if (response) {
@@ -130,7 +138,15 @@ const Cart = ({
 
     const getCartData = async () => {
         setLoader(true);
-        let action = constant.ACTION.CART + cartID + "?store=" + defaultStore;
+        let action =
+            constant.ACTION.CART +
+            constant.ACTION.GETUSERCART +
+            "?code=" +
+            cartID +
+            "&store=" +
+            defaultStore +
+            "&lang=" +
+            JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
         try {
             let response = await WebService.get(action);
             if (response) {
@@ -180,14 +196,12 @@ const Cart = ({
     //   }
     // }
     const applyPromoCode = async (data) => {
-        // console.log(data)
         setLoader(true);
-        let action = constant.ACTION.CART + cartID + "/" + constant.ACTION.PROMO + data.code;
+        let action = constant.ACTION.CART + constant.ACTION.PROMO;
         let param = {};
-        param = { promoCart: data.code };
+        param = { promoCart: data.code, cart: cartID };
         try {
             let response = await WebService.post(action, param);
-            // console.log(response);
             if (response) {
                 setCartItems(response);
             }
@@ -278,12 +292,13 @@ const Cart = ({
                                                                                     addToast,
                                                                                     cartItems.code,
                                                                                     cartItem.quantity - 1,
-                                                                                    defaultStore
+                                                                                    defaultStore,
+                                                                                    undefined,
+                                                                                    userData
                                                                                 )
                                                                             }
                                                                         >
-                                                                            {" "}
-                                                                            -{" "}
+                                                                            -
                                                                         </button>
                                                                         <input className="cart-plus-minus-box" type="text" value={cartItem.quantity} readOnly />
                                                                         <button
@@ -294,7 +309,9 @@ const Cart = ({
                                                                                     addToast,
                                                                                     cartItems.code,
                                                                                     cartItem.quantity + 1,
-                                                                                    defaultStore
+                                                                                    defaultStore,
+                                                                                    undefined,
+                                                                                    userData
                                                                                 )
                                                                             }
                                                                         >
@@ -306,8 +323,7 @@ const Cart = ({
 
                                                                 <td className="product-remove">
                                                                     <button onClick={() => deleteFromCart(cartItems.code, cartItem, defaultStore, addToast)}>
-                                                                        {" "}
-                                                                        <i className="fa fa-times"></i>{" "}
+                                                                        <i className="fa fa-times"></i>
                                                                     </button>
                                                                 </td>
                                                             </tr>
@@ -505,6 +521,7 @@ const mapStateToProps = (state) => {
         cartID: state.cartData.cartID,
         defaultStore: state.merchantData.defaultStore,
         countryData: state.userData.country,
+        userData: state.userData.userData,
         stateData: state.userData.state,
         merchant: state.merchantData.merchant,
         isLoading: state.loading.isLoading,
@@ -529,11 +546,11 @@ const mapDispatchToProps = (dispatch) => {
         setLoader: (value) => {
             dispatch(setLoader(value));
         },
-        decreaseQuantity: (item, addToast, cartId, quantityCount, defaultStore) => {
-            dispatch(addToCart(item, addToast, cartId, quantityCount, defaultStore));
+        decreaseQuantity: (item, addToast, cartId, quantityCount, defaultStore, options, userData) => {
+            dispatch(addToCart(item, addToast, cartId, quantityCount, defaultStore, options, userData));
         },
-        increaseQuantity: (item, addToast, cartId, quantityCount, defaultStore) => {
-            dispatch(addToCart(item, addToast, cartId, quantityCount, defaultStore));
+        increaseQuantity: (item, addToast, cartId, quantityCount, defaultStore, options, userData) => {
+            dispatch(addToCart(item, addToast, cartId, quantityCount, defaultStore, options, userData));
         },
         // decreaseQuantity: (cartItems, key, item, addToast, cartId, quantityCount, defaultStore) => {
         //   console.log('decreaseQuantity...');

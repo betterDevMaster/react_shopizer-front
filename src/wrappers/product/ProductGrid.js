@@ -111,8 +111,8 @@ const mapDispatchToProps = (dispatch) => {
                     cartData.code,
                     index === -1 ? quantityCount : cartData.products[index].quantity + quantityCount,
                     defaultStore,
+                    selectedProductColor,
                     userData,
-                    selectedProductColor
                 )
             );
         },

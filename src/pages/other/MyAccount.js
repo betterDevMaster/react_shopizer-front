@@ -332,7 +332,7 @@ const MyAccount = ({
                 setValue("stateProvince", response.billing.stateProvince);
                 setValue("postalCode", response.billing.postalCode);
                 setValue("phone", response.billing.phone);
-                setValue("email", response.emailAddress);
+                // setValue("email", response.emailAddress);
                 if (response.delivery) {
                     getState(response.delivery.country);
                     setDeliveryValue("shipFirstName", response.delivery.firstName);
