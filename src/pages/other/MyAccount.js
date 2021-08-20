@@ -316,7 +316,7 @@ const MyAccount = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const getProfile = async () => {
-        let action = constant.ACTION.USER + constant.ACTION.PROFILE + "?id=" + userData.id;
+        let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + userData.id;
         try {
             let response = await WebService.get(action);
             if (response) {
@@ -355,7 +355,7 @@ const MyAccount = ({
     const onChangePassword = async (data) => {
         setLoader(true);
         try {
-            let action = constant.ACTION.USER + constant.ACTION.UPDATEPASSWORD;
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.UPDATEPASSWORD;
             let param = {
                 userId: userData.id,
                 password: data.password,
@@ -498,7 +498,7 @@ const MyAccount = ({
             const curCountry = countryData.filter((r) => {
                 return r.code === data.country;
             });
-            let action = constant.ACTION.USER + constant.ACTION.UPDATEBILLING;
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.UPDATEBILLING;
             let param = {
                 userId: userData.id,
                 company: data.company,
@@ -526,7 +526,7 @@ const MyAccount = ({
             const curCountry = countryData.filter((r) => {
                 return r.code === data.shipCountry;
             });
-            let action = constant.ACTION.USER + constant.ACTION.UPDATEDELIVERY;
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.UPDATEDELIVERY;
             let param = {
                 userId: userData.id,
                 company: data.shipCompany,
@@ -552,7 +552,7 @@ const MyAccount = ({
     const onChangeAccount = async (data) => {
         setLoader(true);
         try {
-            let action = constant.ACTION.USER + constant.ACTION.UPDATEUSER;
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.UPDATEUSER;
             let param = {
                 userName: data.username,
                 emailAddress: data.email,
@@ -576,7 +576,7 @@ const MyAccount = ({
         onDeleteConfirm();
         setLoader(true);
         try {
-            let action = constant.ACTION.USER + constant.ACTION.DELETEUSER + "?id=" + userData.id;
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.DELETEUSER + "?id=" + userData.id;
             await WebService.delete(action);
 
             addToast("Your account has been deleted successfully.", { appearance: "success", autoDismiss: true });

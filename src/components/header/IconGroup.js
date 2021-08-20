@@ -53,7 +53,7 @@ const IconGroup = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const getProfile = async () => {
-        let action = constant.ACTION.USER + constant.ACTION.PROFILE + "?id=" + userData.id;
+        let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + userData.id;
         try {
             let response = await WebService.get(action);
             if (response) {

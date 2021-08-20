@@ -336,7 +336,7 @@ const Checkout = ({
         }
     };
     const getProfile = async () => {
-        let action = constant.ACTION.USER + constant.ACTION.PROFILE + "?id=" + userData.id;
+        let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + userData.id;
         try {
             let response = await WebService.get(action);
             if (response) {
@@ -374,7 +374,7 @@ const Checkout = ({
         } catch (error) {}
     };
     const getConfig = async () => {
-        let action = constant.ACTION.USER + constant.ACTION.CONFIG;
+        let action = constant.ACTION.CUSTOMER + constant.ACTION.CONFIG;
         try {
             let response = await WebService.get(action);
             if (response) {

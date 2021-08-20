@@ -27,7 +27,9 @@ const TabProduct = ({ setLoader, spaceTopClass, spaceBottomClass, category, cont
                 response.products.forEach((item) => {
                     if (item.categories !== null) {
                         item.categories.forEach((a) => {
-                            let index = category.findIndex((value) => value.id === a.id);
+                            let index = category.findIndex((value) => {
+                                return value.id === a.id;
+                            });
                             if (index === -1) {
                                 category.push({ id: a.description.id, name: a.description.name, code: a.code, data: [item] });
                             } else {
@@ -37,7 +39,6 @@ const TabProduct = ({ setLoader, spaceTopClass, spaceBottomClass, category, cont
                     }
                 });
                 // setFeaturedData(response.products)
-
                 setCategoryData(category);
                 setLoader(false);
             }

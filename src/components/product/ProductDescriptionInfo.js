@@ -436,7 +436,7 @@ const mapDispatchToProps = (dispatch) => {
         setLoader: (value) => {
             dispatch(setLoader(value));
         },
-        addToCart: (item, addToast, cartItem, quantityCount, defaultStore, userData, selectedProductColor) => {
+        addToCart: (item, addToast, cartItem, quantityCount, defaultStore, selectedProductColor, userData) => {
             let index = isValidObject(cartItem) ? cartItem.products.findIndex((cart) => cart.id === item.id) : -1;
             dispatch(
                 addToCart(

@@ -192,7 +192,7 @@ const LoginRegister = ({
     const onSubmit = async (data) => {
         setLoader(true);
         try {
-            let action = constant.ACTION.USER + constant.ACTION.LOGIN;
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.LOGIN;
             let param = { userName: data.username, password: data.loginPassword };
             let response = await WebService.post(action, param);
             if (response) {
@@ -267,7 +267,7 @@ const LoginRegister = ({
         });
         setLoader(true);
         try {
-            let action = constant.ACTION.USER + constant.ACTION.REGISTER;
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.REGISTER;
             let param = {
                 userName: data.email,
                 password: data.password,

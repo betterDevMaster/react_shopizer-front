@@ -32,6 +32,7 @@ const ProductGridSingleTwo = ({
     const onClickProductDetails = (id) => {
         setProductID(id);
     };
+
     return (
         <Fragment>
             <div className={`col-xl-3 col-md-6 col-lg-4 col-sm-6 ${sliderClassName ? sliderClassName : ""}`}>

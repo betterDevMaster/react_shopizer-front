@@ -22,7 +22,7 @@ export const setUser = (data) => {
 export const getGender = (gender) => {
     return async (dispatch) => {
         try {
-            let action = constant.ACTION.USER + constant.ACTION.GENDER + "?type=" + gender;
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.GENDER + "?type=" + gender;
             let response = await WebService.get(action);
             dispatch({
                 type: SET_GENDER,
@@ -35,7 +35,7 @@ export const getGender = (gender) => {
 export const getCountry = (lang) => {
     return async (dispatch) => {
         try {
-            let action = constant.ACTION.USER + constant.ACTION.COUNTRY + "?lang=" + lang;
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.COUNTRY + "?lang=" + lang;
             let response = await WebService.get(action);
             dispatch({
                 type: SET_COUNTRY,
@@ -48,7 +48,7 @@ export const getCountry = (lang) => {
 export const getState = (code) => {
     return async (dispatch) => {
         try {
-            let action = constant.ACTION.USER + constant.ACTION.ZONES + "?code=" + code;
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.ZONES + "?code=" + code;
             let response = await WebService.get(action);
             dispatch({
                 type: SET_STATE,

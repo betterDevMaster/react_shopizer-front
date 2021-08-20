@@ -40,7 +40,6 @@ function ProductModal(props, strings) {
     // const cartItems = props.cartitems;
 
     // const productCartQty = 0
-
     useEffect(() => {
         getDefualtsOption();
         if (gallerySwiper !== null && gallerySwiper.controller && thumbnailSwiper !== null && thumbnailSwiper.controller) {

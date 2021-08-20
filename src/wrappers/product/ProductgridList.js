@@ -42,7 +42,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addToCart: (item, addToast, cartData, quantityCount, defaultStore, userData, selectedProductColor) => {
+        addToCart: (item, addToast, cartData, quantityCount, defaultStore, selectedProductColor, userData) => {
             let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === item.id) : -1;
             dispatch(
                 addToCart(

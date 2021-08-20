@@ -97,12 +97,12 @@ const mapDispatchToProps = (dispatch) => {
             cartData,
             quantityCount,
             defaultStore,
+            selectedProductColor,
             userData,
-            selectedProductColor
             // selectedProductColor,
             // selectedProductSize
         ) => {
-            // console.log(cartData)
+            console.log('userData : ------- ',defaultStore, selectedProductColor, userData)
             let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === item.id) : -1;
             dispatch(
                 addToCart(

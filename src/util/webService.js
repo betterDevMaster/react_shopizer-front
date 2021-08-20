@@ -32,7 +32,7 @@ axios.interceptors.request.use(
         // Do something before request is sent
         config.baseURL = BASE_URL;
         const token = await getLocalData("token");
-        config.headers.common["API-KEY"] = 123456;
+        config.headers.common["API-KEY"] = process.env.REACT_APP_APP_API_KEY;
         config.headers.common["Authorization"] = token ? token : "";
         return config;
     },

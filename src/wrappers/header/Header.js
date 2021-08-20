@@ -47,7 +47,7 @@ const Header = ({
     const checkServerHealth = async () => {
         try {
             setLocalData("token", "Basic YWJsOmpza2UzMjIzNEtKSEAhQCNKS0xEQQ==");
-            let response = await WebService.get(constant.ACTION.USER + constant.ACTION.PING);
+            let response = await WebService.get(constant.ACTION.CUSTOMER + constant.ACTION.PING);
 
             if (response) {
                 if (response.status === "UP") {
