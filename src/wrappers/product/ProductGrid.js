@@ -102,7 +102,6 @@ const mapDispatchToProps = (dispatch) => {
             // selectedProductColor,
             // selectedProductSize
         ) => {
-            console.log('userData : ------- ',defaultStore, selectedProductColor, userData)
             let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === item.id) : -1;
             dispatch(
                 addToCart(

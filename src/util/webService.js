@@ -1,8 +1,11 @@
 import axios from "axios";
 import { getLocalData } from "./helper";
 
+// const BASE_URL = "https://cors-anywhere.herokuapp.com/http://ggaming.ddns.net/v1/";
 const BASE_URL = process.env.REACT_APP_APP_BASE_URL + process.env.REACT_APP_APP_API_VERSION;
 axios.defaults.baseURL = BASE_URL;
+// axios.defaults.headers.common['Access-Control-Allow-Origin'] ='*';
+// axios.defaults.headers.common['origin'] ='http://ggaming.ddns.net';
 
 export default class WebService {
     static async post(action, params) {
