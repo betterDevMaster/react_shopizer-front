@@ -6,6 +6,7 @@ const Constant = {
         STORE: 'store/',
         DEFAULT: 'DEFAULT/',
         CATEGORY: 'category/',
+        CATEGORYLIST: 'list/',
         CATEGORYDETAIL: 'categoryDetail/',
         CONTENT: 'content/',
         PAGES: 'pages/',

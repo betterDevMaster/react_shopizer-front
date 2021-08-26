@@ -5,13 +5,13 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { connect } from "react-redux";
 import Layout from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-// import RelatedProductSlider from "../../wrappers/product/RelatedProductSlider";
 import ProductDescriptionTab from "../../wrappers/product/ProductDescriptionTab";
 import ProductImageDescription from "../../wrappers/product/ProductImageDescription";
 import WebService from "../../util/webService";
 import constant from "../../util/constant";
 import { setLoader } from "../../redux/actions/loaderActions";
 import { multilanguage } from "redux-multilanguage";
+
 const ProductDetails = ({ strings, location, productID, currentLanguageCode, setLoader, defaultStore, userData }) => {
     const { pathname } = location;
     const [productDetails, setProductDetails] = useState();
@@ -39,7 +39,8 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
     };
     const getReview = async () => {
         let action = constant.ACTION.PRODUCT + constant.ACTION.PRODUCTREVIEW;
-        let param = { productId: productID, lang: currentLanguageCode, store: defaultStore, userId: userData.id };
+        let param = { productId: productID, lang: currentLanguageCode, store: defaultStore };
+        // let param = { productId: productID, lang: currentLanguageCode, store: defaultStore, userId: userData.id };
         try {
             let response = await WebService.post(action, param);
             if (response) {
@@ -47,6 +48,7 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
             }
         } catch (error) {}
     };
+
     return (
         <Fragment>
             <MetaTags>
@@ -60,18 +62,10 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
             <Layout headerContainerClass="container-fluid" headerPaddingClass="header-padding-2" headerTop="visible">
                 {/* breadcrumb */}
                 <Breadcrumb />
-
                 {/* product description with image */}
                 {productDetails && <ProductImageDescription spaceTopClass="pt-100" spaceBottomClass="pb-100" strings={strings} product={productDetails} />}
-
                 {/* product description tab */}
                 {productDetails && <ProductDescriptionTab spaceBottomClass="pb-90" strings={strings} product={productDetails} review={productReview} />}
-
-                {/* related product slider */}
-                {/* <RelatedProductSlider
-          spaceBottomClass="pb-95"
-          category={product.category[0]}
-        /> */}
             </Layout>
         </Fragment>
     );
@@ -84,7 +78,6 @@ ProductDetails.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    // const itemId = ownProps.match.params.id;
     return {
         productID: state.productData.productid,
         currentLanguageCode: state.multilanguage.currentLanguageCode,

@@ -25,6 +25,9 @@ const ProductGridSingleTwo = ({
     const onClickProductDetails = (id) => {
         setProductID(id);
     };
+    const convertBase64Image = (image) => {
+        return "data:image/png;base64," + image;
+    };
 
     return (
         !!+product.visible &&
@@ -36,9 +39,9 @@ const ProductGridSingleTwo = ({
                             <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
                                 {product.images && product.images.length > 0}
                                 {!product.images[0].baseImage ? (
-                                    <img src={product.images[0].imageUrl} alt="" />
+                                    <img src={convertBase64Image(product.images[0].baseImage)} alt="" />
                                 ) : (
-                                    <img src={"data:image/jpeg;base64," + product.images[0].baseImage} alt="" style={{ height: "270px" }} />
+                                    <img src={convertBase64Image(product.images[0].baseImage)} alt="" style={{ height: "270px" }} />
                                 )}
                             </Link>
                             <div className="product-action-2">
@@ -77,7 +80,7 @@ const ProductGridSingleTwo = ({
                                     </Link>
                                 </h3>
                                 <div className="price-2">
-                                    {product.discounted ? (
+                                    {!!+product.discounted ? (
                                         <Fragment>
                                             <span>{finalDiscountedPrice}</span> <span className="old">{finalProductPrice}</span>
                                         </Fragment>

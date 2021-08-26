@@ -39,6 +39,7 @@ const TabProduct = ({ setLoader, spaceTopClass, spaceBottomClass, category, cont
                         });
                     }
                 });
+                console.log('categoryData: ------- ', categoryData)
                 // setFeaturedData(response.products)
                 setCategoryData(category);
                 setLoader(false);

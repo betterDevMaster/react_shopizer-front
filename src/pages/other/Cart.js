@@ -530,9 +530,9 @@ const mapStateToProps = (state) => {
 
 function defaultImage(product) {
     if (product.images && product.images.length > 0) {
-        return product.images[0].imageUrl;
+        return "data:image/png;base64," + product.images[0].baseImage;
     } else if (product.image != null) {
-        return product.imageUrl;
+        return "data:image/png;base64," + product.baseImage;
     } else {
         return null;
     }

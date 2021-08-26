@@ -2,21 +2,15 @@ import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
-// import { getDiscountPrice } from "../../helpers/product";
-// import Rating from "./sub-components/ProductRating";
 import ProductModal from "./ProductModal";
 import { setProductID } from "../../redux/actions/productActions";
 import { connect } from "react-redux";
 import StarRatings from "react-star-ratings";
+
 const ProductGridListSingle = ({
     product,
-    // currency,
     addToCart,
-    // addToWishlist,
-    // addToCompare,
     cartItem,
-    // wishlistItem,
-    // compareItem,
     sliderClassName,
     spaceBottomClass,
     setProductID,
@@ -27,7 +21,6 @@ const ProductGridListSingle = ({
     const [modalShow, setModalShow] = useState(false);
     const { addToast } = useToasts();
     const history = useHistory();
-    // const discountedPrice = getDiscountPrice(product.price, product.discount);
     const finalProductPrice = product.originalPrice;
     const finalDiscountedPrice = product.finalPrice;
     const onClickProductDetails = (id) => {
@@ -40,11 +33,11 @@ const ProductGridListSingle = ({
                 <div className={`product-wrap ${spaceBottomClass ? spaceBottomClass : ""}`}>
                     <div className="product-img">
                         <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
-                            {product.image && <img className="default-img" src={defaultImage(product)} alt="" />}
+                            {product.image && <img className="default-img" src={defaultImage(product)} alt="default-image" />}
                             {product.images.length > 1 ? (
-                                <img className="hover-img-A" src={defaultImage(product)} alt="" />
+                                <img className="hover-img-A" src={defaultImage(product)} alt="hover-img-A1" />
                             ) : (
-                                <img className="hover-img-A" src={defaultImage(product)} alt="" />
+                                <img className="hover-img-A" src={defaultImage(product)} alt="hover-img-A2" />
                             )}
                         </Link>
 
@@ -65,8 +58,6 @@ const ProductGridListSingle = ({
                                             if (!userData) history.push("/login");
                                             else addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
                                         }}
-                                        // className="active"
-                                        // disabled={cartItem !== undefined && cartItem.quantity > 0}
                                         title={strings["Add to cart"]}
                                     >
                                         <i className="pe-7s-cart"></i> {strings["Add to cart"]}
@@ -99,7 +90,6 @@ const ProductGridListSingle = ({
                                 numberOfStars={5}
                                 name="view-rating"
                             />
-                            {/* <Rating ratingValue={product.rating} /> */}
                         </div>
                         <div className="product-price">
                             {product.discounted ? (
@@ -118,21 +108,7 @@ const ProductGridListSingle = ({
                             <div className="product-list-image-wrap">
                                 <div className="product-img">
                                     <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
-                                        {product.image && <img className="default-img img-fluid" src={product.image.imageUrl} alt="" />}
-
-                                        {/*product.images.length > 1 ?
-                      <img
-                        className="hover-img img-fluid"
-                        src={product.images[1]}
-                        alt=""
-                      />
-                      :
-                      <img
-                        className="hover-img img-fluid"
-                        src={defaultImage(product)}
-                        alt=""
-                      />
-                    */}
+                                        {product.image && <img className="default-img img-fluid" src={defaultImage(product)} alt="default-img img-fluid" />}
                                     </Link>
                                 </div>
                             </div>
@@ -163,14 +139,12 @@ const ProductGridListSingle = ({
                                             numberOfStars={5}
                                             name="view-rating"
                                         />
-                                        {/* <Rating ratingValue={product.rating} /> */}
                                     </div>
                                 </div>
                                 <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
                                 <div className="shop-list-actions d-flex align-items-center">
                                     <div className="shop-list-btn btn-hover">
                                         {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 ? (
-                                            // product, addToast, cartItem, 1, defaultStore
                                             <button
                                                 onClick={() => {
                                                     if (!userData) history.push("/login");
@@ -185,8 +159,6 @@ const ProductGridListSingle = ({
                                                 {strings["Out of Stock"]}
                                             </button>
                                         )}
-
-                                        {/* )} */}
                                     </div>
                                 </div>
                             </div>
@@ -226,9 +198,9 @@ ProductGridListSingle.propTypes = {
 
 function defaultImage(product) {
     if (product.images && product.images.length > 0) {
-        return product.images[0].imageUrl;
+        return "data:image/png;base64," + product.images[0].baseImage;
     } else if (product.image != null) {
-        return product.imageUrl;
+        return "data:image/png;base64," + product.baseImage;
     } else {
         return null;
     }

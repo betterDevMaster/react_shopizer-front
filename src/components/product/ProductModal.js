@@ -3,19 +3,14 @@ import React, { Fragment, useState, useEffect } from "react";
 
 import Swiper from "react-id-swiper";
 import "swiper/swiper.scss";
-
-//import { Swiper } from 'swiper/react';
-//import 'swiper/swiper.scss';
-
-// import { getProductCartQuantity } from "../../helpers/product";
 import { Modal } from "react-bootstrap";
-// import Rating from "./sub-components/ProductRating";
 import { connect } from "react-redux";
 import WebService from "../../util/webService";
 import constant from "../../util/constant";
 import { setLoader } from "../../redux/actions/loaderActions";
 import StarRatings from "react-star-ratings";
 import { useHistory } from "react-router-dom";
+
 function ProductModal(props, strings) {
     const { product, cartData, defaultStore, userData, finalproductprice, finaldiscountedprice, setLoader } = props;
 
@@ -26,20 +21,12 @@ function ProductModal(props, strings) {
     const [gallerySwiper, getGallerySwiper] = useState(null);
     const [thumbnailSwiper, getThumbnailSwiper] = useState(null);
     const [selectedProductColor, setSelectedProductColor] = useState([]);
-    // const [productStock, setProductStock] = useState();
     const [quantityCount, setQuantityCount] = useState(1);
     const [currentImage, setCurrentImage] = useState(defaultImage(product));
-    // const wishlistItem = props.wishlistitem;
-    // const compareItem = props.compareitem;
     const history = useHistory();
     const addToCart = props.addtocart;
-    // const addToWishlist = props.addtowishlist;
-    // const addToCompare = props.addtocompare;
-
     const addToast = props.addtoast;
-    // const cartItems = props.cartitems;
 
-    // const productCartQty = 0
     useEffect(() => {
         getDefualtsOption();
         if (gallerySwiper !== null && gallerySwiper.controller && thumbnailSwiper !== null && thumbnailSwiper.controller) {
@@ -107,7 +94,6 @@ function ProductModal(props, strings) {
             let temp = [...selectedProductColor, { name: option.name, id: value.id }];
             tempSelectedOptions = temp;
             setSelectedProductColor(temp);
-            // setSelectedProductColor([...selectedProductColor, { 'name': option.name, 'id': value.id }])
         } else {
             let temp = [...selectedProductColor];
             if (option.type === "radio" || option.type === "select") {
@@ -144,6 +130,9 @@ function ProductModal(props, strings) {
             return true;
         }
     };
+    const convertBase64Image = (image) => {
+        return "data:image/png;base64," + image;
+    };
 
     return (
         <Fragment>
@@ -177,8 +166,8 @@ function ProductModal(props, strings) {
                                                 <div key={key}>
                                                     <div className="single-image">
                                                         <img
-                                                            onClick={() => setCurrentImage(single.imageUrl)}
-                                                            src={single.imageUrl}
+                                                            onClick={() => setCurrentImage(convertBase64Image(single.baseImage))}
+                                                            src={convertBase64Image(single.baseImage)}
                                                             className="img-fluid"
                                                             alt=""
                                                         />
@@ -212,7 +201,6 @@ function ProductModal(props, strings) {
                                             numberOfStars={5}
                                             name="view-rating"
                                         />
-                                        {/* <Rating ratingValue={product.rating} /> */}
                                     </div>
                                 </div>
                                 <div className="pro-details-list">
@@ -249,37 +237,34 @@ function ProductModal(props, strings) {
                                                     <div className="pro-details-color-wrap" key={key}>
                                                         <span>{option.name}</span>
                                                         <div className="pro-details-color-content" style={{ display: "flex", flexDirection: "column" }}>
-                                                            {
-                                                                option.optionValues.map((value, index) => {
-                                                                    return (
-                                                                        <div
-                                                                            style={{ flexDirection: "row", display: "flex", alignItems: "center", margin: 15 }}
+                                                            {option.optionValues.map((value, index) => {
+                                                                return (
+                                                                    <div
+                                                                        style={{ flexDirection: "row", display: "flex", alignItems: "center", margin: 15 }}
+                                                                        key={index}
+                                                                    >
+                                                                        {value.image && <img src={convertBase64Image(value.image)} alt="product-option" />}
+
+                                                                        <label
+                                                                            className={`pro-details-color-content--single`}
+                                                                            style={{ backgroundColor: value.code }}
                                                                             key={index}
                                                                         >
-                                                                            {value.image && <img src={value.image} alt="product-option" />}
-
-                                                                            <label
-                                                                                className={`pro-details-color-content--single`}
-                                                                                style={{ backgroundColor: value.code }}
-                                                                                key={index}
-                                                                            >
-                                                                                <input
-                                                                                    type={option.type}
-                                                                                    value={value.id}
-                                                                                    name={option.name}
-                                                                                    checked={checkedOrNot(value)}
-                                                                                    onChange={() => onChangeOptions(value, option)}
-                                                                                />
-                                                                                <span className="checkmark"></span>
-                                                                            </label>
-                                                                            <label>
-                                                                                {value.description.name} {value.price && "(" + value.price + ")"}
-                                                                            </label>
-                                                                        </div>
-                                                                    );
-                                                                })
-                                                                // )
-                                                            }
+                                                                            <input
+                                                                                type={option.type}
+                                                                                value={value.id}
+                                                                                name={option.name}
+                                                                                checked={checkedOrNot(value)}
+                                                                                onChange={() => onChangeOptions(value, option)}
+                                                                            />
+                                                                            <span className="checkmark"></span>
+                                                                        </label>
+                                                                        <label>
+                                                                            {value.description.name} {value.price && "(" + value.price + ")"}
+                                                                        </label>
+                                                                    </div>
+                                                                );
+                                                            })}
                                                         </div>
                                                     </div>
                                                 )
@@ -297,7 +282,6 @@ function ProductModal(props, strings) {
                                                                         onChangeOptions(JSON.parse(e.target.value), option);
                                                                     }}
                                                                 >
-                                                                    {/* <option>Select a country</option> */}
                                                                     {option.optionValues.map((singleSize, i) => {
                                                                         return (
                                                                             <option
@@ -333,7 +317,9 @@ function ProductModal(props, strings) {
                                                                         }}
                                                                         key={key}
                                                                     >
-                                                                        {singleSize.image && <img src={singleSize.image} alt="product-option" />}
+                                                                        {singleSize.image && (
+                                                                            <img src={convertBase64Image(singleSize.image)} alt="product-option" />
+                                                                        )}
 
                                                                         <label className={`pro-details-size-content--single`} key={key}>
                                                                             <input
@@ -343,9 +329,6 @@ function ProductModal(props, strings) {
                                                                                 checked={checkedOrNot(singleSize)}
                                                                                 onChange={() => {
                                                                                     onChangeOptions(singleSize, option);
-                                                                                    // setSelectedProductSize(singleSize.name);
-                                                                                    //   setProductStock(singleSize.stock);
-                                                                                    //   setQuantityCount(1);
                                                                                 }}
                                                                             />
                                                                             <span className="size-name">
@@ -365,19 +348,6 @@ function ProductModal(props, strings) {
                                     ""
                                 )}
                                 {
-                                    //   product.affiliateLink ? (
-                                    //   <div className="pro-details-quality">
-                                    //     <div className="pro-details-cart btn-hover">
-                                    //       <a
-                                    //         href={product.affiliateLink}
-                                    //         rel="noopener noreferrer"
-                                    //         target="_blank"
-                                    //       >
-                                    //         Buy Now
-                                    //       </a>
-                                    //     </div>
-                                    //   </div>
-                                    // ) : (
                                     <div className="pro-details-quality">
                                         <div className="cart-plus-minus">
                                             <button onClick={() => setQuantityCount(quantityCount > 1 ? quantityCount - 1 : 1)} className="dec qtybutton">
@@ -401,57 +371,17 @@ function ProductModal(props, strings) {
                                                             selectedProductColor.forEach((a) => {
                                                                 options.push({ id: a.id });
                                                             });
-                                                            addToCart(
-                                                                product,
-                                                                addToast,
-                                                                cartData,
-                                                                quantityCount,
-                                                                defaultStore,
-                                                                options,
-                                                                userData,
-                                                                strings
-                                                                // selectedProductColor,
-                                                                // selectedProductSize
-                                                            );
+                                                            addToCart(product, addToast, cartData, quantityCount, defaultStore, options, userData, strings);
                                                         }
                                                     }}
                                                 >
-                                                    {/* {strings["Add to cart"]} */} Add to cart
+                                                    Add to cart
                                                 </button>
                                             ) : (
                                                 <button disabled>Out of Stock</button>
                                             )}
                                         </div>
-                                        {/* <div className="pro-details-wishlist">
-                        <button
-                          className={wishlistItem !== undefined ? "active" : ""}
-                          disabled={wishlistItem !== undefined}
-                          title={
-                            wishlistItem !== undefined
-                              ? "Added to wishlist"
-                              : "Add to wishlist"
-                          }
-                          onClick={() => addToWishlist(product, addToast)}
-                        >
-                          <i className="pe-7s-like" />
-                        </button>
-                      </div> */}
-                                        {/* <div className="pro-details-compare">
-                        <button
-                          className={compareItem !== undefined ? "active" : ""}
-                          disabled={compareItem !== undefined}
-                          title={
-                            compareItem !== undefined
-                              ? "Added to compare"
-                              : "Add to compare"
-                          }
-                          onClick={() => addToCompare(product, addToast)}
-                        >
-                          <i className="pe-7s-shuffle" />
-                        </button>
-                      </div> */}
                                     </div>
-                                    // )
                                 }
                             </div>
                         </div>
@@ -465,35 +395,25 @@ function ProductModal(props, strings) {
 ProductModal.propTypes = {
     addtoast: PropTypes.func,
     addtocart: PropTypes.func,
-    // addtocompare: PropTypes.func,
-    // addtowishlist: PropTypes.func,
-    // cartitems: PropTypes.array,
-    // compareitem: PropTypes.object,
-    // currency: PropTypes.object,
-    // discountedprice: PropTypes.number,
     finaldiscountedprice: PropTypes.string,
     finalproductprice: PropTypes.string,
     onHide: PropTypes.func,
     product: PropTypes.object,
     show: PropTypes.bool,
-
-    // wishlistitem: PropTypes.object
 };
 
 function defaultImage(product) {
     if (product.images && product.images.length > 0) {
-        return product.images[0].imageUrl;
+        return "data:image/png;base64," + product.images[0].baseImage;
     } else if (product.image != null) {
-        return product.imageUrl;
+        return "data:image/png;base64," + product.baseImage;
     } else {
         return null;
     }
 }
 
 const mapStateToProps = (state) => {
-    return {
-        // cartitems: state.cartData
-    };
+    return {};
 };
 const mapDispatchToProps = (dispatch) => {
     return {

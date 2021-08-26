@@ -5,29 +5,21 @@ import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
 import { setLoader } from "../../redux/actions/loaderActions";
 import { connect } from "react-redux";
-// import Rating from "../../components/product/sub-components/ProductRating";
 import StarRatings from "react-star-ratings";
 import WebService from "../../util/webService";
 import constant from "../../util/constant";
 import { useToasts } from "react-toast-notifications";
 import * as moment from "moment";
 import { multilanguage } from "redux-multilanguage";
-// import { Scrollbars } from 'react-custom-scrollbars';
 import ReactPaginate from "react-paginate";
+
 const ProductDescriptionTab = ({ strings, spaceBottomClass, product, review, userData }) => {
     const [ratingValue, setRatingValue] = useState(0);
     const [ratingMessage, setRatingMessage] = useState("");
     const [offset, setOffset] = useState(1);
-    // const [tempReview, setTempReview] = useState([])
     const pageLimit = 5;
     const { addToast } = useToasts();
-    // const getRating = (ratingValue) => {
-    //   let rating = [];
-    //   for (let i = 0; i <= ratingValue - 1; i++) {
-    //     rating.push(i);
-    //   }
-    //   return rating;
-    // }
+  
     useEffect(() => {}, [offset]);
     const onClickSubmit = async () => {
         setLoader(true);
@@ -53,17 +45,13 @@ const ProductDescriptionTab = ({ strings, spaceBottomClass, product, review, use
             // setLoader(false)
         }
     };
+
     return (
         <div className={`description-review-area ${spaceBottomClass}`}>
             <div className="container">
                 <div className="description-review-wrapper">
                     <Tab.Container defaultActiveKey="productDescription">
                         <Nav variant="pills" className="description-review-topbar">
-                            {/* <Nav.Item>
-                <Nav.Link eventKey="additionalInfo">
-                  Additional Information
-                </Nav.Link>
-              </Nav.Item> */}
                             <Nav.Item>
                                 <Nav.Link eventKey="productDescription">{strings["Description"]}</Nav.Link>
                             </Nav.Item>
@@ -74,21 +62,6 @@ const ProductDescriptionTab = ({ strings, spaceBottomClass, product, review, use
                             </Nav.Item>
                         </Nav>
                         <Tab.Content className="description-review-bottom">
-                            {/* <Tab.Pane eventKey="additionalInfo">
-                <div className="product-anotherinfo-wrapper">
-                  <ul>
-
-                    <li>
-                      <span>Weight</span> {product.productSpecifications.weight} Pounds
-                    </li>
-
-                    <li>
-                      <span>{strings["Package size"]}</span>{product.productSpecifications.length}{" "} x {product.productSpecifications.width}{" "}
-                      x {product.productSpecifications.height} Inches{" "}
-                    </li>
-                  </ul>
-                </div>
-              </Tab.Pane> */}
                             <Tab.Pane eventKey="productDescription">
                                 <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
                                 <div className="product-anotherinfo-wrapper">
@@ -171,7 +144,6 @@ const ProductDescriptionTab = ({ strings, spaceBottomClass, product, review, use
                                                     activeClassName={"page-item active"}
                                                 />
                                             </div>
-                                            {/* </Scrollbars> */}
                                         </div>
                                     ) : (
                                         <div className="col-lg-7">
@@ -265,4 +237,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(multilanguage(ProductDescriptionTab));
-// export default ProductDescriptionTab;
