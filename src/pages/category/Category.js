@@ -2,10 +2,8 @@ import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from "react";
 import MetaTags from "react-meta-tags";
 import { useHistory } from "react-router-dom";
-// import Paginator from 'react-hooks-paginator';
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { connect } from "react-redux";
-// import { getSortedProducts } from '../../helpers/product';
 import Layout from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import ShopSidebar from "../../wrappers/product/ShopSidebar";
@@ -22,12 +20,8 @@ import ReactPaginate from "react-paginate";
 const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader }) => {
     const [layout, setLayout] = useState("grid three-column");
     const history = useHistory();
-    // const [sortType, setSortType] = useState('');
     const [categoryValue, setCategoryValue] = useState("");
-    // const [filterSortType, setFilterSortType] = useState('');
-    // const [filterSortValue, setFilterSortValue] = useState('');
     const [offset, setOffset] = useState(0);
-    // const [skip, setSkip] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const pageLimit = parseInt(process.env.REACT_APP_APP_PRODUCT_GRID_LIMIT) || 12;
     const [productData, setProductData] = useState([]);
@@ -39,7 +33,6 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     const [size, setSize] = useState([]);
     const [selectedOption, setSelectedOption] = useState([]);
     const [selectedManufature, setSelectedManufature] = useState([]);
-    // const [sortedProducts, setSortedProducts] = useState([]);
 
     const { pathname } = location;
 
@@ -48,41 +41,31 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     };
 
     const getSortParams = (sortType, sortValue) => {
-        // console.log(sortType)
         let tempSelectedOption = selectedOption;
         let tempSelectedManufature = selectedManufature;
         if (sortType === "size" || sortType === "color") {
             let index = selectedOption.findIndex((a) => a === sortValue);
-            // console.log(index)
             if (index === -1) {
                 tempSelectedOption = [...selectedOption, sortValue];
             } else {
                 tempSelectedOption.splice(index, 1);
             }
-            // console.log(tempSelectedSize)
             setSelectedOption(tempSelectedOption);
         } else if (sortType === "manufacturer") {
             let index = selectedManufature.findIndex((a) => a === sortValue);
-            // console.log(index)
             if (index === -1) {
                 tempSelectedManufature = [...selectedManufature, sortValue];
             } else {
                 tempSelectedManufature.splice(index, 1);
             }
-            // console.log(tempSelectedSize)
             setSelectedManufature(tempSelectedManufature);
         }
-        // console.log(categoryValue, tempSelectedOption, selectedManufature)
         getProductList(categoryValue, tempSelectedOption, tempSelectedManufature);
     };
 
     const getCategoryParams = (sortType, sortValue) => {
-        // console.log(sortType)
-        // console.log(sortValue)
-        // setCategoryValue(sortValue)
         setCategoryID(sortValue.id);
         history.push("/category/" + sortValue.description.friendlyUrl);
-        // getProductList(categoryValue, selectedOption, selectedManufature)
     };
 
     useEffect(() => {
@@ -98,19 +81,20 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     }, [categoryID, offset]);
     const getProductList = async (categoryid, size, manufacture) => {
         setLoader(true);
-        // setProductData([]);
-        let action = constant.ACTION.PRODUCT + constant.ACTION.PRODUCTLIST;
-        let param = {
-            store: defaultStore,
-            lang: currentLanguageCode,
-            page: offset,
-            count: pageLimit,
-            category: categoryID,
-            optionValues: size.join(),
-            manufacturer: manufacture.join(),
-        };
+
+        let action =
+            constant.ACTION.PRODUCT +
+            constant.ACTION.PRODUCTLIST +
+            `?${isCheckValueAndSetParams("&store=", defaultStore)}
+            ${isCheckValueAndSetParams("&lang=", currentLanguageCode)}
+            ${isCheckValueAndSetParams("&page=", offset)}
+            ${isCheckValueAndSetParams("&count=", pageLimit)}
+            ${isCheckValueAndSetParams("&category=", categoryid)}
+            ${isCheckValueAndSetParams("&optionValues=", size.join())}
+            ${isCheckValueAndSetParams("&manufacturer=", manufacture.join())}`;
+
         try {
-            let response = await WebService.post(action, param);
+            let response = await WebService.get(action);
             if (response) {
                 setCurrentPage(response.totalPages);
                 setProductData(response.products);
@@ -137,10 +121,9 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         getManufacturers(categoryid);
     };
     const getManufacturers = async (categoryid) => {
-        let action = constant.ACTION.CATEGORY + constant.ACTION.MANUFACTURERS;
-        let param = { id: categoryid, store: defaultStore, lang: currentLanguageCode };
+        let action = constant.ACTION.CATEGORY + constant.ACTION.MANUFACTURERS + "?store=" + defaultStore + "&lang=" + currentLanguageCode;
         try {
-            let response = await WebService.post(action, param);
+            let response = await WebService.get(action);
             if (response) {
                 setManufacture(response.sort());
             }
@@ -148,7 +131,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         getVariants(categoryid);
     };
     const getVariants = async (categoryid) => {
-        let action = constant.ACTION.CATEGORY + constant.ACTION.VARIANTS
+        let action = constant.ACTION.CATEGORY + constant.ACTION.VARIANTS;
         let param = { id: categoryid, store: defaultStore, lang: currentLanguageCode };
         try {
             let response = await WebService.post(action, param);

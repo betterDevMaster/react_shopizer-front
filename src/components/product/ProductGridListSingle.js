@@ -7,17 +7,7 @@ import { setProductID } from "../../redux/actions/productActions";
 import { connect } from "react-redux";
 import StarRatings from "react-star-ratings";
 
-const ProductGridListSingle = ({
-    product,
-    addToCart,
-    cartItem,
-    sliderClassName,
-    spaceBottomClass,
-    setProductID,
-    defaultStore,
-    userData,
-    strings,
-}) => {
+const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, spaceBottomClass, setProductID, defaultStore, userData, strings }) => {
     const [modalShow, setModalShow] = useState(false);
     const { addToast } = useToasts();
     const history = useHistory();
@@ -92,12 +82,12 @@ const ProductGridListSingle = ({
                             />
                         </div>
                         <div className="product-price">
-                            {product.discounted ? (
+                            {!!+product.discounted ? (
                                 <Fragment>
-                                    <span>{finalDiscountedPrice}</span> <span className="old">{finalProductPrice}</span>
+                                    <span>USD {finalDiscountedPrice}</span> <span className="old">USD {finalProductPrice}</span>
                                 </Fragment>
                             ) : (
-                                <span>{finalProductPrice} </span>
+                                <span>USD {finalProductPrice} </span>
                             )}
                         </div>
                     </div>

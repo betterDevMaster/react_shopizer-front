@@ -82,10 +82,10 @@ const ProductGridSingleTwo = ({
                                 <div className="price-2">
                                     {!!+product.discounted ? (
                                         <Fragment>
-                                            <span>{finalDiscountedPrice}</span> <span className="old">{finalProductPrice}</span>
+                                            <span>USD {finalDiscountedPrice}</span> <span className="old">USD {finalProductPrice}</span>
                                         </Fragment>
                                     ) : (
-                                        <span>{finalProductPrice} </span>
+                                        <span>USD {finalProductPrice} </span>
                                     )}
                                 </div>
                             </div>

@@ -1,21 +1,15 @@
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-// import { getProducts } from "../../helpers/product";
 import ProductGridSingle from "../../components/product/ProductGridSingle";
 import { addToCart } from "../../redux/actions/cartActions";
-// import { addToWishlist } from "../../redux/actions/wishlistActions";
-// import { addToCompare } from "../../redux/actions/compareActions";
 import { isValidObject } from "../../util/helper";
+
 const ProductGrid = ({
     products,
     currency,
     addToCart,
-    // addToWishlist,
-    // addToCompare,
     cartData,
-    // wishlistItems,
-    // compareItems,
     sliderClassName,
     spaceBottomClass,
     colorClass,
@@ -31,25 +25,9 @@ const ProductGrid = ({
                         spaceBottomClass={spaceBottomClass}
                         colorClass={colorClass}
                         product={product}
-                        // currency={currency}
                         addToCart={addToCart}
                         cartData={cartData}
                         userData={userData}
-                        // addToWishlist={addToWishlist}
-                        // addToCompare={addToCompare}
-                        // cartItem={cartItems}
-                        // cartItems.filter((cartItem) => cartItem.id === product.id)[0]
-                        // }
-                        // wishlistItem={
-                        //   wishlistItems.filter(
-                        //     (wishlistItem) => wishlistItem.id === product.id
-                        //   )[0]
-                        // }
-                        // compareItem={
-                        //   compareItems.filter(
-                        //     (compareItem) => compareItem.id === product.id
-                        //   )[0]
-                        // }
                         key={product.id}
                         titlePriceClass={titlePriceClass}
                     />
@@ -61,8 +39,6 @@ const ProductGrid = ({
 
 ProductGrid.propTypes = {
     addToCart: PropTypes.func,
-    // addToCompare: PropTypes.func,
-    // addToWishlist: PropTypes.func,
     compareItems: PropTypes.array,
     currency: PropTypes.object,
     products: PropTypes.array,
@@ -75,17 +51,8 @@ ProductGrid.propTypes = {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        // products: getProducts(
-        //   state.productData.products,
-        //   ownProps.category,
-        //   ownProps.type,
-        //   ownProps.limit
-        // ),
-        // currency: state.currencyData,
         cartData: state.cartData.cartItems,
         userData: state.userData.userData,
-        // wishlistItems: state.wishlistData,
-        // compareItems: state.compareData
     };
 };
 
@@ -99,8 +66,6 @@ const mapDispatchToProps = (dispatch) => {
             defaultStore,
             selectedProductColor,
             userData,
-            // selectedProductColor,
-            // selectedProductSize
         ) => {
             let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === item.id) : -1;
             dispatch(
@@ -115,12 +80,6 @@ const mapDispatchToProps = (dispatch) => {
                 )
             );
         },
-        // addToWishlist: (item, addToast) => {
-        //   dispatch(addToWishlist(item, addToast));
-        // },
-        // addToCompare: (item, addToast) => {
-        //   dispatch(addToCompare(item, addToast));
-        // }
     };
 };
 

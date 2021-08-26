@@ -3,18 +3,18 @@ import React from "react";
 import ProductgridList from "./ProductgridList";
 
 const ShopProducts = ({ products, layout, strings }) => {
-  return (
-    <div className="shop-bottom-area mt-35">
-      <div className={`row ${layout ? layout : ""}`}>
-        <ProductgridList products={products} strings={strings} spaceBottomClass="mb-25" />
-      </div>
-    </div>
-  );
+    return (
+        <div className="shop-bottom-area mt-35">
+            <div className={`row ${layout ? layout : ""}`}>
+                <ProductgridList products={products} strings={strings} spaceBottomClass="mb-25" />
+            </div>
+        </div>
+    );
 };
 
 ShopProducts.propTypes = {
-  layout: PropTypes.string,
-  products: PropTypes.array
+    layout: PropTypes.string,
+    products: PropTypes.array,
 };
 
 export default ShopProducts;

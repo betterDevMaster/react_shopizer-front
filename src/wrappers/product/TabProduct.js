@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 const TabProduct = ({ setLoader, spaceTopClass, spaceBottomClass, category, containerClass, extraClass, defaultStore, currentLanguageCode }) => {
     // const [featuredData, setFeaturedData] = useState([]);
     const [categoryData, setCategoryData] = useState([]);
-    
+
     useEffect(() => {
         getProductList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -26,21 +26,19 @@ const TabProduct = ({ setLoader, spaceTopClass, spaceBottomClass, category, cont
             if (response) {
                 let category = [{ id: "", name: "All", code: "all", data: response.products }];
                 response.products.forEach((item) => {
-                    if (item.categories !== null) {
-                        item.categories.forEach((a) => {
-                            let index = category.findIndex((value) => {
-                                return value.id === a.id;
-                            });
-                            if (index === -1) {
-                                category.push({ id: a.description.id, name: a.description.name, code: a.code, data: [item] });
-                            } else {
-                                category[index].data.push(item);
-                            }
+                    if (item.category !== null) {
+                        // item.categories.forEach((a) => {
+                        let index = category.findIndex((value) => {
+                            return value.id === item.category.id;
                         });
+                        if (index === -1) {
+                            category.push({ id: item.category.description.id, name: item.category.description.name, code: item.category.code, data: [item] });
+                        } else {
+                            category[index].data.push(item);
+                        }
+                        // });
                     }
                 });
-                console.log('categoryData: ------- ', categoryData)
-                // setFeaturedData(response.products)
                 setCategoryData(category);
                 setLoader(false);
             }
