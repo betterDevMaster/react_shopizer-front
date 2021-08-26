@@ -105,7 +105,7 @@ const Header = ({
 
             <div className={`${headerPaddingClass ? headerPaddingClass : ""} sticky-bar header-res-padding clearfix ${scroll > headerTop ? "stick" : ""}`}>
                 <div className={layout === "container-fluid" ? layout : "container"}>
-                    <div className="row">
+                    <div className="row align-item-baseline">
                         <div className="col-xl-2 col-lg-2 col-md-6 col-4">
                             {/* header logo */}
                             {merchant.logo != null && <Logo imageUrl={merchant.logo.path} logoClass="logo" />}

@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 const TabProduct = ({ setLoader, spaceTopClass, spaceBottomClass, category, containerClass, extraClass, defaultStore, currentLanguageCode }) => {
     // const [featuredData, setFeaturedData] = useState([]);
     const [categoryData, setCategoryData] = useState([]);
+    
     useEffect(() => {
         getProductList();
         // eslint-disable-next-line react-hooks/exhaustive-deps

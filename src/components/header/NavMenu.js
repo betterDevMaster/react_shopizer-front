@@ -15,7 +15,7 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
     };
 
     return (
-        <div className={` ${sidebarMenu ? "sidebar-menu" : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`} `}>
+        <div className={`${sidebarMenu ? "sidebar-menu" : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`} `}>
             <nav>
                 <ul>
                     <li>
