@@ -25,10 +25,9 @@ const ProductDetails = ({ strings, location, productID, currentLanguageCode, set
 
     const getProductDetails = async () => {
         setLoader(true);
-        let action = constant.ACTION.PRODUCT + constant.ACTION.PRODUCTDETAIL;
-        let param = { id: productID, lang: currentLanguageCode, store: defaultStore };
+        let action = constant.ACTION.PRODUCT + constant.ACTION.PRODUCTDETAIL + productID + '?lang=' + currentLanguageCode + '&store=' + defaultStore;
         try {
-            let response = await WebService.post(action, param);
+            let response = await WebService.get(action);
             if (response) {
                 setProductDetails(response);
                 setLoader(false);

@@ -206,16 +206,18 @@ function ProductModal(props, strings) {
                                 <div className="pro-details-list">
                                     <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
                                     <ul>
-                                        <li>
-                                            <span>Weight</span> {product.productSpecifications.weight} Pounds
-                                        </li>
-                                        {
+                                        {product.productSpecifications && (
+                                            <li>
+                                                <span>Weight</span> {product.productSpecifications.weight} Pounds
+                                            </li>
+                                        )}
+                                        {product.productSpecifications && (
                                             <li>
                                                 <span>{strings["Package size"]}</span>
                                                 {product.productSpecifications.length} x {product.productSpecifications.width} x{" "}
                                                 {product.productSpecifications.height} Inches{" "}
                                             </li>
-                                        }
+                                        )}
                                         {product.properties.map((value, i) => {
                                             return (
                                                 <li key={i}>

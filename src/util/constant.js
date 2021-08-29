@@ -7,6 +7,7 @@ const Constant = {
         DEFAULT: 'DEFAULT/',
         CATEGORY: 'category/',
         CATEGORYLIST: 'list/',
+        CATEGORYHIERARCHYLIST: 'hierarchyList/',
         CATEGORYDETAIL: 'categoryDetail/',
         CONTENT: 'content/',
         PAGES: 'pages/',

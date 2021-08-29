@@ -82,6 +82,8 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     const getProductList = async (categoryid, size, manufacture) => {
         setLoader(true);
 
+        if (manufacture.length > 0) manufacture = manufacture.join() + ",";
+
         let action =
             constant.ACTION.PRODUCT +
             constant.ACTION.PRODUCTLIST +
@@ -91,7 +93,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
             ${isCheckValueAndSetParams("&count=", pageLimit)}
             ${isCheckValueAndSetParams("&category=", categoryid)}
             ${isCheckValueAndSetParams("&optionValues=", size.join())}
-            ${isCheckValueAndSetParams("&manufacturer=", manufacture.join())}`;
+            ${isCheckValueAndSetParams("&manufacturer=", manufacture)}`;
 
         try {
             let response = await WebService.get(action);
@@ -168,67 +170,63 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
 
                 <div className="shop-area pt-95 pb-100">
                     <div className="container">
-                        {productData.length > 0 ? (
-                            <div className="row">
-                                <div className="col-lg-3 order-2 order-lg-1">
-                                    {/* shop sidebar */}
-                                    {/* <ShopSidebar products={products} getSortParams={getSortParams} sideSpaceClass="mr-30" /> */}
-                                    <ShopSidebar
-                                        string={strings}
-                                        getSortParams={getSortParams}
-                                        getCategoryParams={getCategoryParams}
-                                        uniqueCategories={subCategory}
-                                        uniqueColors={color}
-                                        uniqueSizes={size}
-                                        uniqueManufacture={manufacture}
-                                        sideSpaceClass="mr-30"
-                                    />
-                                </div>
-                                <div className="col-lg-9 order-1 order-lg-2">
-                                    {/* shop topbar default */}
-                                    {/* <ShopTopbar getLayout={getLayout} getFilterSortParams={getFilterSortParams} productCount={products.length} sortedProductCount={productData.length} /> */}
-                                    <ShopTopbar
-                                        strings={strings}
-                                        getLayout={getLayout}
-                                        productCount={totalProduct}
-                                        offset={offset + 1}
-                                        pageLimit={pageLimit}
-                                        sortedProductCount={productData.length}
-                                    />
-
-                                    {/* shop page content default */}
-                                    <ShopProducts strings={strings} layout={layout} products={productData} />
-
-                                    {/* shop product pagination */}
-
-                                    <div className="pro-pagination-style text-center mt-30">
-                                        <ReactPaginate
-                                            previousLabel={"«"}
-                                            nextLabel={"»"}
-                                            breakLabel={"..."}
-                                            breakClassName={"break-me"}
-                                            pageCount={currentPage}
-                                            onPageChange={(e) => setOffset(e.selected)}
-                                            containerClassName={"mb-0 mt-0"}
-                                            activeClassName={"page-item active"}
-                                        />
+                        <div className="row">
+                            <div className="col-lg-3 order-2 order-lg-1">
+                                {/* shop sidebar */}
+                                {/* <ShopSidebar products={products} getSortParams={getSortParams} sideSpaceClass="mr-30" /> */}
+                                <ShopSidebar
+                                    string={strings}
+                                    getSortParams={getSortParams}
+                                    getCategoryParams={getCategoryParams}
+                                    uniqueCategories={subCategory}
+                                    uniqueColors={color}
+                                    uniqueSizes={size}
+                                    uniqueManufacture={manufacture}
+                                    sideSpaceClass="mr-30"
+                                />
+                            </div>
+                            <div className="col-lg-9 order-1 order-lg-2">
+                                {/* shop topbar default */}
+                                {/* <ShopTopbar getLayout={getLayout} getFilterSortParams={getFilterSortParams} productCount={products.length} sortedProductCount={productData.length} /> */}
+                                <ShopTopbar
+                                    strings={strings}
+                                    getLayout={getLayout}
+                                    productCount={totalProduct}
+                                    offset={offset + 1}
+                                    pageLimit={pageLimit}
+                                    sortedProductCount={productData.length}
+                                />
+                                {productData.length > 0 && (
+                                    <>
+                                        <ShopProducts strings={strings} layout={layout} products={productData} />
+                                        <div className="pro-pagination-style text-center mt-30">
+                                            <ReactPaginate
+                                                previousLabel={"«"}
+                                                nextLabel={"»"}
+                                                breakLabel={"..."}
+                                                breakClassName={"break-me"}
+                                                pageCount={currentPage}
+                                                onPageChange={(e) => setOffset(e.selected)}
+                                                containerClassName={"mb-0 mt-0"}
+                                                activeClassName={"page-item active"}
+                                            />
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                        {productData.length < 0 && !isLoading && (
+                            <div className="col-lg-12">
+                                <div className="item-empty-area text-center">
+                                    <div className="item-empty-area__icon mb-30">
+                                        <i className="pe-7s-shopbag"></i>
+                                    </div>
+                                    <div className="item-empty-area__text">
+                                        {strings["No items found in category"]}
+                                        <br />{" "}
                                     </div>
                                 </div>
                             </div>
-                        ) : (
-                            !isLoading && (
-                                <div className="col-lg-12">
-                                    <div className="item-empty-area text-center">
-                                        <div className="item-empty-area__icon mb-30">
-                                            <i className="pe-7s-shopbag"></i>
-                                        </div>
-                                        <div className="item-empty-area__text">
-                                            {strings["No items found in category"]}
-                                            <br />{" "}
-                                        </div>
-                                    </div>
-                                </div>
-                            )
                         )}
                     </div>
                 </div>

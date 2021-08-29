@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import React from "react";
 
 const ShopManufacture = ({ string, manufactures, getSortParams }) => {
-                            console.log('manufactures: ------------ ', manufactures)
     return (
         <div className="sidebar-widget mt-30">
             <h4 className="pro-sidebar-title">{string["Styles"]}</h4>

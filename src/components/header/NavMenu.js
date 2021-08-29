@@ -56,7 +56,8 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
                             )
                         );
                     })}
-                    {contents && contents.map((content, index) => {
+                    {/* {contents && contents.map((content, index) => {
+                        console.log('item; 0-============ ', content)
                         return (
                             !!+content.visible &&
                             content.description && (
@@ -67,7 +68,7 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
                                 </li>
                             )
                         );
-                    })}
+                    })} */}
                 </ul>
             </nav>
         </div>

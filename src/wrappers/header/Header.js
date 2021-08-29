@@ -64,11 +64,11 @@ const Header = ({
         }
     };
     const getCategoryHierarchy = async () => {
-        let action = constant.ACTION.CATEGORY + constant.ACTION.CATEGORYLIST + "?count=20&page=0&store=" + defaultStore + "&lang=" + currentLanguageCode;
+        let action = constant.ACTION.CATEGORY + constant.ACTION.CATEGORYHIERARCHYLIST + "?count=20&page=0&store=" + defaultStore + "&lang=" + currentLanguageCode;
         try {
             let response = await WebService.get(action);
             if (response) {
-                setCategoryData(response.categories);
+                setCategoryData(response);
             }
         } catch (error) {
             // console.log(error.messages)
