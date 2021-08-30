@@ -66,12 +66,12 @@ const ProductDescriptionTab = ({ strings, spaceBottomClass, product, review, use
                                 <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
                                 <div className="product-anotherinfo-wrapper">
                                     <ul>
-                                        {product.productSpecifications.weight && (
+                                        {product.productSpecifications && product.productSpecifications.weight && (
                                             <li>
                                                 <span>{strings["Weight"]}</span> {product.productSpecifications.weight}
                                             </li>
                                         )}
-                                        {product.productSpecifications.length && product.productSpecifications.width && product.productSpecifications.height && (
+                                        {product.productSpecifications && product.productSpecifications.length && product.productSpecifications.width && product.productSpecifications.height && (
                                             <li>
                                                 <span>{strings["Package size"]}</span>
                                                 {product.productSpecifications.length || 0} x {product.productSpecifications.width || 0} x{" "}

@@ -3,6 +3,7 @@ import MetaTags from "react-meta-tags";
 import Layout from "../../layouts/Layout";
 import HeroSlider from "../../wrappers/hero-slider/HeroSlider";
 import TabProduct from "../../wrappers/product/TabProduct";
+import CategoryProduct from "../../wrappers/product/CategoryProduct";
 import Newsletter from "../../wrappers/newsletter/Newsletter";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
@@ -17,7 +18,7 @@ const Home = ({ merchant, strings }) => {
                 {/* hero slider */}
                 <HeroSlider string={strings} />
                 {/* tab product */}
-                <TabProduct category="fashion" spaceBottomClass="pb-100" spaceTopClass="pt-100" />
+                <CategoryProduct category="fashion" spaceBottomClass="pb-100" spaceTopClass="pt-100" />
                 {/* newsletter */}
                 <Newsletter spaceTopClass="pt-100" spaceBottomClass="pb-100" subscribeBtnClass="dark-red-subscribe" />
             </Layout>

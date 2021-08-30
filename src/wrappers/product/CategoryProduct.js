@@ -15,66 +15,51 @@ const CategoryProduct = ({ setLoader, spaceTopClass, spaceBottomClass, category,
     const [categoryData, setCategoryData] = useState([]);
 
     useEffect(() => {
-        getProductList();
+        getCategoryList();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const getProductList = async () => {
+    const getCategoryList = async () => {
         setLoader(true);
-        let action = constant.ACTION.PRODUCT + constant.ACTION.FEATUREDITEM + "?store=" + defaultStore + "&lang=" + currentLanguageCode;
+
+        let action =
+            constant.ACTION.CATEGORY + constant.ACTION.CATEGORYHIERARCHYLIST + "?count=20&page=0&store=" + defaultStore + "&lang=" + currentLanguageCode;
         try {
             let response = await WebService.get(action);
             if (response) {
-                let category = [{ id: "", name: "All", code: "all", data: response.products }];
-                response.products.forEach((item) => {
-                    if (item.category !== null) {
-                        // item.categories.forEach((a) => {
-                        let index = category.findIndex((value) => {
-                            return value.id === item.category.id;
-                        });
-                        if (index === -1) {
-                            category.push({ id: item.category.description.id, name: item.category.description.name, code: item.category.code, data: [item] });
-                        } else {
-                            category[index].data.push(item);
-                        }
-                        // });
-                    }
-                });
-                setCategoryData(category);
-                setLoader(false);
+                let category = response.filter((item) => item.code === "Categories");
+                setCategoryData(category[0].children);
             }
-        } catch (error) {
             setLoader(false);
+        } catch (error) {
+            console.log(error.messages);
+            setLoader(false);
+            // console.log(error)
+            // history.push('/not-found')
         }
     };
 
     return (
         <div className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${spaceBottomClass ? spaceBottomClass : ""} ${extraClass ? extraClass : ""}`}>
             <div className={`${containerClass ? containerClass : "container"}`}>
-                <SectionTitle titleText="Featured Products" positionClass="text-center" />
-                <Tab.Container defaultActiveKey="all">
-                    <Nav variant="pills" className="product-tab-list pt-30 pb-55 text-center">
-                        {categoryData.map((value, i) => {
-                            return (
-                                <Nav.Item key={i}>
-                                    <Nav.Link eventKey={value.code}>
-                                        <h4>{value.name}</h4>
-                                    </Nav.Link>
-                                </Nav.Item>
-                            );
-                        })}
-                    </Nav>
-                    <Tab.Content>
-                        {categoryData.map((value, i) => {
-                            return (
-                                <Tab.Pane key={i} eventKey={value.code}>
-                                    <div className="row">
-                                        <ProductGrid products={value.data} type="men" limit={8} spaceBottomClass="mb-25" />
-                                    </div>
-                                </Tab.Pane>
-                            );
-                        })}
-                    </Tab.Content>
-                </Tab.Container>
+                <SectionTitle titleText="Categories" positionClass="text-center" />
+                <div className="row mt-4">
+                    {categoryData.map((value, key) => (
+                        <div className="col-md-4" key={key}>
+                            <div
+                                className="category-wrap ftco-animate category-img mb-4 d-flex align-items-end fadeInUp ftco-animated"
+                                style={{ backgroundImage: `url(data:image/png;base64,${value.image})` }}
+                            >
+                                <div className="text px-3 py-1">
+                                    <h2 className="mb-0">
+                                        <a href={`/category/${value.description.friendlyUrl}`}>
+                                            <font>{value.description.name}</font>
+                                        </a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

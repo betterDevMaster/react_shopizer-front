@@ -14,6 +14,31 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
         setContent(item);
     };
 
+    const contactsUrl = (isContacts, url) => {
+        return isContacts ? "/" + url : "/category/" + url;
+    };
+
+    const ItemDescription = ({ item, sidebarMenu }) => {
+        return (
+            item && (
+                <div className="parentWithChild">
+                    {item.description.name}
+                    {item.children && item.children.length > 0 ? (
+                        sidebarMenu ? (
+                            <span>
+                                <i className="fa fa-angle-right"></i>
+                            </span>
+                        ) : (
+                            <i className="fa fa-angle-down" />
+                        )
+                    ) : (
+                        ""
+                    )}
+                </div>
+            )
+        );
+    };
+
     return (
         <div className={`${sidebarMenu ? "sidebar-menu" : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`} `}>
             <nav>
@@ -21,41 +46,41 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
                     <li>
                         <Link to={"/"}>{strings["Home"]}</Link>
                     </li>
-                    {categories && categories.map((item, index) => {
-                        return (
-                            !!+item.visible && (
-                                <li key={index}>
-                                    <Link to={"/category/" + item.description.friendlyUrl} onClick={() => onClickCategory(item)}>
-                                        {item.description.name}
-                                        {item.children && item.children.length > 0 ? (
-                                            sidebarMenu ? (
-                                                <span>
-                                                    <i className="fa fa-angle-right"></i>
-                                                </span>
-                                            ) : (
-                                                <i className="fa fa-angle-down" />
-                                            )
+                    {categories &&
+                        categories.map((item, index) => {
+                            return (
+                                !!+item.visible && (
+                                    <li key={index}>
+                                        {item.children.length === 0 ? (
+                                            <Link
+                                                to={contactsUrl(item.code === "Contacts", item.description.friendlyUrl)}
+                                                onClick={() => onClickCategory(item)}
+                                            >
+                                                <ItemDescription item={item} sidebarMenu={sidebarMenu} />
+                                            </Link>
                                         ) : (
-                                            ""
+                                            <ItemDescription item={item} sidebarMenu={sidebarMenu} />
                                         )}
-                                    </Link>
-                                    {item.children && item.children.length > 0 && (
-                                        <ul className="submenu">
-                                            {item.children.map((submenu, index) => {
-                                                return (
-                                                    <li key={index}>
-                                                        <Link to={"/category/" + submenu.description.friendlyUrl} onClick={() => onClickCategory(submenu)}>
-                                                            {submenu.description.name}
-                                                        </Link>
-                                                    </li>
-                                                );
-                                            })}
-                                        </ul>
-                                    )}
-                                </li>
-                            )
-                        );
-                    })}
+                                        {item.children && item.children.length > 0 && (
+                                            <ul className="submenu">
+                                                {item.children.map((submenu, index) => {
+                                                    return (
+                                                        <li key={index}>
+                                                            <Link
+                                                                to={contactsUrl(item.code === "Contacts", submenu.description.friendlyUrl)}
+                                                                onClick={() => onClickCategory(submenu)}
+                                                            >
+                                                                {submenu.description.name}
+                                                            </Link>
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        )}
+                                    </li>
+                                )
+                            );
+                        })}
                     {/* {contents && contents.map((content, index) => {
                         console.log('item; 0-============ ', content)
                         return (
