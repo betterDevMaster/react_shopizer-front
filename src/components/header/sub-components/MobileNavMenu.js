@@ -9,8 +9,13 @@ const MobileNavMenu = ({ strings, categories, contents, setCategoryID, setConten
     const onClickCategory = (item) => {
         setCategoryID(item.id);
     };
+
     const onClickContent = (item) => {
         setContent(item);
+    };
+
+    const contactsUrl = (isContacts, url) => {
+        return isContacts ? "/" + url : "/content/" + url;
     };
 
     return (
@@ -49,8 +54,10 @@ const MobileNavMenu = ({ strings, categories, contents, setCategoryID, setConten
                         !!+content.visible &&
                         content.description && (
                             <li key={index}>
-                                {" "}
-                                <Link to={"/content/" + content.description.friendlyUrl} onClick={() => onClickContent(content.code)}>
+                                <Link
+                                    to={contactsUrl(content.code === "contacts", content.description.friendlyUrl)}
+                                    onClick={() => onClickContent(content.code)}
+                                >
                                     {content.description.name}
                                 </Link>
                             </li>

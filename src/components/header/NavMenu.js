@@ -10,12 +10,13 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
     const onClickCategory = (item) => {
         setCategoryID(item.id);
     };
+    
     const onClickContent = (item) => {
         setContent(item);
     };
 
     const contactsUrl = (isContacts, url) => {
-        return isContacts ? "/" + url : "/category/" + url;
+        return isContacts ? "/" + url : "/content/" + url;
     };
 
     const ItemDescription = ({ item, sidebarMenu }) => {
@@ -53,7 +54,7 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
                                     <li key={index}>
                                         {item.children.length === 0 ? (
                                             <Link
-                                                to={contactsUrl(item.code === "Contacts", item.description.friendlyUrl)}
+                                                to={"/category/" + item.description.friendlyUrl}
                                                 onClick={() => onClickCategory(item)}
                                             >
                                                 <ItemDescription item={item} sidebarMenu={sidebarMenu} />
@@ -67,7 +68,7 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
                                                     return (
                                                         <li key={index}>
                                                             <Link
-                                                                to={contactsUrl(item.code === "Contacts", submenu.description.friendlyUrl)}
+                                                                to={"/category/" + submenu.description.friendlyUrl}
                                                                 onClick={() => onClickCategory(submenu)}
                                                             >
                                                                 {submenu.description.name}
@@ -81,19 +82,18 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
                                 )
                             );
                         })}
-                    {/* {contents && contents.map((content, index) => {
-                        console.log('item; 0-============ ', content)
+                    {contents && contents.map((content, index) => {
                         return (
                             !!+content.visible &&
                             content.description && (
                                 <li key={index}>
-                                    <Link to={"/content/" + content.description.friendlyUrl} onClick={() => onClickContent(content.code)}>
+                                    <Link to={contactsUrl(content.code === "contacts", content.description.friendlyUrl)} onClick={() => onClickContent(content.code)}>
                                         {content.description.name}
                                     </Link>
                                 </li>
                             )
                         );
-                    })} */}
+                    })}
                 </ul>
             </nav>
         </div>
