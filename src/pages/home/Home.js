@@ -2,9 +2,9 @@ import React, { Fragment } from "react";
 import MetaTags from "react-meta-tags";
 import Layout from "../../layouts/Layout";
 import HeroSlider from "../../wrappers/hero-slider/HeroSlider";
-import TabProduct from "../../wrappers/product/TabProduct";
 import CategoryProduct from "../../wrappers/product/CategoryProduct";
-import Newsletter from "../../wrappers/newsletter/Newsletter";
+import BestSellerProduct from "../../wrappers/product/BestSellerProduct";
+import StaticLogo from "../../wrappers/staticLogo/StaticLogo";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
 const Home = ({ merchant, strings }) => {
@@ -18,9 +18,11 @@ const Home = ({ merchant, strings }) => {
                 {/* hero slider */}
                 <HeroSlider string={strings} />
                 {/* tab product */}
-                <CategoryProduct category="fashion" spaceBottomClass="pb-100" spaceTopClass="pt-100" />
-                {/* newsletter */}
-                <Newsletter spaceTopClass="pt-100" spaceBottomClass="pb-100" subscribeBtnClass="dark-red-subscribe" />
+                <CategoryProduct category="fashion" spaceBottomClass="pb-30" spaceTopClass="pt-50" />
+                {/* Best Seller */}
+                <BestSellerProduct category="fashion" spaceBottomClass="pb-30"/>
+                {/* Advertise Picture */}
+                <StaticLogo/>
             </Layout>
         </Fragment>
     );

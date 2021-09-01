@@ -41,7 +41,7 @@ const CategoryProduct = ({ setLoader, spaceTopClass, spaceBottomClass, category,
     return (
         <div className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${spaceBottomClass ? spaceBottomClass : ""} ${extraClass ? extraClass : ""}`}>
             <div className={`${containerClass ? containerClass : "container"}`}>
-                <SectionTitle titleText="Categories" positionClass="text-center" />
+                <SectionTitle titleText="Categories"/>
                 <div className="row mt-4">
                     {categoryData.map((value, key) => (
                         <div className="col-md-4" key={key}>

@@ -79,6 +79,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         getProductList(categoryID, [], []);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categoryID, offset]);
+    
     const getProductList = async (categoryid, size, manufacture) => {
         setLoader(true);
 
@@ -97,6 +98,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
 
         try {
             let response = await WebService.get(action);
+           console.log('responseL ------------ ', response)
             if (response) {
                 setCurrentPage(response.totalPages);
                 setProductData(response.products);

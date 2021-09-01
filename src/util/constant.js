@@ -14,6 +14,7 @@ const Constant = {
         PAGEDETAIL: 'pageDetail/',
         PRODUCT: 'product/',
         FEATUREDITEM: 'featuredItem/',
+        BESTSELLERS: 'bestselllersItem/',
         PRODUCTS: 'products/',
         PRODUCTLIST: 'productList/',
         PRODUCTDETAIL: 'productDetail/',
