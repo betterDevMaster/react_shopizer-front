@@ -4425,7 +4425,7 @@
 .best-seller-carousel-container {
     box-shadow: 0 1px 1px 0 rgb(42 42 42 / 8%), 0 1px 3px 1px rgb(42 42 42 / 16%);
     margin: 7px;
-    
+
     .best-seller-desc-area {
         padding: 8px;
         overflow: hidden;
@@ -4464,6 +4464,9 @@
         }
 
         .shop-container {
+            height: 16px;
+            overflow: hidden;
+
             .shop-container-block {
                 width: 100%;
                 display: flex;
@@ -4494,15 +4497,28 @@
         height: 48px;
         background-color: #ffb400;
 
-        button {
+        .shop-order-button {
             width: 100%;
             height: 100%;
             background: none;
             border: none;
         }
 
-        span {
-            font-size: 1.125rem;
+        .shop-order-calc-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+            font-size: 18px;
+
+            button {
+                background: none;
+                border: none;
+            }
+            svg {
+                width: 1em;
+                height: 1em;
+            }
         }
     }
 }

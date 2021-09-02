@@ -8,12 +8,31 @@ import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { setProductID } from "../../redux/actions/productActions";
+import { useToasts } from "react-toast-notifications";
+import { isValidObject } from "../../util/helper";
+import { addToCart } from "../../redux/actions/cartActions";
 
-const BestSellerProduct = ({ setLoader, spaceTopClass, spaceBottomClass, category, containerClass, extraClass, defaultStore, currentLanguageCode, setProductID }) => {
+const BestSellerProduct = ({
+    addToCart,
+    setLoader,
+    cartData,
+    spaceTopClass,
+    spaceBottomClass,
+    category,
+    containerClass,
+    extraClass,
+    defaultStore,
+    currentLanguageCode,
+    userData,
+    setProductID,
+}) => {
     // const [featuredData, setFeaturedData] = useState([]);
     const [proudctsData, setProudctsData] = useState([]);
+    const history = useHistory();
+    const { addToast } = useToasts();
+    const [preOrder, setPreorder] = useState(0);
 
     useEffect(() => {
         getProductList();
@@ -93,36 +112,113 @@ const BestSellerProduct = ({ setLoader, spaceTopClass, spaceBottomClass, categor
                     slidesToSlide={5}
                     swipeable
                 >
-                    {proudctsData.map((data) => (
+                    {proudctsData.map((product) => (
                         <div className="best-seller-carousel-container">
-                            <div style={{width: '180px', height: '180px'}}>
-                                <Link to={process.env.PUBLIC_URL + "/product/" + data.description.friendlyUrl} onClick={() => onClickProductDetails(data.id)}>
-                                    {data.images && data.images.length > 0}
-                                    {!data.images[0].baseImage ? (
-                                        <img src={convertBase64Image(data.images[0].baseImage)} alt="" style={{ width: "100%" }} />
+                            <div style={{ width: "180px", height: "180px" }}>
+                                <Link
+                                    to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl}
+                                    onClick={() => onClickProductDetails(product.id)}
+                                >
+                                    {product.images && product.images.length > 0}
+                                    {!product.images[0].baseImage ? (
+                                        <img src={convertBase64Image(product.images[0].baseImage)} alt="" style={{ width: "100%" }} />
                                     ) : (
-                                        <img src={convertBase64Image(data.images[0].baseImage)} alt="" style={{ width: "100%" }} />
+                                        <img src={convertBase64Image(product.images[0].baseImage)} alt="" style={{ width: "100%" }} />
                                     )}
                                 </Link>
                             </div>
                             <div className="best-seller-desc-area">
-                                <Link to={process.env.PUBLIC_URL + "/product/" + data.description.friendlyUrl} onClick={() => onClickProductDetails(data.id)}>
-                                    {data.description.title}
+                                <Link
+                                    to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl}
+                                    onClick={() => onClickProductDetails(product.id)}
+                                >
+                                    {product.description.title}
                                 </Link>
                                 <span title="6uds | 0,42&nbsp;€/ud.">6uds | 0,42&nbsp;€/ud.</span>
-                                <p>USD {data.originalPrice}</p>
+                                <p>USD {product.originalPrice}</p>
                                 <div className="shop-container">
                                     <div className="shop-container-block">
-                                        <a role="button" className="MuiChip-root MuiChip-clickable" href="/en/filter/eco">
-                                            <span className="MuiChip-label">Organic</span>
-                                        </a>
+                                        {!!+product.discounted && (
+                                            <a role="button" className="MuiChip-root MuiChip-clickable" href="/en/filter/eco">
+                                                <span className="MuiChip-label">
+                                                    USD {product.finalPrice} -{" "}
+                                                    {Math.ceil(((product.originalPrice - product.finalPrice) / product.originalPrice) * 100)} %
+                                                </span>
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
                             </div>
                             <div className="shop-order-container">
-                                <button>
-                                    <span>Add your CP</span>
-                                </button>
+                                {preOrder !== product.id || preOrder === 0 ? (
+                                    <button
+                                        className="shop-order-button"
+                                        onClick={() => {
+                                            if (!userData) history.push("/login");
+                                            setPreorder(product.id);
+                                        }}
+                                    >
+                                        <i className="fa fa-shopping-cart" style={{ fontSize: "27px" }}></i>
+                                    </button>
+                                ) : (
+                                    <div className="shop-order-calc-area">
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === product.id) : -1;
+                                                if (index !== -1) {
+                                                    addToCart(
+                                                        product,
+                                                        addToast,
+                                                        cartData,
+                                                        cartData.products[index].quantity - 1,
+                                                        defaultStore,
+                                                        undefined,
+                                                        userData
+                                                    );
+                                                    if (cartData.products[index].quantity < 1) setPreorder(0);
+                                                }
+                                            }}
+                                        >
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" role="presentation">
+                                                <path d="M19 13H5v-2h14v2z"></path>
+                                            </svg>
+                                        </button>
+                                        <span>
+                                            {isValidObject(cartData) && cartData.products.findIndex((order) => order.id === product.id) !== -1
+                                                ? cartData.products[cartData.products.findIndex((order) => order.id === product.id)].quantity
+                                                : 0}
+                                        </span>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === product.id) : -1;
+                                                addToCart(
+                                                    product,
+                                                    addToast,
+                                                    cartData,
+                                                    index === -1 ? 1 : cartData.products[index].quantity + 1,
+                                                    defaultStore,
+                                                    undefined,
+                                                    userData
+                                                );
+                                            }}
+                                        >
+                                            <svg viewBox="0 0 24 24" aria-hidden="true" role="presentation">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                )}
+                                {/* <button
+                                    onClick={() => {
+                                        if (!userData) history.push("/login");
+                                        else addToCart(product, addToast, cartData, 1, defaultStore, undefined, userData);
+                                    }}
+                                    className="active"
+                                >
+                                    <i className="fa fa-shopping-cart" style={{ fontSize: "27px" }}></i>
+                                </button> */}
                             </div>
                         </div>
                     ))}
@@ -133,6 +229,7 @@ const BestSellerProduct = ({ setLoader, spaceTopClass, spaceBottomClass, categor
 };
 
 BestSellerProduct.propTypes = {
+    addToCart: PropTypes.func,
     category: PropTypes.string,
     containerClass: PropTypes.string,
     extraClass: PropTypes.string,
@@ -145,6 +242,8 @@ const mapStateToProps = (state) => {
     return {
         currentLanguageCode: state.multilanguage.currentLanguageCode,
         defaultStore: state.merchantData.defaultStore,
+        userData: state.userData.userData,
+        cartData: state.cartData.cartItems,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -154,6 +253,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         setProductID: (value) => {
             dispatch(setProductID(value));
+        },
+        addToCart: (item, addToast, cartData, quantityCount, defaultStore, selectedProductColor, userData) => {
+            dispatch(addToCart(item, addToast, cartData.code, quantityCount, defaultStore, selectedProductColor, userData));
         },
     };
 };

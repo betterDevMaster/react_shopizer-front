@@ -33,7 +33,7 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, s
             } else {
                 param = { productId: item.id, quantity: quantityCount, customerId: userData.id, store: process.env.REACT_APP_APP_MERCHANT };
             }
-console.log('cartId: ---------- ', cartId)
+
             if (cartId) {
                 message = "Updated Cart";
                 action = constant.ACTION.CART + constant.ACTION.ADDCART;
@@ -84,13 +84,14 @@ export const getCart = (cartID, userData) => {
             }
 
             let response = await WebService.get(action);
+            console.log("Cart action response " + response);
             dispatch(setShopizerCartID(response.code));
             dispatch({
                 type: GET_CART,
                 payload: response,
             });
         } catch (error) {
-            console.log("Cart action response " + error);
+            console.log("Cart action response error " + error);
             dispatch(deleteAllFromCart());
         }
     };

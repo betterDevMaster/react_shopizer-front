@@ -11,10 +11,10 @@ import { useForm, Controller } from "react-hook-form";
 import { useToasts } from "react-toast-notifications";
 import WebService from "../../util/webService";
 import constant from "../../util/constant";
-import { setLocalData, isValidObject, getLocalData } from "../../util/helper";
+import { setLocalData, getLocalData } from "../../util/helper";
 import { setLoader } from "../../redux/actions/loaderActions";
 import { setUser, getGender, getCountry, getState } from "../../redux/actions/userAction";
-import { addToCart, getCart } from "../../redux/actions/cartActions";
+import { getCart } from "../../redux/actions/cartActions";
 import { connect } from "react-redux";
 import { multilanguage } from "redux-multilanguage";
 
@@ -138,7 +138,6 @@ const registerForm = {
 const LoginRegister = ({
     merchant,
     strings,
-    props,
     location,
     setLoader,
     setUser,
@@ -151,8 +150,6 @@ const LoginRegister = ({
     currentLocation,
     stateData,
     cartItems,
-    addToCart,
-    defaultStore,
     currentLanguageCode,
 }) => {
     const { pathname } = location;
@@ -173,7 +170,6 @@ const LoginRegister = ({
         if (getLocalData("isRemember") === "true") {
             setIsRemember(true);
             setLoginValue("username", getLocalData("loginEmail"));
-            // setLoginValue('loginPassword', '')
         }
         getGender("M");
         getCountry(currentLanguageCode);
@@ -196,18 +192,8 @@ const LoginRegister = ({
             let param = { userName: data.username, password: data.loginPassword };
             let response = await WebService.post(action, param);
             if (response) {
-                if (isValidObject(cartItems)) {
-                    // getCart('', response)
-                    // setTimeout(() => {
-                    // console.log(cartItems);
-                    // cartItems.products.forEach((element) => {
-                    //   addToCart(element, '', cartItems.code, element.quantity, defaultStore, response)
-                    // });
-                    getCartandAdd(response);
-                    // }, 5000);
-                } else {
-                    getCart("", response);
-                }
+                getCart(response.token, response);
+
                 if (getLocalData("isRemember") === "true") {
                     setLocalData("loginEmail", data.username);
                 } else {
@@ -224,25 +210,7 @@ const LoginRegister = ({
             setLoader(false);
         }
     };
-    const getCartandAdd = async (data) => {
-        try {
-            let action =
-                constant.ACTION.AUTH +
-                constant.ACTION.CUSTOMER +
-                constant.ACTION.CARTS +
-                "?&lang=" +
-                JSON.parse(getLocalData("redux_localstorage_simple")).currentLanguageCode;
-            let response = await WebService.get(action);
 
-            if (response) {
-                setTimeout(() => {
-                    cartItems.products.forEach((element) => {
-                        addToCart(element, "", response, element.quantity, defaultStore, undefined, data);
-                    });
-                }, 2000);
-            }
-        } catch (error) {}
-    };
     const onConfirmPassword = (e) => {
         if (watch("password") !== e.target.value) {
             return setError(registerForm.repeatPassword.name, {
@@ -596,10 +564,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        addToCart: (item, addToast, cartItem, quantityCount, defaultStore, selectedProductColor, userData) => {
-            // let index = isValidObject(cartItem) ? cartItem.products.findIndex(cart => cart.id === item.id) : -1;
-            dispatch(addToCart(item, addToast, cartItem.code, quantityCount, defaultStore, selectedProductColor, userData));
-        },
         setLoader: (value) => {
             dispatch(setLoader(value));
         },
@@ -622,4 +586,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(multilanguage(LoginRegister));
-// export default LoginRegister;

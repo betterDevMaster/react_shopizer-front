@@ -349,7 +349,7 @@ const MyAccount = ({
             }
             //   // setConfig(response)
         } catch (error) {
-            // history.push("/login");
+            history.push("/login");
         }
     };
     const onChangePassword = async (data) => {

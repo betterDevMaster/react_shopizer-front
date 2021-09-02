@@ -34,9 +34,8 @@ axios.interceptors.request.use(
     async (config) => {
         // Do something before request is sent
         config.baseURL = BASE_URL;
-        const token = await getLocalData("token");
         config.headers.common["API-KEY"] = process.env.REACT_APP_APP_API_KEY;
-        config.headers.common["Authorization"] = token ? token : "";
+        config.headers.common["Authorization"] = "Basic YWJsOmpza2UzMjIzNEtKSEAhQCNKS0xEQQ==";
         return config;
     },
     (error) => {
