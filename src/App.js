@@ -65,7 +65,7 @@ const App = (props) => {
         <ToastProvider placement="bottom-left">
             <BreadcrumbsProvider>
                 <Router>
-                {/* <Router basename="/front"> */}
+                    {/* <Router basename="/front"> */}
                     <Loader></Loader>
                     <Cookie></Cookie>
                     <ScrollToTop>

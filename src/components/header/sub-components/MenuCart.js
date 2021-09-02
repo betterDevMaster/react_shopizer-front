@@ -5,7 +5,7 @@ import { useToasts } from "react-toast-notifications";
 import { isValidObject } from "../../../util/helper";
 import { connect } from "react-redux";
 import { multilanguage } from "redux-multilanguage";
-const MenuCart = ({ cartData, deleteFromCart, defaultStore, strings }) => {
+const MenuCart = ({ cartData, deleteFromCart, defaultStore, strings, userData }) => {
     // let cartTotalPrice = 0;
     const { addToast } = useToasts();
     return (
@@ -41,7 +41,7 @@ const MenuCart = ({ cartData, deleteFromCart, defaultStore, strings }) => {
                       )} */}
                                     </div>
                                     <div className="shopping-cart-delete">
-                                        <button onClick={() => deleteFromCart(cartData.code, single, defaultStore, addToast)}>
+                                        <button onClick={() => deleteFromCart(cartData.code, single, defaultStore, addToast, userData)}>
                                             <i className="fa fa-times-circle" />
                                         </button>
                                     </div>
@@ -90,6 +90,7 @@ function defaultImage(product) {
 const mapStateToProps = (state) => {
     return {
         defaultStore: state.merchantData.defaultStore,
+        userData: state.userData.userData,
     };
 };
 

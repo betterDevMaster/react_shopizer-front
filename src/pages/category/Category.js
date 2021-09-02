@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from "react";
 import MetaTags from "react-meta-tags";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { connect } from "react-redux";
 import Layout from "../../layouts/Layout";
@@ -17,9 +17,9 @@ import { multilanguage } from "redux-multilanguage";
 import { setCategoryID } from "../../redux/actions/productActions";
 import ReactPaginate from "react-paginate";
 
-const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader }) => {
+const Category = ({ props, setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader }) => {
     const [layout, setLayout] = useState("grid three-column");
-    const history = useHistory();
+    // const history = useHistory();
     const [categoryValue, setCategoryValue] = useState("");
     const [offset, setOffset] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
@@ -33,7 +33,6 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     const [size, setSize] = useState([]);
     const [selectedOption, setSelectedOption] = useState([]);
     const [selectedManufature, setSelectedManufature] = useState([]);
-
     const { pathname } = location;
 
     const getLayout = (layout) => {
@@ -65,7 +64,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
 
     const getCategoryParams = (sortType, sortValue) => {
         setCategoryID(sortValue.id);
-        history.push("/category/" + sortValue.description.friendlyUrl);
+        // history.push("/category/" + sortValue.description.friendlyUrl);
     };
 
     useEffect(() => {
@@ -79,7 +78,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         getProductList(categoryID, [], []);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categoryID, offset]);
-    
+
     const getProductList = async (categoryid, size, manufacture) => {
         setLoader(true);
 
@@ -96,9 +95,10 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
             ${isCheckValueAndSetParams("&optionValues=", size.join())}
             ${isCheckValueAndSetParams("&manufacturer=", manufacture)}`;
 
+        if (location.search.includes("promo")) action = action + "&promo";
+
         try {
             let response = await WebService.get(action);
-           console.log('responseL ------------ ', response)
             if (response) {
                 setCurrentPage(response.totalPages);
                 setProductData(response.products);
@@ -117,7 +117,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         try {
             let response = await WebService.get(action);
             if (response) {
-                history.push(response.description.friendlyUrl);
+                // history.push(response.description.friendlyUrl);
                 setProductDetails(response);
                 setSubCategory(response.children);
             }

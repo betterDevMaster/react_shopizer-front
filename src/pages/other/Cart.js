@@ -162,7 +162,7 @@ const Cart = ({
     };
     const deleteAllFromCart = () => {
         cartItems.products.forEach((value) => {
-            deleteFromCart(cartItems.code, value, defaultStore, addToast);
+            deleteFromCart(cartItems.code, value, defaultStore, addToast, userData);
         });
         //go to home page
         history.push("/");
@@ -322,7 +322,7 @@ const Cart = ({
                                                                 <td className="product-subtotal">{cartItem.displaySubTotal}</td>
 
                                                                 <td className="product-remove">
-                                                                    <button onClick={() => deleteFromCart(cartItems.code, cartItem, defaultStore, addToast)}>
+                                                                    <button onClick={() => deleteFromCart(cartItems.code, cartItem, defaultStore, addToast, userData)}>
                                                                         <i className="fa fa-times"></i>
                                                                     </button>
                                                                 </td>
@@ -562,8 +562,8 @@ const mapDispatchToProps = (dispatch) => {
         // getValue: () => {
         //   return 5;
         // },
-        deleteFromCart: (cartId, item, defaultStore, addToast) => {
-            dispatch(deleteFromCart(cartId, item, defaultStore, addToast));
+        deleteFromCart: (cartId, item, defaultStore, addToast, userData) => {
+            dispatch(deleteFromCart(cartId, item, defaultStore, addToast, userData));
         },
         getState: (code) => {
             dispatch(getState(code));

@@ -112,8 +112,8 @@ const BestSellerProduct = ({
                     slidesToSlide={5}
                     swipeable
                 >
-                    {proudctsData.map((product) => (
-                        <div className="best-seller-carousel-container">
+                    {proudctsData.map((product, key) => (
+                        <div className="best-seller-carousel-container" key={key}>
                             <div style={{ width: "180px", height: "180px" }}>
                                 <Link
                                     to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl}

@@ -47,15 +47,9 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, s
 
             //refresh cart
             if (response) {
-                dispatch(setShopizerCartID(response.code));
+                dispatch(getCart(response.code, userData));
                 dispatch(setLoader(false));
-                if (userData) {
-                    setTimeout(() => {
-                        dispatch(getCart(response.code, userData));
-                    }, 2000);
-                } else {
-                    dispatch(getCart(response.code, userData));
-                }
+
                 if (addToast) {
                     addToast(message, { appearance: "success", autoDismiss: true });
                 }
@@ -84,27 +78,25 @@ export const getCart = (cartID, userData) => {
             }
 
             let response = await WebService.get(action);
-            console.log("Cart action response " + response);
-            dispatch(setShopizerCartID(response.code));
             dispatch({
                 type: GET_CART,
                 payload: response,
             });
+            dispatch(setShopizerCartID(response.code));
         } catch (error) {
             console.log("Cart action response error " + error);
             dispatch(deleteAllFromCart());
         }
     };
-    // }
 };
 
 export const setShopizerCartID = (id) => {
-    //set local data
+    // set local data
+    setLocalData(GET_SHOPIZER_CART_ID, id);
     // set cart id in cookie
     var cart_cookie = process.env.REACT_APP_APP_MERCHANT + "_shopizer_cart";
     const cookies = new Cookies();
     cookies.set(cart_cookie, id, { path: "/", maxAge: 20000000 }); //6 months
-    setLocalData(GET_SHOPIZER_CART_ID, id);
     return (dispatch) => {
         dispatch({
             type: GET_SHOPIZER_CART_ID,
@@ -152,7 +144,7 @@ export const increaseQuantity = (item, addToast) => {
 };
 
 //delete from cart
-export const deleteFromCart = (cartID, item, defaultStore, addToast) => {
+export const deleteFromCart = (cartID, item, defaultStore, addToast, userData) => {
     return async (dispatch) => {
         dispatch(setLoader(true));
         try {
@@ -165,15 +157,20 @@ export const deleteFromCart = (cartID, item, defaultStore, addToast) => {
                 item.id +
                 "&store=" +
                 process.env.REACT_APP_APP_MERCHANT;
-            await WebService.delete(action);
+            let response = await WebService.delete(action);
 
-            dispatch({
-                type: DELETE_FROM_CART,
-                payload: item,
-            });
-            dispatch(setLoader(false));
-            if (addToast) {
-                addToast("Removed From Cart", { appearance: "error", autoDismiss: true });
+            //refresh cart
+            if (response) {
+                // dispatch({
+                //     type: DELETE_FROM_CART,
+                //     payload: item,
+                // });
+                dispatch(getCart(userData.token, userData));
+                dispatch(setLoader(false));
+
+                if (addToast) {
+                    addToast("Removed From Cart", { appearance: "error", autoDismiss: true });
+                }
             }
 
             // dispatch(getCart(cartID));
