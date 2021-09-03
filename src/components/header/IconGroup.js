@@ -178,8 +178,8 @@ const mapDispatchToProps = (dispatch) => {
         deleteAllFromCart: () => {
             dispatch(deleteAllFromCart());
         },
-        getCart: (cartID, userData) => {
-            dispatch(getCart(cartID, userData));
+        getCart: (cartID) => {
+            dispatch(getCart(cartID));
         },
     };
 };

@@ -9,7 +9,7 @@ import BestSellerProduct from "../../wrappers/product/BestSellerProduct";
 import StaticLogo from "../../wrappers/staticLogo/StaticLogo";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
-const Home = ({ merchant, strings }) => {
+const Home = ({ merchant, strings, userData }) => {
     return (
         <Fragment>
             <MetaTags>
@@ -18,17 +18,17 @@ const Home = ({ merchant, strings }) => {
             </MetaTags>
             <Layout headerContainerClass="container-fluid" headerPaddingClass="header-padding-2" headerTop="visible">
                 {/* hero slider */}
-                <HeroSlider string={strings} />
+                <HeroSlider string={strings} spaceBottomClass="pb-30"/>
                 {/* DeliveryDiscount */}
-                <DeliveryDiscount spaceBottomClass="pb-30" spaceTopClass="pt-50" />
+                {!userData && <DeliveryDiscount spaceBottomClass="pb-30"/>}
                 {/* Promos */}
                 <Promos spaceBottomClass="pb-30" />
                 {/* Category product */}
-                <CategoryProduct category="fashion" spaceBottomClass="pb-30"/>
+                <CategoryProduct category="fashion" spaceBottomClass="pb-30" />
                 {/* Best Seller */}
-                <BestSellerProduct category="fashion" spaceBottomClass="pb-30"/>
+                <BestSellerProduct category="fashion" spaceBottomClass="pb-30" />
                 {/* Advertise Picture */}
-                <StaticLogo/>
+                <StaticLogo />
             </Layout>
         </Fragment>
     );
@@ -37,6 +37,7 @@ const Home = ({ merchant, strings }) => {
 const mapStateToProps = (state) => {
     return {
         merchant: state.merchantData.merchant,
+        userData: state.userData.userData,
     };
 };
 

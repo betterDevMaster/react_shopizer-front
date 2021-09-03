@@ -47,7 +47,7 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, s
 
             //refresh cart
             if (response) {
-                dispatch(getCart(response.code, userData));
+                dispatch(getCart(response.code));
                 dispatch(setLoader(false));
 
                 if (addToast) {
@@ -61,11 +61,11 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, s
 };
 
 //Get cart
-export const getCart = (cartID, userData) => {
+export const getCart = (cartID) => {
     return async (dispatch) => {
         try {
             let action;
-            if (userData && cartID) {
+            if (cartID) {
                 action =
                     constant.ACTION.CART +
                     constant.ACTION.GETUSERCART +
@@ -112,7 +112,7 @@ export const getShopizerCartID = () => {
     const cookies = new Cookies();
     let cookie = cookies.get(cart_cookie);
     if (cookie) {
-        getCart(cookie, null);
+        getCart(cookie);
     }
 };
 
@@ -165,7 +165,7 @@ export const deleteFromCart = (cartID, item, defaultStore, addToast, userData) =
                 //     type: DELETE_FROM_CART,
                 //     payload: item,
                 // });
-                dispatch(getCart(userData.token, userData));
+                dispatch(getCart(userData.token));
                 dispatch(setLoader(false));
 
                 if (addToast) {

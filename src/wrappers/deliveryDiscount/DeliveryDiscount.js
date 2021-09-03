@@ -8,6 +8,7 @@ import { multilanguage } from "redux-multilanguage";
 import pattern from "../../assets/images/pattern.png";
 
 const DeliveryDiscount = ({ spaceTopClass, spaceBottomClass, containerClass, gutterClass, responsiveClass, bgImg, setCategoryID, strings }) => {
+    const history = useHistory();
     return (
         <div
             className={`delivery-content-area hm9-section-padding ${spaceTopClass ? spaceTopClass : ""} ${spaceBottomClass ? spaceBottomClass : ""} ${
@@ -21,7 +22,7 @@ const DeliveryDiscount = ({ spaceTopClass, spaceBottomClass, containerClass, gut
                         <h3>{strings['Get 3 months of free shipping by registering right now']}</h3>
                     </div>
                     <div className="offset-md-4 col-md-4 offer">
-                        <button>{strings['GET MY OFFER']}</button>
+                        <button onClick={()=>history.push('/login')}>{strings['GET MY OFFER']}</button>
                     </div>
                 </div>
             </div>

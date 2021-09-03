@@ -192,7 +192,7 @@ const LoginRegister = ({
             let param = { userName: data.username, password: data.loginPassword };
             let response = await WebService.post(action, param);
             if (response) {
-                getCart(response.token, response);
+                getCart(response.token);
 
                 if (getLocalData("isRemember") === "true") {
                     setLocalData("loginEmail", data.username);
@@ -579,8 +579,8 @@ const mapDispatchToProps = (dispatch) => {
         getState: (code) => {
             dispatch(getState(code));
         },
-        getCart: (cartID, userData) => {
-            dispatch(getCart(cartID, userData));
+        getCart: (cartID) => {
+            dispatch(getCart(cartID));
         },
     };
 };

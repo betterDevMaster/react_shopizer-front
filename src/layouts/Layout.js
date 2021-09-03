@@ -6,6 +6,7 @@ import Footer from "../wrappers/footer/Footer";
 const Layout = ({ children, headerContainerClass, headerTop, headerPaddingClass, headerPositionClass }) => {
     return (
         <Fragment>
+            {/* <SearchProduct match={1}/> */}
             <Header layout={headerContainerClass} top={headerTop} headerPaddingClass={headerPaddingClass} headerPositionClass={headerPositionClass} />
             {children}
             <Footer backgroundColorClass="bg-gray" spaceTopClass="pt-100" spaceBottomClass="pb-70" />

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
 import Logo from "../../components/header/Logo";
@@ -13,6 +13,7 @@ import constant from "../../util/constant";
 import { setLocalData } from "../../util/helper";
 import { setMerchant } from "../../redux/actions/storeAction";
 import { getCurrentLocation } from "../../redux/actions/userAction";
+
 const Header = ({
     setMerchant,
     merchant,
@@ -25,12 +26,14 @@ const Header = ({
     defaultStore,
     getCurrentLocation,
     currentLanguageCode,
+    strings,
 }) => {
     const history = useHistory();
     const [scroll, setScroll] = useState(0);
     const [headerTop, setHeaderTop] = useState(0);
     const [categoryData, setCategoryData] = useState([]);
     const [contentData, setContentData] = useState([]);
+    const [searchKey, setSearchKey] = useState('');
 
     useEffect(() => {
         checkServerHealth();
@@ -63,7 +66,8 @@ const Header = ({
         }
     };
     const getCategoryHierarchy = async () => {
-        let action = constant.ACTION.CATEGORY + constant.ACTION.CATEGORYHIERARCHYLIST + "?count=20&page=0&store=" + defaultStore + "&lang=" + currentLanguageCode;
+        let action =
+            constant.ACTION.CATEGORY + constant.ACTION.CATEGORYHIERARCHYLIST + "?count=20&page=0&store=" + defaultStore + "&lang=" + currentLanguageCode;
         try {
             let response = await WebService.get(action);
             if (response) {
@@ -105,17 +109,37 @@ const Header = ({
             <div className={`${headerPaddingClass ? headerPaddingClass : ""} sticky-bar header-res-padding clearfix ${scroll > headerTop ? "stick" : ""}`}>
                 <div className={layout === "container-fluid" ? layout : "container"}>
                     <div className="row align-item-baseline">
-                        <div className="col-xl-2 col-lg-2 col-md-6 col-4">
+                        <div className="col-xl-4 col-lg-4 col-md-4 col-4">
                             {/* header logo */}
-                            {merchant.logo != null && <Logo imageUrl={merchant.logo.path} logoClass="logo" />}
+                            {merchant.logo != null && <Logo imageUrl={merchant.logo.path} logoclassName="logo" />}
                         </div>
-                        <div className="col-xl-8 col-lg-8 d-none d-lg-block">
-                            {/* Nav menu */}
-                            <NavMenu categories={categoryData} contents={contentData} />
+                        <div className="col-xl-4 col-lg-4 d-none d-lg-block">
+                            {/* Search */}
+                            <div className="search-area">
+                                <svg className="jss3665" fill="#9E9E9E" width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M4.39168921 4.39168921c2.97774772-2.97774773 7.80563069-2.97774773 10.78337839 0 2.8287763 2.82877624 2.970295 7.32720029.4245561 10.32303559l4.8787448 4.8797602c.2440777.2440777.2440777.6398058 0 .8838835-.2218888.2218888-.5691086.2420605-.8137848.0605151l-.0700987-.0605151-4.8789968-4.8793935c-2.9958345 2.5464116-7.49478248 2.4051091-10.32379899-.4239074-2.97774773-2.9777477-2.97774773-7.80563067 0-10.78337839zm.88388347.88388347c-2.48959236 2.48959236-2.48959236 6.52601912 0 9.01561142 2.48959236 2.4895924 6.52601912 2.4895924 9.01561142 0 2.4895924-2.4895923 2.4895924-6.52601906 0-9.01561142-2.4895923-2.48959236-6.52601906-2.48959236-9.01561142 0z"></path>
+                                </svg>
+                                <div className="searh-input">
+                                    <input
+                                        autoComplete="off"
+                                        name="searchQuery"
+                                        placeholder={strings["Search here..."]}
+                                        type="text"
+                                        onChange={(e) => setSearchKey(e.target.value)}
+                                    />
+                                </div>
+                                <Link className="search-button" to={process.env.PUBLIC_URL + "/search/" + searchKey}>
+                                    <span>{strings["Search"]}</span>
+                                </Link>
+                            </div>
                         </div>
-                        <div className="col-xl-2 col-lg-2 col-md-6 col-8">
+                        <div className="col-xl-4 col-lg-4 col-md-4 col-4">
                             {/* Icon group */}
                             <IconGroup />
+                        </div>
+                        <div className="col-xl-12 col-lg-12 d-none d-lg-block">
+                            {/* Nav menu */}
+                            <NavMenu categories={categoryData} contents={contentData} />
                         </div>
                     </div>
                 </div>

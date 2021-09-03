@@ -52,7 +52,7 @@ const Constant = {
         ADDRESS: 'address',
         RESET: 'reset/',
         REQUEST: 'request/',
-        SEARCH: 'search/',
+        SEARCH: 'productSearch/',
         AUTOCOMPLETE: 'autocomplete/',
         BOXES: 'boxes/',
         BANNER_TEXT: 'bannerText/',

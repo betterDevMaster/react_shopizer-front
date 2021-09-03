@@ -41,10 +41,12 @@ const SearchProduct = ({ strings, location, defaultStore, currentLanguageCode, s
     }, []);
     const getProductList = async (e) => {
         setLoader(true)
-        let action = constant.ACTION.SEARCH;
-        let param = { 'query': searchID }
+        let action = constant.ACTION.PRODUCT + constant.ACTION.SEARCH + '?key=' + searchID;
+        // let param = { 'searchId': searchID }
         try {
-            let response = await WebService.post(action, param);
+            let response = await WebService.get(action);
+           console.log('resposne: ---------- ', response)
+            // let response = await WebService.post(action, param);
             if (response) {
                 // console.log(response)
                 // console.log(response.categoryFacets)

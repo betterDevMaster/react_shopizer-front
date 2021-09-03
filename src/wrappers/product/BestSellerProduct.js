@@ -33,6 +33,7 @@ const BestSellerProduct = ({
     const history = useHistory();
     const { addToast } = useToasts();
     const [preOrder, setPreorder] = useState(0);
+    let timer1 = null;
 
     useEffect(() => {
         getProductList();
@@ -158,8 +159,11 @@ const BestSellerProduct = ({
                                     <button
                                         className="shop-order-button"
                                         onClick={() => {
+                                            clearTimeout(timer1);
+
                                             // if (!userData) history.push("/login");
                                             setPreorder(product.id);
+                                            timer1 = setTimeout(() => setPreorder(0), 5000);
                                         }}
                                     >
                                         <i className="fa fa-shopping-cart" style={{ fontSize: "27px", color: "#fff" }}></i>
@@ -169,6 +173,7 @@ const BestSellerProduct = ({
                                         <button
                                             type="button"
                                             onClick={() => {
+                                                clearTimeout(timer1);
                                                 let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === product.id) : -1;
                                                 if (index !== -1) {
                                                     addToCart(
@@ -182,6 +187,7 @@ const BestSellerProduct = ({
                                                     );
                                                     if (cartData.products[index].quantity < 1) setPreorder(0);
                                                 } else setPreorder(0);
+                                                timer1 = setTimeout(() => setPreorder(0), 5000);
                                             }}
                                         >
                                             <svg viewBox="0 0 24 24" aria-hidden="true" role="presentation">
@@ -196,6 +202,7 @@ const BestSellerProduct = ({
                                         <button
                                             type="button"
                                             onClick={() => {
+                                                clearTimeout(timer1);
                                                 let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === product.id) : -1;
                                                 addToCart(
                                                     product,
@@ -206,6 +213,7 @@ const BestSellerProduct = ({
                                                     undefined,
                                                     userData
                                                 );
+                                                timer1 = setTimeout(() => setPreorder(0), 5000);
                                             }}
                                         >
                                             <svg viewBox="0 0 24 24" aria-hidden="true" role="presentation">
