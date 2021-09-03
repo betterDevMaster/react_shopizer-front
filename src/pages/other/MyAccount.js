@@ -579,14 +579,14 @@ const MyAccount = ({
             let action = constant.ACTION.CUSTOMER + constant.ACTION.DELETEUSER + "?id=" + userData.id;
             await WebService.delete(action);
 
-            addToast("Your account has been deleted successfully.", { appearance: "success", autoDismiss: true });
+            addToast(strings["Your account has been deleted successfully"], { appearance: "success", autoDismiss: true });
             history.push("/login");
             setUser("");
             setLocalData("token", "");
             deleteAllFromCart();
             setLoader(false);
         } catch (error) {
-            addToast("Your account has been deleted fail.", { appearance: "error", autoDismiss: true });
+            addToast(strings['Your account has been deleted fail'], { appearance: "error", autoDismiss: true });
             setLoader(false);
         }
     };
@@ -1211,7 +1211,7 @@ const MyAccount = ({
                         onCancel={onDeleteConfirm}
                         title="Are you sure?"
                     >
-                        Are you sure that you want to permanently delete this account
+                        {strings['Are you sure that you want to permanently delete this account']}
                     </SweetAlert>
                 )}
             </Layout>

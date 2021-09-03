@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
-const FooterCopyright = ({ footerLogo, spaceBottomClass, colorClass, merchant }) => {
+const FooterCopyright = ({ footerLogo, spaceBottomClass, colorClass, merchant, strings }) => {
     return (
         <div className={`copyright ${spaceBottomClass ? spaceBottomClass : ""} ${colorClass ? colorClass : ""}`}>
             <div className="footer-logo">
@@ -14,11 +14,11 @@ const FooterCopyright = ({ footerLogo, spaceBottomClass, colorClass, merchant })
                 )}
             </div>
             <p>
-                Copyright © {new Date(merchant.inBusinessSince).getFullYear()}{" "}
+                {strings["Copyright"]} © {new Date(merchant.inBusinessSince).getFullYear()}{" "}
                 <Link to="" rel="noopener noreferrer">
                     {merchant.name}
                 </Link>
-                .<br /> All Rights Reserved
+                .<br /> {strings["All Rights Reserved"]}
             </p>
         </div>
     );
@@ -28,6 +28,7 @@ FooterCopyright.propTypes = {
     footerLogo: PropTypes.string,
     spaceBottomClass: PropTypes.string,
     colorClass: PropTypes.string,
+    strings: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {

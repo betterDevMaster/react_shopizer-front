@@ -23,6 +23,7 @@ const HeaderTop = ({ strings, currentLanguageCode, dispatch, borderStyle }) => {
             }
         } catch (error) {}
     };
+
     return (
         <div className={`header-top-wap ${borderStyle === "fluid-border" ? "border-bottom" : ""}`}>
             <LanguageCurrencyChanger currentLanguageCode={currentLanguageCode} dispatch={dispatch} />

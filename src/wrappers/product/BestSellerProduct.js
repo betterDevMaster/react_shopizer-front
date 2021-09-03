@@ -135,7 +135,11 @@ const BestSellerProduct = ({
                                     {product.description.title}
                                 </Link>
                                 <span title="6uds | 0,42&nbsp;€/ud.">6uds | 0,42&nbsp;€/ud.</span>
-                                <p>USD {product.originalPrice}</p>
+                                {!!+product.discounted ? (
+                                    <p style={{ textDecoration: "line-through" }}>USD {product.originalPrice}</p>
+                                ) : (
+                                    <p>USD {product.originalPrice}</p>
+                                )}
                                 <div className="shop-container">
                                     <div className="shop-container-block">
                                         {!!+product.discounted && (
@@ -154,11 +158,11 @@ const BestSellerProduct = ({
                                     <button
                                         className="shop-order-button"
                                         onClick={() => {
-                                            if (!userData) history.push("/login");
+                                            // if (!userData) history.push("/login");
                                             setPreorder(product.id);
                                         }}
                                     >
-                                        <i className="fa fa-shopping-cart" style={{ fontSize: "27px" }}></i>
+                                        <i className="fa fa-shopping-cart" style={{ fontSize: "27px", color: "#fff" }}></i>
                                     </button>
                                 ) : (
                                     <div className="shop-order-calc-area">
@@ -177,7 +181,7 @@ const BestSellerProduct = ({
                                                         userData
                                                     );
                                                     if (cartData.products[index].quantity < 1) setPreorder(0);
-                                                }
+                                                } else setPreorder(0);
                                             }}
                                         >
                                             <svg viewBox="0 0 24 24" aria-hidden="true" role="presentation">

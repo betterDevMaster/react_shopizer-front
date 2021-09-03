@@ -27,24 +27,28 @@ const StaticLogo = ({ spaceTopClass, spaceBottomClass, subscribeBtnClass, bgColo
                     <img alt="logo visa" src={logo_visa} />
                 </div>
             </div>
-            <div className="static-download mt-30">
-                <div className="static-mockup">
-                    <img alt="mockup" src={mockup} />
-                </div>
-                <div className="static-mobile-area">
-                    <h4>Download our app</h4>
-                    <div className="static-mobile-download">
-                        <a className="" title="Download our app iOS" rel="nofollow" href="https://apps.apple.com/en/app/ulabox/id465984761">
-                            <img alt="Download our app iOS" src={appstore} />
-                        </a>
-                        <a
-                            className=""
-                            title="Download our app Android"
-                            rel="nofollow"
-                            href="https://play.google.com/store/apps/details?id=com.ulabox&amp;hl=en"
-                        >
-                            <img alt="Download our app Android" src={playstore} />
-                        </a>
+            <div className="static-mobile">
+                <div className="container mt-30 static-download">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <img alt="mockup" src={mockup} style={{ width: "100%" }} />
+                        </div>
+                        <div className="col-md-6 static-mobile-area">
+                            <h4>{strings['Download our app']}</h4>
+                            <div className="static-mobile-download">
+                                <a className="" title="Download our app iOS" rel="nofollow" href="https://apps.apple.com/en/app/ulabox/id465984761">
+                                    <img alt="Download our app iOS" src={appstore} />
+                                </a>
+                                <a
+                                    className=""
+                                    title="Download our app Android"
+                                    rel="nofollow"
+                                    href="https://play.google.com/store/apps/details?id=com.ulabox&amp;hl=en"
+                                >
+                                    <img alt="Download our app Android" src={playstore} />
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

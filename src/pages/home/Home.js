@@ -3,6 +3,7 @@ import MetaTags from "react-meta-tags";
 import Layout from "../../layouts/Layout";
 import HeroSlider from "../../wrappers/hero-slider/HeroSlider";
 import Promos from "../../wrappers/promos/Promos";
+import DeliveryDiscount from "../../wrappers/deliveryDiscount/DeliveryDiscount";
 import CategoryProduct from "../../wrappers/product/CategoryProduct";
 import BestSellerProduct from "../../wrappers/product/BestSellerProduct";
 import StaticLogo from "../../wrappers/staticLogo/StaticLogo";
@@ -18,8 +19,10 @@ const Home = ({ merchant, strings }) => {
             <Layout headerContainerClass="container-fluid" headerPaddingClass="header-padding-2" headerTop="visible">
                 {/* hero slider */}
                 <HeroSlider string={strings} />
+                {/* DeliveryDiscount */}
+                <DeliveryDiscount spaceBottomClass="pb-30" spaceTopClass="pt-50" />
                 {/* Promos */}
-                <Promos spaceBottomClass="pb-30" spaceTopClass="pt-50" />
+                <Promos spaceBottomClass="pb-30" />
                 {/* Category product */}
                 <CategoryProduct category="fashion" spaceBottomClass="pb-30"/>
                 {/* Best Seller */}

@@ -36,6 +36,7 @@ axios.interceptors.request.use(
         config.baseURL = BASE_URL;
         config.headers.common["API-KEY"] = process.env.REACT_APP_APP_API_KEY;
         config.headers.common["Authorization"] = "Basic YWJsOmpza2UzMjIzNEtKSEAhQCNKS0xEQQ==";
+        config.headers.common["accept-encoding"] = "gzip";
         return config;
     },
     (error) => {

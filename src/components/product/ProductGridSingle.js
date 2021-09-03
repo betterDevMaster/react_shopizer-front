@@ -55,8 +55,9 @@ const ProductGridSingleTwo = ({
                                 {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 && (
                                     <button
                                         onClick={() => {
-                                            if (!userData) history.push("/login");
-                                            else addToCart(product, addToast, cartData, 1, defaultStore, undefined, userData);
+                                            // if (!userData) history.push("/login");
+                                            // else 
+                                            addToCart(product, addToast, cartData, 1, defaultStore, undefined, userData);
                                         }}
                                         className="active"
                                         title="Add to cart"

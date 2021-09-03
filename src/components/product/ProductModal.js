@@ -367,14 +367,14 @@ function ProductModal(props, strings) {
                                             {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 ? (
                                                 <button
                                                     onClick={() => {
-                                                        if (!userData) history.push("/login");
-                                                        else {
+                                                        // if (!userData) history.push("/login");
+                                                        // else {
                                                             let options = [];
                                                             selectedProductColor.forEach((a) => {
                                                                 options.push({ id: a.id });
                                                             });
                                                             addToCart(product, addToast, cartData, quantityCount, defaultStore, options, userData, strings);
-                                                        }
+                                                        // }
                                                     }}
                                                 >
                                                     Add to cart

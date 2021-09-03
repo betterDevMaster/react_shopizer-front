@@ -55,6 +55,7 @@ const App = (props) => {
                 languages: {
                     //from merchant supported languages
                     en: require("./translations/english.json"),
+                    es: require("./translations/spanish.json"),
                     fr: require("./translations/french.json"),
                 },
             })

@@ -5,7 +5,7 @@ import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
 import Carousel from "../carousel/Carousel";
 
-const HeroSlider = ({ string }) => {
+const HeroSlider = ({ string, strings }) => {
     return (
         <>
             <div className="site-blocks-cover">
@@ -15,7 +15,7 @@ const HeroSlider = ({ string }) => {
             </div> */}
             </div>
             <div className="py-1 bg-success bg-footer-title">
-                <h3>Tu supermercado saludable sin salir de casa</h3>
+                <h3>{strings['Your healthy supermarket without leaving home']}</h3>
             </div>
         </>
     );

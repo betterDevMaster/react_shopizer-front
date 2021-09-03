@@ -45,8 +45,9 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                                 {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 ? (
                                     <button
                                         onClick={() => {
-                                            if (!userData) history.push("/login");
-                                            else addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
+                                            // if (!userData) history.push("/login");
+                                            // else 
+                                            addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
                                         }}
                                         title={strings["Add to cart"]}
                                     >
@@ -137,8 +138,9 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                                         {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 ? (
                                             <button
                                                 onClick={() => {
-                                                    if (!userData) history.push("/login");
-                                                    else addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
+                                                    // if (!userData) history.push("/login");
+                                                    // else 
+                                                    addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
                                                 }}
                                                 title={strings["Add to cart"]}
                                             >
