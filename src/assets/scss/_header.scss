@@ -617,16 +617,16 @@
 .header-right-wrap {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    // margin-top: 32px;
 
-    margin-top: 32px;
+    // @media #{$md-layout} {
+    //     margin-top: 17px;
+    // }
 
-    @media #{$md-layout} {
-        margin-top: 17px;
-    }
-
-    @media #{$xs-layout} {
-        margin-top: 17px;
-    }
+    // @media #{$xs-layout} {
+    //     margin-top: 17px;
+    // }
 
     .same-style {
         position: relative;
@@ -2997,6 +2997,10 @@
 
 .align-item-baseline {
     align-items: baseline;
+}
+
+.align-item-center {
+    align-items: center;
 }
 
 .logoImage {

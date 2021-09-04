@@ -108,12 +108,12 @@ const Header = ({
 
             <div className={`${headerPaddingClass ? headerPaddingClass : ""} sticky-bar header-res-padding clearfix ${scroll > headerTop ? "stick" : ""}`}>
                 <div className={layout === "container-fluid" ? layout : "container"}>
-                    <div className="row align-item-baseline">
+                    <div className="row align-item-center">
                         <div className="col-xl-4 col-lg-4 col-md-4 col-4">
                             {/* header logo */}
                             {merchant.logo != null && <Logo imageUrl={merchant.logo.path} logoclassName="logo" />}
                         </div>
-                        <div className="col-xl-4 col-lg-4 d-none d-lg-block">
+                        <div className="col-xl-4 col-lg-4 col-md-4 col-4">
                             {/* Search */}
                             <div className="search-area">
                                 <svg className="jss3665" fill="#9E9E9E" width="24" height="24" viewBox="0 0 24 24">
