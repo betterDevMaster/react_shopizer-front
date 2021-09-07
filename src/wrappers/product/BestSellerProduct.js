@@ -122,10 +122,10 @@ const BestSellerProduct = ({
                                         onClick={() => onClickProductDetails(product.id)}
                                     >
                                         {product.images && product.images.length > 0}
-                                        {!product.images[0].baseImage ? (
-                                            <img src={convertBase64Image(product.images[0].baseImage)} alt="" style={{ width: "100%" }} />
+                                        {!product.images[0].imageUrl ? (
+                                            <img src={process.env.REACT_APP_APP_BASE_URL + product.images[0].imageUrl} alt="" style={{ width: "100%" }} />
                                         ) : (
-                                            <img src={convertBase64Image(product.images[0].baseImage)} alt="" style={{ width: "100%" }} />
+                                            <img src={process.env.REACT_APP_APP_BASE_URL + product.images[0].imageUrl} alt="" style={{ width: "100%" }} />
                                         )}
                                     </Link>
                                 </div>

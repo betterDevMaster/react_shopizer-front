@@ -37,10 +37,10 @@ const ProductGridSingleTwo = ({
                         <div className="product-img">
                             <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
                                 {product.images && product.images.length > 0}
-                                {!product.images[0].baseImage ? (
-                                    <img src={convertBase64Image(product.images[0].baseImage)} alt="" />
+                                {!product.images[0].imageUrl ? (
+                                    <img src={process.env.REACT_APP_APP_BASE_URL + product.images[0].imageUrl} alt="product-img" />
                                 ) : (
-                                    <img src={convertBase64Image(product.images[0].baseImage)} alt="" style={{ height: "270px" }} />
+                                    <img src={process.env.REACT_APP_APP_BASE_URL + product.images[0].imageUrl} alt="product-img" style={{ height: "270px" }} />
                                 )}
                             </Link>
                             <div className="product-action-2">

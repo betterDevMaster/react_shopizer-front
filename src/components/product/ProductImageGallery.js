@@ -11,7 +11,7 @@ import "swiper/swiper.scss";
 const ProductImageGallery = ({ product }) => {
     const [gallerySwiper, getGallerySwiper] = useState(null);
     const [thumbnailSwiper, getThumbnailSwiper] = useState(null);
-    const [currentImage, setCurrentImage] = useState(product.images[0].baseImage);
+    const [currentImage, setCurrentImage] = useState(process.env.REACT_APP_APP_BASE_URL + product.images[0].imageUrl);
 
     // effect for swiper slider synchronize
     useEffect(() => {
@@ -69,13 +69,13 @@ const ProductImageGallery = ({ product }) => {
                             product.images.map((single, key) => {
                                 return (
                                     <div key={key}>
-                                        <LightgalleryItem group="any" src={convertBase64Image(single.baseImage)}>
+                                        <LightgalleryItem group="any" src={process.env.REACT_APP_APP_BASE_URL + single.imageUrl}>
                                             <button>
                                                 <i className="pe-7s-expand1"></i>
                                             </button>
                                         </LightgalleryItem>
                                         <div className="single-image">
-                                            <img src={convertBase64Image(currentImage)} className="img-fluid" alt="" />
+                                            <img src={currentImage} className="img-fluid" alt="" />
                                         </div>
                                     </div>
                                 );
@@ -91,7 +91,7 @@ const ProductImageGallery = ({ product }) => {
                             return (
                                 <div key={key}>
                                     <div className="single-image">
-                                        <img onClick={() => setCurrentImage(convertBase64Image(single.baseImage))} src={convertBase64Image(single.baseImage)} className="img-fluid" alt="" />
+                                        <img onClick={() => setCurrentImage(process.env.REACT_APP_APP_BASE_URL + single.imageUrl)} src={process.env.REACT_APP_APP_BASE_URL + single.imageUrl} className="img-fluid" alt="" />
                                     </div>
                                 </div>
                             );
