@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
 import ProductModal from "./ProductModal";
@@ -19,7 +19,6 @@ const ProductGridSingleTwo = ({
 }) => {
     const [modalShow, setModalShow] = useState(false);
     const { addToast } = useToasts();
-    const history = useHistory();
     const finalProductPrice = product.originalPrice;
     const finalDiscountedPrice = product.finalPrice;
     const onClickProductDetails = (id) => {
@@ -56,7 +55,7 @@ const ProductGridSingleTwo = ({
                                     <button
                                         onClick={() => {
                                             // if (!userData) history.push("/login");
-                                            // else 
+                                            // else
                                             addToCart(product, addToast, cartData, 1, defaultStore, undefined, userData);
                                         }}
                                         className="active"

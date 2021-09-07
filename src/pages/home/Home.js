@@ -18,9 +18,9 @@ const Home = ({ merchant, strings, userData }) => {
             </MetaTags>
             <Layout headerContainerClass="container-fluid" headerPaddingClass="header-padding-2" headerTop="visible">
                 {/* hero slider */}
-                <HeroSlider string={strings} spaceBottomClass="pb-30"/>
+                <HeroSlider string={strings} spaceBottomClass="pb-30" />
                 {/* DeliveryDiscount */}
-                {!userData && <DeliveryDiscount spaceBottomClass="pb-30"/>}
+                {!userData && <DeliveryDiscount spaceBottomClass="pb-30" />}
                 {/* Promos */}
                 <Promos spaceBottomClass="pb-30" />
                 {/* Category product */}

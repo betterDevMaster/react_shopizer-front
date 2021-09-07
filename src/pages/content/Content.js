@@ -8,7 +8,6 @@ import Layout from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { connect } from "react-redux";
 import { multilanguage } from "redux-multilanguage";
-import { isCheckValueAndSetParams } from "../../util/helper";
 
 const Content = ({ strings, contentID, setLoader, currentLanguageCode }) => {
     const [contentDetails, setContentDetail] = useState("");

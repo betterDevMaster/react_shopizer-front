@@ -15,20 +15,16 @@ import * as serviceWorker from "./serviceWorker";
 
 import { composeWithDevTools } from "redux-devtools-extension";
 
-const store = createStore(
-  rootReducer,
-  load(),
-  composeWithDevTools(applyMiddleware(thunk, save()))
-);
+const store = createStore(rootReducer, load(), composeWithDevTools(applyMiddleware(thunk, save())));
 
 // fetch products from json file
 // store.dispatch(fetchProducts(products));
 
 ReactDOM.render(
     <Provider store={store}>
-      <App />
+        <App />
     </Provider>,
-  document.getElementById("root")
+    document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

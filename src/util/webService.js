@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getLocalData } from "./helper";
 
 // const BASE_URL = "https://cors-anywhere.herokuapp.com/http://ggaming.ddns.net/v1/";
 const BASE_URL = process.env.REACT_APP_APP_BASE_URL + process.env.REACT_APP_APP_API_VERSION;
@@ -36,7 +35,7 @@ axios.interceptors.request.use(
         config.baseURL = BASE_URL;
         config.headers.common["API-KEY"] = process.env.REACT_APP_APP_API_KEY;
         config.headers.common["Authorization"] = "Basic YWJsOmpza2UzMjIzNEtKSEAhQCNKS0xEQQ==";
-        config.headers.common["accept-encoding"] = "gzip";
+        // config.headers.common["Content-Encoding"] = "gzip";
         return config;
     },
     (error) => {

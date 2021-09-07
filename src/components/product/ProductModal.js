@@ -9,7 +9,6 @@ import WebService from "../../util/webService";
 import constant from "../../util/constant";
 import { setLoader } from "../../redux/actions/loaderActions";
 import StarRatings from "react-star-ratings";
-import { useHistory } from "react-router-dom";
 
 function ProductModal(props, strings) {
     const { product, cartData, defaultStore, userData, finalproductprice, finaldiscountedprice, setLoader } = props;
@@ -23,7 +22,6 @@ function ProductModal(props, strings) {
     const [selectedProductColor, setSelectedProductColor] = useState([]);
     const [quantityCount, setQuantityCount] = useState(1);
     const [currentImage, setCurrentImage] = useState(defaultImage(product));
-    const history = useHistory();
     const addToCart = props.addtocart;
     const addToast = props.addtoast;
 

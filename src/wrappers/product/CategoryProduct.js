@@ -1,47 +1,26 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React from "react";
 // import { Link } from "react-router-dom";
-import Tab from "react-bootstrap/Tab";
-import Nav from "react-bootstrap/Nav";
 import SectionTitle from "../../components/section-title/SectionTitle";
-import ProductGrid from "./ProductGrid";
-import WebService from "../../util/webService";
-import constant from "../../util/constant";
 import { setLoader } from "../../redux/actions/loaderActions";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
-const CategoryProduct = ({ setLoader, spaceTopClass, spaceBottomClass, category, containerClass, extraClass, defaultStore, currentLanguageCode }) => {
-    // const [featuredData, setFeaturedData] = useState([]);
-    const [categoryData, setCategoryData] = useState([]);
 
-    useEffect(() => {
-        getCategoryList();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    const getCategoryList = async () => {
-        setLoader(true);
-
-        let action =
-            constant.ACTION.CATEGORY + constant.ACTION.CATEGORYHIERARCHYLIST + "?count=20&page=0&store=" + defaultStore + "&lang=" + currentLanguageCode;
-        try {
-            let response = await WebService.get(action);
-            if (response) {
-                let category = response.filter((item) => item.code === "Categories");
-                setCategoryData(category[0].children);
-            }
-            setLoader(false);
-        } catch (error) {
-            console.log(error.messages);
-            setLoader(false);
-            // console.log(error)
-            // history.push('/not-found')
-        }
-    };
-
+const CategoryProduct = ({
+    setLoader,
+    spaceTopClass,
+    spaceBottomClass,
+    category,
+    containerClass,
+    extraClass,
+    defaultStore,
+    currentLanguageCode,
+    categoryData,
+}) => {
     return (
         <div className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${spaceBottomClass ? spaceBottomClass : ""} ${extraClass ? extraClass : ""}`}>
             <div className={`${containerClass ? containerClass : "container"}`}>
-                <SectionTitle titleText="Categories"/>
+                <SectionTitle titleText="Categories" />
                 <div className="row mt-4">
                     {categoryData.map((value, key) => (
                         <div className="col-md-4" key={key}>
@@ -78,6 +57,7 @@ const mapStateToProps = (state) => {
     return {
         currentLanguageCode: state.multilanguage.currentLanguageCode,
         defaultStore: state.merchantData.defaultStore,
+        categoryData: state.categoryData.categories,
     };
 };
 const mapDispatchToProps = (dispatch) => {

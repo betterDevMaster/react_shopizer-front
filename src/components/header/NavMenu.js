@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 
 import { setCategoryID } from "../../redux/actions/productActions";
 import { setContent } from "../../redux/actions/contentAction";
+
 const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, contents, setCategoryID, setContent }) => {
     const onClickCategory = (item) => {
         setCategoryID(item.id);

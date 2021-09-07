@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import SectionTitle from "../../components/section-title/SectionTitle";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { setCategoryID } from "../../redux/actions/productActions";
 import { connect } from "react-redux";
 import { multilanguage } from "redux-multilanguage";

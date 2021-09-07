@@ -5,7 +5,7 @@ export const SET_STORE = "SET_STORE";
 
 export const setMerchant = () => {
     return async dispatch => {
-        let action = constant.ACTION.STORE + constant.ACTION.DEFAULT;
+        let action = constant.ACTION.ADMIN + constant.ACTION.STORES + constant.ACTION.STORE + constant.ACTION.DEFAULT;
         try {
             let response = await WebService.get(action);
             dispatch({

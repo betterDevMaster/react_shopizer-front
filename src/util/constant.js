@@ -3,6 +3,7 @@ const Constant = {
         USER: 'user/',
         ADMIN: 'admin/',
         PING: 'ping',
+        STORES: 'stores/',
         STORE: 'store/',
         DEFAULT: 'DEFAULT/',
         CATEGORY: 'category/',

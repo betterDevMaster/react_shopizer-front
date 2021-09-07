@@ -10,9 +10,9 @@ import MobileMenu from "../../components/header/MobileMenu";
 import HeaderTop from "../../components/header/HeaderTop";
 import WebService from "../../util/webService";
 import constant from "../../util/constant";
-import { setLocalData } from "../../util/helper";
 import { setMerchant } from "../../redux/actions/storeAction";
 import { getCurrentLocation } from "../../redux/actions/userAction";
+import { fetchCategories } from "../../redux/actions/categoryActions";
 
 const Header = ({
     setMerchant,
@@ -27,13 +27,15 @@ const Header = ({
     getCurrentLocation,
     currentLanguageCode,
     strings,
+    fetchCategories,
+    categoryData,
 }) => {
     const history = useHistory();
     const [scroll, setScroll] = useState(0);
     const [headerTop, setHeaderTop] = useState(0);
-    const [categoryData, setCategoryData] = useState([]);
+    // const [categoryData, setCategoryData] = useState([]);
     const [contentData, setContentData] = useState([]);
-    const [searchKey, setSearchKey] = useState('');
+    const [searchKey, setSearchKey] = useState("");
 
     useEffect(() => {
         checkServerHealth();
@@ -65,20 +67,11 @@ const Header = ({
             history.push("/not-found");
         }
     };
-    const getCategoryHierarchy = async () => {
-        let action =
-            constant.ACTION.CATEGORY + constant.ACTION.CATEGORYHIERARCHYLIST + "?count=20&page=0&store=" + defaultStore + "&lang=" + currentLanguageCode;
-        try {
-            let response = await WebService.get(action);
-            if (response) {
-                setCategoryData(response);
-            }
-        } catch (error) {
-            // console.log(error.messages)
-            // console.log(error)
-            // history.push('/not-found')
-        }
+
+    const getCategoryHierarchy = () => {
+        fetchCategories(defaultStore, currentLanguageCode);
     };
+
     const getContent = async () => {
         //TODO PAGE + COUNT
         let action = constant.ACTION.CONTENT + constant.ACTION.PAGES + "?page=0&count=20&store=" + defaultStore + "&lang=" + currentLanguageCode;
@@ -137,6 +130,8 @@ const Header = ({
                             {/* Icon group */}
                             <IconGroup />
                         </div>
+                    </div>
+                    <div className="row">
                         <div className="col-xl-12 col-lg-12 d-none d-lg-block">
                             {/* Nav menu */}
                             <NavMenu categories={categoryData} contents={contentData} />
@@ -165,6 +160,7 @@ const mapStateToProps = (state) => {
         merchant: state.merchantData.merchant,
         currentLanguageCode: state.multilanguage.currentLanguageCode,
         defaultStore: state.merchantData.defaultStore,
+        categoryData: state.categoryData.categories,
     };
 };
 
@@ -175,6 +171,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getCurrentLocation: () => {
             dispatch(getCurrentLocation());
+        },
+        fetchCategories: (store, lang) => {
+            dispatch(fetchCategories(store, lang));
         },
     };
 };

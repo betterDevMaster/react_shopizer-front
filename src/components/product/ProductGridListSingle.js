@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import ProductModal from "./ProductModal";
 import { setProductID } from "../../redux/actions/productActions";
@@ -10,7 +10,6 @@ import StarRatings from "react-star-ratings";
 const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, spaceBottomClass, setProductID, defaultStore, userData, strings }) => {
     const [modalShow, setModalShow] = useState(false);
     const { addToast } = useToasts();
-    const history = useHistory();
     const finalProductPrice = product.originalPrice;
     const finalDiscountedPrice = product.finalPrice;
     const onClickProductDetails = (id) => {
@@ -23,7 +22,7 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                 <div className={`product-wrap ${spaceBottomClass ? spaceBottomClass : ""}`}>
                     <div className="product-img">
                         <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
-                            {product.image && <img className="default-img" src={defaultImage(product)} alt="default-image" />}
+                            {product.image && <img className="default-img" src={defaultImage(product)} alt="defaultImg" />}
                             {/* {product.images.length > 1 ? (
                                 <img className="hover-img-A" src={defaultImage(product)} alt="hover-img-A1" />
                             ) : (

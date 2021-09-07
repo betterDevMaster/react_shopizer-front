@@ -49,6 +49,7 @@ const App = (props) => {
         if (cookie) {
             props.dispatch(setShopizerCartID(cookie));
         }
+
         document.documentElement.style.setProperty("--theme-color", process.env.REACT_APP_APP_THEME_COLOR);
         props.dispatch(
             loadLanguages({
@@ -56,7 +57,7 @@ const App = (props) => {
                     //from merchant supported languages
                     en: require("./translations/english.json"),
                     es: require("./translations/spanish.json"),
-                    fr: require("./translations/french.json"),
+                    // fr: require("./translations/french.json"),
                 },
             })
         );
@@ -66,7 +67,6 @@ const App = (props) => {
         <ToastProvider placement="bottom-left">
             <BreadcrumbsProvider>
                 <Router>
-                    {/* <Router basename="/front"> */}
                     <Loader></Loader>
                     <Cookie></Cookie>
                     <ScrollToTop>

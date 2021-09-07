@@ -1,8 +1,6 @@
-// import PropTypes from "prop-types";
 import React from "react";
 import CookieConsent from "react-cookie-consent";
 import { connect } from "react-redux";
-// import { multilanguage, loadLanguages } from "redux-multilanguage";
 import { multilanguage } from "redux-multilanguage";
 
 const Cookie = ({ strings }) => {
@@ -10,10 +8,10 @@ const Cookie = ({ strings }) => {
         <CookieConsent
             location="bottom"
             style={{ background: "#2B373B" }}
-            buttonText={strings["Accept"]}
+            buttonText={strings && strings["Accept"]}
             buttonStyle={{ background: "#4e503b", color: "#fff", fontSize: "14px", padding: "10px 30px" }}
         >
-            {strings["Cookie Consent"]}
+            {strings && strings["Cookie Consent"]}
         </CookieConsent>
     );
 };

@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { changeLanguage } from "redux-multilanguage";
-import { multilanguage } from "redux-multilanguage";
+import { multilanguage, changeLanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
+
 const LanguageCurrencyChanger = ({
     // currency,
     // setCurrency,
@@ -13,7 +13,7 @@ const LanguageCurrencyChanger = ({
 }) => {
     const changeLanguageTrigger = (e) => {
         const languageCode = e.target.value;
-        window.location.reload(false);
+        // window.location.reload(false);
         dispatch(changeLanguage(languageCode));
     };
 

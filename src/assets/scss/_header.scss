@@ -677,7 +677,7 @@
         .account-dropdown {
             position: absolute;
             z-index: 220;
-            top: 190%;
+            top: 120%;
             right: 0;
 
             visibility: hidden;
@@ -724,25 +724,25 @@
                 display: list-item !important;
             }
 
-            @media #{$xs-layout} {
-                top: 100%;
+            // @media #{$xs-layout} {
+            //     top: 100%;
 
-                margin-top: 14px;
-            }
+            //     margin-top: 14px;
+            // }
 
-            @media #{$md-layout} {
-                top: 100%;
+            // @media #{$md-layout} {
+            //     top: 100%;
 
-                margin-top: 14px;
-            }
+            //     margin-top: 14px;
+            // }
 
-            @media #{$lg-layout} {
-                left: -40px;
-            }
+            // @media #{$lg-layout} {
+            //     left: -40px;
+            // }
 
-            @media #{$xl-layout} {
-                left: -34px;
-            }
+            // @media #{$xl-layout} {
+            //     left: -34px;
+            // }
 
             ul {
                 li {
@@ -844,7 +844,7 @@
         .shopping-cart-content {
             position: absolute;
             z-index: 9999;
-            top: 190%;
+            top: 120%;
             right: 0;
 
             visibility: hidden;
@@ -1220,19 +1220,19 @@
     padding: 9px 70px;
 
     @media #{$xl-layout} {
-        padding: 0 15px;
+        padding: 3px 15px;
     }
 
     @media #{$lg-layout} {
-        padding: 0 30px;
+        padding: 4px 30px;
     }
 
     @media #{$md-layout} {
-        padding: 0 40px;
+        padding: 5px 40px;
     }
 
     @media #{$xs-layout} {
-        padding: 0 15px;
+        padding: 3px 15px;
     }
 }
 
@@ -2967,33 +2967,33 @@
     }
 }
 
-@media only screen and (min-width: 1025px) and (max-width: 1225px) {
-    .logo {
-        margin-top: 20px;
-    }
+// @media only screen and (min-width: 1025px) and (max-width: 1225px) {
+//     .logo {
+//         margin-top: 20px;
+//     }
 
-    .main-menu nav ul li {
-        padding: 0 7px;
+//     .main-menu nav ul li {
+//         padding: 0 7px;
 
-        a {
-            font-size: 12px;
-        }
-    }
-}
+//         a {
+//             font-size: 12px;
+//         }
+//     }
+// }
 
-@media only screen and (min-width: 992px) and (max-width: 1024px) {
-    .logo {
-        margin-top: 24px;
-    }
+// @media only screen and (min-width: 992px) and (max-width: 1024px) {
+//     .logo {
+//         margin-top: 24px;
+//     }
 
-    .main-menu nav ul li {
-        padding: 0 7px;
+//     .main-menu nav ul li {
+//         padding: 0 7px;
 
-        a {
-            font-size: 12px;
-        }
-    }
-}
+//         a {
+//             font-size: 12px;
+//         }
+//     }
+// }
 
 .align-item-baseline {
     align-items: baseline;
@@ -3004,6 +3004,6 @@
 }
 
 .logoImage {
-    width: 80px !important;
+    width: 6rem !important;
     margin-left: 0.3rem;
 }

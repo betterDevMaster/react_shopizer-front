@@ -10,22 +10,24 @@ const ShopManufacture = ({ string, manufactures, getSortParams }) => {
                     <ul>
                         {manufactures.map((category, key) => {
                             return (
-                                <li key={key}>
-                                    <div className="sidebar-widget-list-left">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                value={category.id}
-                                                name="manufacture"
-                                                onChange={() => {
-                                                    getSortParams("manufacturer", category.id);
-                                                }}
-                                            />
-                                            <span className="checkmark" />
-                                            {category.description.name}
-                                        </label>
-                                    </div>
-                                </li>
+                                category.description && (
+                                    <li key={key}>
+                                        <div className="sidebar-widget-list-left">
+                                            <label>
+                                                <input
+                                                    type="checkbox"
+                                                    value={category.id}
+                                                    name="manufacture"
+                                                    onChange={() => {
+                                                        getSortParams("manufacturer", category.id);
+                                                    }}
+                                                />
+                                                <span className="checkmark" />
+                                                {category.description.name}
+                                            </label>
+                                        </div>
+                                    </li>
+                                )
                             );
                         })}
                     </ul>

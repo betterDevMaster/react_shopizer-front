@@ -679,56 +679,56 @@ const Checkout = ({
         } catch (error) {}
     };
 
-    function changeAddress() {
-        var param = { postalCode: watch("postalCode"), countryCode: watch("country"), zoneCode: watch("stateProvince") };
-        if (isShipping) {
-            param = { postalCode: watch("shipPostalCode"), countryCode: watch("shipCountry"), zoneCode: watch("shipStateProvince") };
-        }
+    // function changeAddress() {
+    //     var param = { postalCode: watch("postalCode"), countryCode: watch("country"), zoneCode: watch("stateProvince") };
+    //     if (isShipping) {
+    //         param = { postalCode: watch("shipPostalCode"), countryCode: watch("shipCountry"), zoneCode: watch("shipStateProvince") };
+    //     }
 
-        var p = "";
-        if (p !== param) {
-            p = param;
-            //execute
+    //     var p = "";
+    //     if (p !== param) {
+    //         p = param;
+    //         //execute
 
-            console.log("Required fields " + JSON.stringify(param));
-            unity(p);
-        } else {
-            return;
-        }
-    }
+    //         console.log("Required fields " + JSON.stringify(param));
+    //         unity(p);
+    //     } else {
+    //         return;
+    //     }
+    // }
 
-    var unity = (function () {
-        var executed;
-        if (executed) {
-            return;
-        }
-        return function () {
-            if (!executed) {
-                executed = true;
-                //if( param.postalCode == null && param.country == null && param.zoneCode == null) {
-                //  return;
-                //}
-                var millisecondsToWait = 5000;
-                setTimeout(function () {
-                    // Whatever you want to do after the wait
-                    console.log("Into execution");
+    // var unity = (function () {
+    //     var executed;
+    //     if (executed) {
+    //         return;
+    //     }
+    //     return function () {
+    //         if (!executed) {
+    //             executed = true;
+    //             //if( param.postalCode == null && param.country == null && param.zoneCode == null) {
+    //             //  return;
+    //             //}
+    //             var millisecondsToWait = 5000;
+    //             setTimeout(function () {
+    //                 // Whatever you want to do after the wait
+    //                 console.log("Into execution");
 
-                    executed = false;
-                }, millisecondsToWait);
-            }
-            return;
-            /**
-            console.log('The execution '+ executed);
-            var millisecondsToWait = 5000;
-            setTimeout(function() {
-                // Whatever you want to do after the wait
-                console.log('Into execution');
-                executed = false;
-            }, millisecondsToWait);
-            // do something
-            ?**/
-        };
-    })();
+    //                 executed = false;
+    //             }, millisecondsToWait);
+    //         }
+    //         return;
+    //         /**
+    //         console.log('The execution '+ executed);
+    //         var millisecondsToWait = 5000;
+    //         setTimeout(function() {
+    //             // Whatever you want to do after the wait
+    //             console.log('Into execution');
+    //             executed = false;
+    //         }, millisecondsToWait);
+    //         // do something
+    //         ?**/
+    //     };
+    // })();
 
     return (
         <Fragment>

@@ -17,7 +17,7 @@ import { multilanguage } from "redux-multilanguage";
 import { setCategoryID } from "../../redux/actions/productActions";
 import ReactPaginate from "react-paginate";
 
-const Category = ({ props, setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader }) => {
+const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader }) => {
     const [layout, setLayout] = useState("grid three-column");
     // const history = useHistory();
     const [categoryValue, setCategoryValue] = useState("");
@@ -87,14 +87,13 @@ const Category = ({ props, setCategoryID, isLoading, strings, location, defaultS
         let action =
             constant.ACTION.PRODUCT +
             constant.ACTION.PRODUCTLIST +
-            `?${isCheckValueAndSetParams("&store=", defaultStore)}
-            ${isCheckValueAndSetParams("&lang=", currentLanguageCode)}
-            ${isCheckValueAndSetParams("&page=", offset)}
-            ${isCheckValueAndSetParams("&count=", pageLimit)}
-            ${isCheckValueAndSetParams("&category=", categoryid)}
-            ${isCheckValueAndSetParams("&optionValues=", size.join())}
-            ${isCheckValueAndSetParams("&manufacturer=", manufacture)}`;
-
+            `?${isCheckValueAndSetParams("&store=", defaultStore)}${isCheckValueAndSetParams("&lang=", currentLanguageCode)}${isCheckValueAndSetParams(
+                "&page=",
+                offset
+            )}${isCheckValueAndSetParams("&count=", pageLimit)}${isCheckValueAndSetParams("&category=", categoryid)}${isCheckValueAndSetParams(
+                "&optionValues=",
+                size.join()
+            )}${isCheckValueAndSetParams("&manufacturer=", manufacture)}`;
         if (location.search.includes("promo")) action = action + "&promo";
 
         try {
@@ -150,6 +149,7 @@ const Category = ({ props, setCategoryID, isLoading, strings, location, defaultS
             }
         } catch (error) {}
     };
+    console.log("productDetails: ------------ ", productDetails);
 
     return (
         <Fragment>
@@ -225,7 +225,7 @@ const Category = ({ props, setCategoryID, isLoading, strings, location, defaultS
                                     </div>
                                     <div className="item-empty-area__text">
                                         {strings["No items found in category"]}
-                                        <br />{" "}
+                                        <br />
                                     </div>
                                 </div>
                             </div>
