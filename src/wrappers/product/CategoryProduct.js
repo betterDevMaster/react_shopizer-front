@@ -32,7 +32,7 @@ const CategoryProduct = ({
                         <div className="col-md-4" key={key}>
                             <div
                                 className="category-wrap ftco-animate category-img mb-4 d-flex align-items-end fadeInUp ftco-animated"
-                                style={{ backgroundImage: `url(${process.env.REACT_APP_APP_BASE_URL + value.image})` }}
+                                style={{ backgroundImage: `url(${process.env.REACT_APP_APP_HTTP_URL + value.image})` }}
                             >
                                 <div className="text px-3 py-1">
                                     <h2 className="mb-0">

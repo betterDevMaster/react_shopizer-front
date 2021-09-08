@@ -104,7 +104,7 @@ const Header = ({
                     <div className="row align-item-center">
                         <div className="col-xl-4 col-lg-4 col-md-4 col-4">
                             {/* header logo */}
-                            {merchant.logo != null && <Logo imageUrl={process.env.REACT_APP_APP_BASE_URL + merchant.logo.path} logoclassName="logo" />}
+                            {merchant.logo != null && <Logo imageUrl={process.env.REACT_APP_APP_HTTP_URL + merchant.logo.path} logoclassName="logo" />}
                         </div>
                         <div className="col-xl-4 col-lg-4 col-md-4 col-4">
                             {/* Search */}

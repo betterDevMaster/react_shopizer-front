@@ -164,8 +164,8 @@ function ProductModal(props, strings) {
                                                 <div key={key}>
                                                     <div className="single-image">
                                                         <img
-                                                            onClick={() => setCurrentImage(process.env.REACT_APP_APP_BASE_URL + single.imageUrl)}
-                                                            src={process.env.REACT_APP_APP_BASE_URL + single.imageUrl}
+                                                            onClick={() => setCurrentImage(process.env.REACT_APP_APP_HTTP_URL + single.imageUrl)}
+                                                            src={process.env.REACT_APP_APP_HTTP_URL + single.imageUrl}
                                                             className="img-fluid"
                                                             alt=""
                                                         />
@@ -404,9 +404,9 @@ ProductModal.propTypes = {
 
 function defaultImage(product) {
     if (product.images && product.images.length > 0) {
-        return process.env.REACT_APP_APP_BASE_URL + product.images[0].imageUrl;
+        return process.env.REACT_APP_APP_HTTP_URL + product.images[0].imageUrl;
     } else if (product.image != null) {
-        return process.env.REACT_APP_APP_BASE_URL + product.imageUrl;
+        return process.env.REACT_APP_APP_HTTP_URL + product.imageUrl;
     } else {
         return null;
     }

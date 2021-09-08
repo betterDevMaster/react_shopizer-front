@@ -79,9 +79,9 @@ MenuCart.propTypes = {
 
 function defaultImage(product) {
     if (product.images && product.images.length > 0) {
-        return process.env.REACT_APP_APP_BASE_URL + product.images[0].imageUrl;
+        return process.env.REACT_APP_APP_HTTP_URL + product.images[0].imageUrl;
     } else if (product.image != null) {
-        return process.env.REACT_APP_APP_BASE_URL + product.imageUrl;
+        return process.env.REACT_APP_APP_HTTP_URL + product.imageUrl;
     } else {
         return null;
     }

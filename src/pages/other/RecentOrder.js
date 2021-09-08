@@ -106,7 +106,7 @@ const RecentOrder = ({
                                           <img
                                             style={{ width: 140 }}
                                             className="img-fluid"
-                                            src={process.env.REACT_APP_APP_BASE_URL + orderItem.product.image.imageUrl}
+                                            src={process.env.REACT_APP_APP_HTTP_URL + orderItem.product.image.imageUrl}
                                             alt=""
                                           />
                                         </Link>
