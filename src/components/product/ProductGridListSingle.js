@@ -22,7 +22,7 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                 <div className={`product-wrap ${spaceBottomClass ? spaceBottomClass : ""}`}>
                     <div className="product-img">
                         <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
-                            {product.image && <img className="default-img" src={defaultImage(product)} alt="defaultImg" />}
+                            <img className="default-img" src={defaultImage(product)} alt="defaultImg" />
                             {/* {product.images.length > 1 ? (
                                 <img className="hover-img-A" src={defaultImage(product)} alt="hover-img-A1" />
                             ) : (
@@ -45,7 +45,7 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                                     <button
                                         onClick={() => {
                                             // if (!userData) history.push("/login");
-                                            // else 
+                                            // else
                                             addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
                                         }}
                                         title={strings["Add to cart"]}
@@ -138,7 +138,7 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                                             <button
                                                 onClick={() => {
                                                     // if (!userData) history.push("/login");
-                                                    // else 
+                                                    // else
                                                     addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
                                                 }}
                                                 title={strings["Add to cart"]}
@@ -178,7 +178,7 @@ ProductGridListSingle.propTypes = {
     addToCart: PropTypes.func,
     // addToCompare: PropTypes.func,
     // addToWishlist: PropTypes.func,
-    // cartItem: PropTypes.object,
+    cartItem: PropTypes.object,
     // compareItem: PropTypes.object,
     // currency: PropTypes.object,
     product: PropTypes.object,
@@ -189,7 +189,7 @@ ProductGridListSingle.propTypes = {
 
 function defaultImage(product) {
     if (product.images && product.images.length > 0) {
-        return process.env.REACT_APP_APP_BASE_URL +  + product.images[0].imageUrl;
+        return process.env.REACT_APP_APP_BASE_URL + product.images[0].imageUrl;
     } else if (product.image != null) {
         return process.env.REACT_APP_APP_BASE_URL + product.imageUrl;
     } else {
@@ -210,4 +210,3 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProductGridListSingle);
-// export default ProductGridListSingle;

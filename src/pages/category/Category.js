@@ -14,15 +14,14 @@ import constant from "../../util/constant";
 import { isCheckValueAndSetParams } from "../../util/helper";
 import { setLoader } from "../../redux/actions/loaderActions";
 import { multilanguage } from "redux-multilanguage";
-import { setCategoryID } from "../../redux/actions/productActions";
+import { setCategoryID, setPageNumber } from "../../redux/actions/productActions";
 import ReactPaginate from "react-paginate";
 
-const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, setLoader }) => {
+const Category = ({ setCategoryID, setPageNumber, isLoading, strings, location, defaultStore, currentLanguageCode, categoryID, pageNumber, setLoader }) => {
     const [layout, setLayout] = useState("grid three-column");
     // const history = useHistory();
     const [categoryValue, setCategoryValue] = useState("");
-    const [offset, setOffset] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
     const pageLimit = parseInt(process.env.REACT_APP_APP_PRODUCT_GRID_LIMIT) || 12;
     const [productData, setProductData] = useState([]);
     const [totalProduct, setTotalProduct] = useState(0);
@@ -35,6 +34,19 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
     const [selectedManufature, setSelectedManufature] = useState([]);
     const { pathname } = location;
 
+    useEffect(() => {
+        setCategoryValue(categoryID);
+        setSubCategory([]);
+        setColor([]);
+        setManufacture([]);
+        setSize([]);
+        setSelectedManufature([]);
+        setSelectedOption([]);
+        getProductList(categoryID, [], []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [categoryID, pageNumber]);
+
+    console.log("pageNumber; ---------- ", pageNumber, totalPage);
     const getLayout = (layout) => {
         setLayout(layout);
     };
@@ -67,18 +79,6 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         // history.push("/category/" + sortValue.description.friendlyUrl);
     };
 
-    useEffect(() => {
-        setCategoryValue(categoryID);
-        setSubCategory([]);
-        setColor([]);
-        setManufacture([]);
-        setSize([]);
-        setSelectedManufature([]);
-        setSelectedOption([]);
-        getProductList(categoryID, [], []);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [categoryID, offset]);
-
     const getProductList = async (categoryid, size, manufacture) => {
         setLoader(true);
 
@@ -89,7 +89,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
             constant.ACTION.PRODUCTLIST +
             `?${isCheckValueAndSetParams("&store=", defaultStore)}${isCheckValueAndSetParams("&lang=", currentLanguageCode)}${isCheckValueAndSetParams(
                 "&page=",
-                offset
+                pageNumber
             )}${isCheckValueAndSetParams("&count=", pageLimit)}${isCheckValueAndSetParams("&category=", categoryid)}${isCheckValueAndSetParams(
                 "&optionValues=",
                 size.join()
@@ -99,7 +99,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         try {
             let response = await WebService.get(action);
             if (response) {
-                setCurrentPage(response.totalPages);
+                setTotalPage(response.totalPages);
                 setProductData(response.products);
                 setTotalProduct(response.recordsTotal);
             }
@@ -110,6 +110,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
 
         getCategoryDetails(categoryid);
     };
+
     const getCategoryDetails = async (categoryid) => {
         let action =
             constant.ACTION.CATEGORY + constant.ACTION.CATEGORYDETAIL + "?id=" + categoryid + "&store=" + defaultStore + "&lang=" + currentLanguageCode;
@@ -123,6 +124,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         } catch (error) {}
         getManufacturers(categoryid);
     };
+
     const getManufacturers = async (categoryid) => {
         let action = constant.ACTION.CATEGORY + constant.ACTION.MANUFACTURERS + "?store=" + defaultStore + "&lang=" + currentLanguageCode;
         try {
@@ -133,6 +135,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
         } catch (error) {}
         getVariants(categoryid);
     };
+
     const getVariants = async (categoryid) => {
         let action = constant.ACTION.CATEGORY + constant.ACTION.VARIANTS;
         let param = { id: categoryid, store: defaultStore, lang: currentLanguageCode };
@@ -149,8 +152,8 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
             }
         } catch (error) {}
     };
-    console.log("productDetails: ------------ ", productDetails);
 
+console.log('productDetails: ---------' ,productDetails)
     return (
         <Fragment>
             <MetaTags>
@@ -194,7 +197,7 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                                     strings={strings}
                                     getLayout={getLayout}
                                     productCount={totalProduct}
-                                    offset={offset + 1}
+                                    offset={pageNumber + 1}
                                     pageLimit={pageLimit}
                                     sortedProductCount={productData.length}
                                 />
@@ -207,8 +210,9 @@ const Category = ({ setCategoryID, isLoading, strings, location, defaultStore, c
                                                 nextLabel={"»"}
                                                 breakLabel={"..."}
                                                 breakClassName={"break-me"}
-                                                pageCount={currentPage}
-                                                onPageChange={(e) => setOffset(e.selected)}
+                                                initialPage={parseInt(pageNumber)}
+                                                pageCount={totalPage}
+                                                onPageChange={(e) => setPageNumber(e.selected)}
                                                 containerClassName={"mb-0 mt-0"}
                                                 activeClassName={"page-item active"}
                                             />
@@ -247,6 +251,7 @@ const mapStateToProps = (state) => {
         currentLanguageCode: state.multilanguage.currentLanguageCode,
         defaultStore: state.merchantData.defaultStore,
         categoryID: state.productData.categoryid,
+        pageNumber: state.productData.page,
         isLoading: state.loading.isLoading,
     };
 };
@@ -257,6 +262,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         setCategoryID: (value) => {
             dispatch(setCategoryID(value));
+        },
+        setPageNumber: (value) => {
+            dispatch(setPageNumber(value));
         },
     };
 };

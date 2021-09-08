@@ -57,9 +57,9 @@ const BestSellerProduct = ({
         setProductID(id);
     };
 
-    const convertBase64Image = (image) => {
-        return "data:image/png;base64," + image;
-    };
+    // const convertBase64Image = (image) => {
+    //     return "data:image/png;base64," + image;
+    // };
 
     return (
         <div className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${spaceBottomClass ? spaceBottomClass : ""} ${extraClass ? extraClass : ""}`}>
@@ -164,7 +164,7 @@ const BestSellerProduct = ({
 
                                                 // if (!userData) history.push("/login");
                                                 setPreorder(product.id);
-                                                timer1 = setTimeout(() => setPreorder(0), 5000);
+                                                timer1 = setTimeout(() => setPreorder(0), 10000);
                                             }}
                                         >
                                             <i className="fa fa-shopping-cart" style={{ fontSize: "27px", color: "#fff" }}></i>
@@ -188,7 +188,7 @@ const BestSellerProduct = ({
                                                         );
                                                         if (cartData.products[index].quantity < 1) setPreorder(0);
                                                     } else setPreorder(0);
-                                                    timer1 = setTimeout(() => setPreorder(0), 5000);
+                                                    timer1 = setTimeout(() => setPreorder(0), 10000);
                                                 }}
                                             >
                                                 <svg viewBox="0 0 24 24" aria-hidden="true" role="presentation">
@@ -214,7 +214,7 @@ const BestSellerProduct = ({
                                                         undefined,
                                                         userData
                                                     );
-                                                    timer1 = setTimeout(() => setPreorder(0), 5000);
+                                                    timer1 = setTimeout(() => setPreorder(0), 10000);
                                                 }}
                                             >
                                                 <svg viewBox="0 0 24 24" aria-hidden="true" role="presentation">

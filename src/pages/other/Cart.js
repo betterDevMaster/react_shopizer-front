@@ -101,52 +101,17 @@ const Cart = ({
     // const [shippingOptions, setShippingOptions] = useState();
     const [shippingOptions] = useState();
 
+    console.log('cartCount: ------' ,cartCount)
     useEffect(() => {
         getCartData();
-        // if (!isValidObject(cartItems)) {
-        //   history.push('/')
-        // }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    useEffect(() => {
-        async function fetchData() {
-            let action =
-                constant.ACTION.CART +
-                constant.ACTION.GETUSERCART +
-                "?code=" +
-                cartID +
-                "&store=" +
-                defaultStore +
-                "&lang=" +
-                JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
-            try {
-                let response = await WebService.get(action);
-                if (response) {
-                    setCartItems(response);
-                }
-            } catch (error) {
-                console.log(error, "jaimin");
-                setTimeout(() => {
-                    history.push("/");
-                }, 200);
-            }
-        }
-        fetchData();
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cartCount]);
 
     const getCartData = async () => {
         setLoader(true);
+        let cartid = getLocalData("GET_SHOPIZER_CART_ID") ? getLocalData("GET_SHOPIZER_CART_ID") : cartID;
         let action =
-            constant.ACTION.CART +
-            constant.ACTION.GETUSERCART +
-            "?code=" +
-            cartID +
-            "&store=" +
-            defaultStore +
-            "&lang=" +
-            JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
+            constant.ACTION.CART + constant.ACTION.GETUSERCART + "?code=" + cartid + "&store=" + defaultStore + "&lang=" + getLocalData("currentLanguageCode");
         try {
             let response = await WebService.get(action);
             if (response) {
@@ -322,7 +287,11 @@ const Cart = ({
                                                                 <td className="product-subtotal">{cartItem.displaySubTotal}</td>
 
                                                                 <td className="product-remove">
-                                                                    <button onClick={() => deleteFromCart(cartItems.code, cartItem, defaultStore, addToast, userData)}>
+                                                                    <button
+                                                                        onClick={() =>
+                                                                            deleteFromCart(cartItems.code, cartItem, defaultStore, addToast, userData)
+                                                                        }
+                                                                    >
                                                                         <i className="fa fa-times"></i>
                                                                     </button>
                                                                 </td>

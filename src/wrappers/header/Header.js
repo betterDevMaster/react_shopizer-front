@@ -34,7 +34,7 @@ const Header = ({
     const [scroll, setScroll] = useState(0);
     const [headerTop, setHeaderTop] = useState(0);
     // const [categoryData, setCategoryData] = useState([]);
-    const [contentData, setContentData] = useState([]);
+    // const [contentData, setContentData] = useState([]);
     const [searchKey, setSearchKey] = useState("");
 
     useEffect(() => {
@@ -58,7 +58,7 @@ const Header = ({
                     setMerchant();
                     getCurrentLocation();
                     getCategoryHierarchy();
-                    getContent();
+                    // getContent();
                 } else {
                     history.push("/not-found");
                 }
@@ -72,16 +72,16 @@ const Header = ({
         fetchCategories(defaultStore, currentLanguageCode);
     };
 
-    const getContent = async () => {
-        //TODO PAGE + COUNT
-        let action = constant.ACTION.CONTENT + constant.ACTION.PAGES + "?page=0&count=20&store=" + defaultStore + "&lang=" + currentLanguageCode;
-        try {
-            let response = await WebService.get(action);
-            if (response) {
-                setContentData(response.items);
-            }
-        } catch (error) {}
-    };
+    // const getContent = async () => {
+    //     //TODO PAGE + COUNT
+    //     let action = constant.ACTION.CONTENT + constant.ACTION.PAGES + "?page=0&count=20&store=" + defaultStore + "&lang=" + currentLanguageCode;
+    //     try {
+    //         let response = await WebService.get(action);
+    //         if (response) {
+    //             setContentData(response.items);
+    //         }
+    //     } catch (error) {}
+    // };
     const handleScroll = () => {
         setScroll(window.scrollY);
     };
@@ -134,12 +134,14 @@ const Header = ({
                     <div className="row">
                         <div className="col-xl-12 col-lg-12 d-none d-lg-block">
                             {/* Nav menu */}
-                            <NavMenu categories={categoryData} contents={contentData} />
+                            <NavMenu categories={categoryData} />
+                            {/* <NavMenu categories={categoryData} contents={contentData} /> */}
                         </div>
                     </div>
                 </div>
                 {/* mobile menu */}
-                <MobileMenu categories={categoryData} contents={contentData} />
+                <MobileMenu categories={categoryData} />
+                {/* <MobileMenu categories={categoryData} contents={contentData} /> */}
             </div>
         </header>
     );

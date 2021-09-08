@@ -49,7 +49,6 @@ const App = (props) => {
         if (cookie) {
             props.dispatch(setShopizerCartID(cookie));
         }
-
         document.documentElement.style.setProperty("--theme-color", process.env.REACT_APP_APP_THEME_COLOR);
         props.dispatch(
             loadLanguages({

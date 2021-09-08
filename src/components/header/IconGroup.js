@@ -11,21 +11,13 @@ import { multilanguage } from "redux-multilanguage";
 import IdleTimer from "react-idle-timer";
 import constant from "../../util/constant";
 import WebService from "../../util/webService";
-const IconGroup = ({
-    cartData,
-    cartCount,
-    deleteFromCart,
-    iconWhiteClass,
-    userData,
-    setUser,
-    deleteAllFromCart,
-    strings,
-    getCart,
-}) => {
+
+const IconGroup = ({ cartData, cartCount, deleteFromCart, iconWhiteClass, userData, setUser, deleteAllFromCart, strings, getCart }) => {
     const pathname = useRouteMatch();
     const history = useHistory();
     const timeout = 1000 * 60 * 30;
     const [useDetails, setUseDetails] = useState({});
+
     useEffect(() => {
         if (getLocalData("thekey") === process.env.REACT_APP_APP_BASE_URL) {
             setLocalData("thekey", process.env.REACT_APP_APP_BASE_URL);
@@ -33,10 +25,8 @@ const IconGroup = ({
             logout();
             setLocalData("thekey", process.env.REACT_APP_APP_BASE_URL);
         }
-       
-        if (userData) {
-            getProfile();
-        }
+        if (getLocalData("GET_SHOPIZER_CART_ID")) getCart(getLocalData("GET_SHOPIZER_CART_ID"));
+        if (userData) getProfile();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -53,18 +43,22 @@ const IconGroup = ({
             history.push("/");
         }
     };
+
     const handleClick = (e) => {
         e.currentTarget.nextSibling.classList.toggle("active");
     };
+
     const triggerMobileMenu = () => {
         const offcanvasMobileMenu = document.querySelector("#offcanvas-mobile-menu");
         offcanvasMobileMenu.classList.add("active");
     };
+
     const logout = () => {
         setUser("");
         setLocalData("token", "");
         deleteAllFromCart();
     };
+
     const onAction = (e) => {
         setLocalData("session", new Date());
     };
@@ -132,10 +126,7 @@ const IconGroup = ({
                         <span className="count-style">{cartCount}</span>
                     </button>
                     {/* menu cart */}
-                    <MenuCart
-                        cartData={cartData}
-                        deleteFromCart={deleteFromCart}
-                    />
+                    <MenuCart cartData={cartData} deleteFromCart={deleteFromCart} />
                 </div>
             )}
             <div className="same-style cart-wrap d-block d-lg-none">
@@ -178,8 +169,8 @@ const mapDispatchToProps = (dispatch) => {
         deleteAllFromCart: () => {
             dispatch(deleteAllFromCart());
         },
-        getCart: (cartID) => {
-            dispatch(getCart(cartID));
+        getCart: (cartId) => {
+            dispatch(getCart(cartId));
         },
     };
 };

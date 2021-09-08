@@ -1,16 +1,15 @@
 export const FETCH_PRODUCTS_SUCCESS = "FETCH_PRODUCTS_SUCCESS";
 export const SET_PRODUCT_ID = "SET_PRODUCT_ID";
 export const SET_CATEGORY_ID = "SET_CATEGORY_ID";
-
-const fetchProductsSuccess = (products) => ({
-    type: FETCH_PRODUCTS_SUCCESS,
-    payload: products,
-});
+export const SET_PAGE_NUMBER = "SET_PAGE_NUMBER";
 
 // fetch products
 export const fetchProducts = (products) => {
     return (dispatch) => {
-        dispatch(fetchProductsSuccess(products));
+        dispatch({
+            type: FETCH_PRODUCTS_SUCCESS,
+            payload: products,
+        });
     };
 };
 export const setProductID = (productID) => {
@@ -26,6 +25,14 @@ export const setCategoryID = (categoryID) => {
         dispatch({
             type: SET_CATEGORY_ID,
             payload: categoryID,
+        });
+    };
+};
+export const setPageNumber = (page) => {
+    return (dispatch) => {
+        dispatch({
+            type: SET_PAGE_NUMBER,
+            payload: page,
         });
     };
 };

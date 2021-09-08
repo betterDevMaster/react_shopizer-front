@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
+
 import MetaTags from "react-meta-tags";
 import Layout from "../../layouts/Layout";
 import HeroSlider from "../../wrappers/hero-slider/HeroSlider";
@@ -9,7 +10,14 @@ import BestSellerProduct from "../../wrappers/product/BestSellerProduct";
 import StaticLogo from "../../wrappers/staticLogo/StaticLogo";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
+import { removeLocalData } from "../../util/helper";
+
 const Home = ({ merchant, strings, userData }) => {
+    useEffect(() => {
+        removeLocalData("productId");
+        removeLocalData("categoryId");
+        removeLocalData("pageNumber");
+    });
     return (
         <Fragment>
             <MetaTags>

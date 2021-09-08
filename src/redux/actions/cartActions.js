@@ -74,7 +74,7 @@ export const getCart = (cartID) => {
                     "&store=" +
                     process.env.REACT_APP_APP_MERCHANT +
                     "&lang=" +
-                    JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
+                    getLocalData("currentLanguageCode");
             }
 
             let response = await WebService.get(action);
@@ -82,7 +82,9 @@ export const getCart = (cartID) => {
                 type: GET_CART,
                 payload: response,
             });
-            dispatch(setShopizerCartID(response.code));
+            if (!getLocalData(GET_SHOPIZER_CART_ID)) {
+                dispatch(setShopizerCartID(response.code));
+            }
         } catch (error) {
             console.log("Cart action response error " + error);
             dispatch(deleteAllFromCart());
@@ -165,7 +167,7 @@ export const deleteFromCart = (cartID, item, defaultStore, addToast, userData) =
                 //     type: DELETE_FROM_CART,
                 //     payload: item,
                 // });
-                dispatch(getCart(userData.token));
+                dispatch(getCart(getLocalData(GET_SHOPIZER_CART_ID)));
                 dispatch(setLoader(false));
 
                 if (addToast) {

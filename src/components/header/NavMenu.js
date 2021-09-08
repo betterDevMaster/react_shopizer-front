@@ -4,21 +4,24 @@ import { Link } from "react-router-dom";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
 
-import { setCategoryID } from "../../redux/actions/productActions";
+import { setCategoryID, setPageNumber } from "../../redux/actions/productActions";
 import { setContent } from "../../redux/actions/contentAction";
 
-const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, contents, setCategoryID, setContent }) => {
+const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, setCategoryID, setPageNumber, setContent }) => {
+// const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, contents, setCategoryID, setContent }) => {
+
     const onClickCategory = (item) => {
         setCategoryID(item.id);
+        setPageNumber(0);
     };
     
-    const onClickContent = (item) => {
-        setContent(item);
-    };
+    // const onClickContent = (item) => {
+    //     setContent(item);
+    // };
 
-    const contactsUrl = (isContacts, url) => {
-        return isContacts ? "/" + url : "/content/" + url;
-    };
+    // const contactsUrl = (isContacts, url) => {
+    //     return isContacts ? "/" + url : "/content/" + url;
+    // };
 
     const ItemDescription = ({ item, sidebarMenu }) => {
         return (
@@ -53,16 +56,16 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
                             return (
                                 !!+item.visible && (
                                     <li key={index}>
-                                        {item.children.length === 0 ? (
+                                        {/* {item.children.length === 0 ? ( */}
                                             <Link
                                                 to={"/category/" + item.description.friendlyUrl}
                                                 onClick={() => onClickCategory(item)}
                                             >
                                                 <ItemDescription item={item} sidebarMenu={sidebarMenu} />
                                             </Link>
-                                        ) : (
+                                        {/* ) : (
                                             <ItemDescription item={item} sidebarMenu={sidebarMenu} />
-                                        )}
+                                        )} */}
                                         {item.children && item.children.length > 0 && (
                                             <ul className="submenu">
                                                 {item.children.map((submenu, index) => {
@@ -83,7 +86,7 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
                                 )
                             );
                         })}
-                    {contents && contents.map((content, index) => {
+                    {/* {contents && contents.map((content, index) => {
                         return (
                             !!+content.visible &&
                             content.description && (
@@ -94,7 +97,7 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, cont
                                 </li>
                             )
                         );
-                    })}
+                    })} */}
                 </ul>
             </nav>
         </div>
@@ -110,6 +113,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setCategoryID: (value) => {
             dispatch(setCategoryID(value));
+        },
+        setPageNumber: (value) => {
+            dispatch(setPageNumber(value));
         },
         setContent: (value) => {
             dispatch(setContent(value));

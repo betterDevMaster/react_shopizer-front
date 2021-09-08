@@ -3,20 +3,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
-import { setCategoryID } from "../../../redux/actions/productActions";
+import { setCategoryID, setPageNumber } from "../../../redux/actions/productActions";
 import { setContent } from "../../../redux/actions/contentAction";
-const MobileNavMenu = ({ strings, categories, contents, setCategoryID, setContent }) => {
+
+const MobileNavMenu = ({ strings, categories, setCategoryID, setPageNumber, setContent }) => {
+// const MobileNavMenu = ({ strings, categories, contents, setCategoryID, setContent }) => {
     const onClickCategory = (item) => {
         setCategoryID(item.id);
+        setPageNumber(0)
     };
 
-    const onClickContent = (item) => {
-        setContent(item);
-    };
+    // const onClickContent = (item) => {
+    //     setContent(item);
+    // };
 
-    const contactsUrl = (isContacts, url) => {
-        return isContacts ? "/" + url : "/content/" + url;
-    };
+    // const contactsUrl = (isContacts, url) => {
+    //     return isContacts ? "/" + url : "/content/" + url;
+    // };
 
     return (
         <nav className="offcanvas-navigation" id="offcanvas-navigation">
@@ -49,7 +52,7 @@ const MobileNavMenu = ({ strings, categories, contents, setCategoryID, setConten
                         )
                     );
                 })}
-                {contents.map((content, index) => {
+                {/* {contents.map((content, index) => {
                     return (
                         !!+content.visible &&
                         content.description && (
@@ -63,7 +66,7 @@ const MobileNavMenu = ({ strings, categories, contents, setCategoryID, setConten
                             </li>
                         )
                     );
-                })}
+                })} */}
             </ul>
         </nav>
     );
@@ -79,6 +82,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         setContent: (value) => {
             dispatch(setContent(value));
+        },
+        setPageNumber: (value) => {
+            dispatch(setPageNumber(value));
         },
     };
 };

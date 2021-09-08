@@ -3,7 +3,8 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { addToCart } from "../../redux/actions/cartActions";
 import ProductGridListSingle from "../../components/product/ProductGridListSingle";
-import { isValidObject } from "../../util/helper";
+import { isValidObject, getLocalData } from "../../util/helper";
+
 const ProductGrid = ({ products, addToCart, cartItems, sliderClassName, spaceBottomClass, userData, strings }) => {
     return (
         <Fragment>
@@ -44,11 +45,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addToCart: (item, addToast, cartData, quantityCount, defaultStore, selectedProductColor, userData) => {
             let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === item.id) : -1;
+            let cardId = getLocalData('GET_SHOPIZER_CART_ID') ? getLocalData('GET_SHOPIZER_CART_ID') : cartData.code
             dispatch(
                 addToCart(
                     item,
                     addToast,
-                    cartData.code,
+                    cardId,
                     index === -1 ? quantityCount : cartData.products[index].quantity + quantityCount,
                     defaultStore,
                     selectedProductColor,

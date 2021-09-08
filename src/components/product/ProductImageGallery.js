@@ -21,9 +21,9 @@ const ProductImageGallery = ({ product }) => {
         }
     }, [gallerySwiper, thumbnailSwiper]);
 
-    const convertBase64Image = (image) => {
-        return "data:image/png;base64," + image;
-    };
+    // const convertBase64Image = (image) => {
+    //     return "data:image/png;base64," + image;
+    // };
 
     // swiper slider settings
     const gallerySwiperParams = {

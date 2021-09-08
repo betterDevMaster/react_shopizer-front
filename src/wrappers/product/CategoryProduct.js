@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
 import React from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SectionTitle from "../../components/section-title/SectionTitle";
 import { setLoader } from "../../redux/actions/loaderActions";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
+import { setCategoryID } from "../../redux/actions/productActions";
 
 const CategoryProduct = ({
     setLoader,
@@ -16,7 +17,12 @@ const CategoryProduct = ({
     defaultStore,
     currentLanguageCode,
     categoryData,
+    setCategoryID
 }) => {
+    const onClickCategory = (item) => {
+        setCategoryID(item.id);
+    };
+
     return (
         <div className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${spaceBottomClass ? spaceBottomClass : ""} ${extraClass ? extraClass : ""}`}>
             <div className={`${containerClass ? containerClass : "container"}`}>
@@ -30,9 +36,9 @@ const CategoryProduct = ({
                             >
                                 <div className="text px-3 py-1">
                                     <h2 className="mb-0">
-                                        <a href={`/category/${value.description.friendlyUrl}`}>
-                                            <font>{value.description.name}</font>
-                                        </a>
+                                        <Link to={`/category/${value.description.friendlyUrl}`} onClick={() => onClickCategory(value)}>
+                                           <font>{value.description.name}</font>
+                                        </Link>
                                     </h2>
                                 </div>
                             </div>
@@ -64,6 +70,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setLoader: (value) => {
             dispatch(setLoader(value));
+        },
+        setCategoryID: (value) => {
+            dispatch(setCategoryID(value));
         },
     };
 };

@@ -299,15 +299,9 @@ const Checkout = ({
 
     const getSummaryOrder = async () => {
         setLoader(true);
+        let cartid = getLocalData("GET_SHOPIZER_CART_ID") ? getLocalData("GET_SHOPIZER_CART_ID") : cartID;
         let action =
-            constant.ACTION.CART +
-            constant.ACTION.GETUSERCART +
-            "?code=" +
-            cartID +
-            "&store=" +
-            defaultStore +
-            "&lang=" +
-            JSON.parse(getLocalData("redux_localstorage_simple")).multilanguage.currentLanguageCode;
+            constant.ACTION.CART + constant.ACTION.GETUSERCART + "?code=" + cartid + "&store=" + defaultStore + "&lang=" + getLocalData("currentLanguageCode");
         try {
             let response = await WebService.get(action);
             // console.log(JSON.stringify(response));
@@ -500,11 +494,12 @@ const Checkout = ({
         let action;
 
         //console.log('SHIPPING QUOTE CHANGED');
+        let cartid = getLocalData("GET_SHOPIZER_CART_ID") ? getLocalData("GET_SHOPIZER_CART_ID") : cartID;
 
         if (quoteID) {
-            action = constant.ACTION.CART + constant.ACTION.TOTAL + "?code=" + cartID + "&quote=" + quoteID;
+            action = constant.ACTION.CART + constant.ACTION.TOTAL + "?code=" + cartid + "&quote=" + quoteID;
         } else {
-            action = constant.ACTION.CART + constant.ACTION.TOTAL + "?code=" + cartID;
+            action = constant.ACTION.CART + constant.ACTION.TOTAL + "?code=" + cartid;
         }
         // console.log('Shipping action ' +action);
         try {
