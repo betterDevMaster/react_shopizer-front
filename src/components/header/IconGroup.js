@@ -17,6 +17,7 @@ const IconGroup = ({ cartData, cartCount, deleteFromCart, iconWhiteClass, userDa
     const history = useHistory();
     const timeout = 1000 * 60 * 30;
     const [useDetails, setUseDetails] = useState({});
+    const [iconHover, setIconHover] = useState("");
 
     useEffect(() => {
         if (getLocalData("thekey") === process.env.REACT_APP_APP_BASE_URL) {
@@ -26,12 +27,14 @@ const IconGroup = ({ cartData, cartCount, deleteFromCart, iconWhiteClass, userDa
             setLocalData("thekey", process.env.REACT_APP_APP_BASE_URL);
         }
         if (getLocalData("GET_SHOPIZER_CART_ID")) getCart(getLocalData("GET_SHOPIZER_CART_ID"));
-        if (userData) getProfile();
+        if (getLocalData("uid") && getLocalData("token")) setUser({ id: getLocalData("uid"), token: getLocalData("token") });
+        getProfile();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getProfile = async () => {
-        let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + userData.id;
+        let uid = getLocalData("uid") ? getLocalData("uid") : userData ? userData.id : null;
+        let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + uid;
         try {
             let response = await WebService.get(action);
             if (response) {
@@ -68,67 +71,74 @@ const IconGroup = ({ cartData, cartCount, deleteFromCart, iconWhiteClass, userDa
     };
 
     const onIdle = (e) => {
-        // logout()
+        logout();
     };
 
     return (
         <div className={`header-right-wrap ${iconWhiteClass ? iconWhiteClass : ""}`}>
             <IdleTimer element={document} onActive={onActive} onIdle={onIdle} onAction={onAction} debounce={250} timeout={timeout} />
             <div className="same-style account-setting d-none d-lg-block">
-                {pathname.url !== "/checkout" && (
-                    <button className="account-setting-active" onClick={(e) => handleClick(e)}>
-                        <i className="pe-7s-user-female" />
-                    </button>
-                )}
-                <div className="account-dropdown">
-                    <ul>
-                        {!userData && (
-                            <div>
-                                <li>
-                                    <Link to={"/login"}>{strings["Login"]}</Link>
-                                </li>
-                                <li>
-                                    <Link to={"/register"}>{strings["Register"]}</Link>
-                                </li>
-                            </div>
-                        )}
-                        {userData && (
-                            <div className="user-profile">
-                                <div className="user-name">
-                                    Welcome {useDetails.firstName} {useDetails.lastName}
+                {/* {pathname.url !== "/checkout" && ( */}
+                <button
+                    className="account-setting-active"
+                    onClick={(e) => handleClick(e)}
+                    onMouseEnter={() => {
+                        setIconHover("setting");
+                    }}
+                >
+                    <i className="pe-7s-user-female" />
+                </button>
+                {/* )} */}
+                {iconHover === "setting" && (
+                    <div className="account-dropdown active" onMouseLeave={() => setIconHover("")}>
+                        <ul>
+                            {!userData ? (
+                                <div>
+                                    <li>
+                                        <Link to={"/login"}>{strings["Login"]}</Link>
+                                    </li>
+                                    <li>
+                                        <Link to={"/register"}>{strings["Register"]}</Link>
+                                    </li>
                                 </div>
-                                <span className="user-email">{useDetails.emailAddress}</span>
-                            </div>
-                        )}
-                        {userData && <li className="border-line"></li>}
-                        {userData && (
-                            <div style={{ marginTop: 12 }}>
-                                <li>
-                                    <Link to={"/my-account"}>{strings["My Account"]}</Link>
-                                </li>
-                                <li>
-                                    <Link to={"/recent-order"}>{strings["Recent Orders"]}</Link>
-                                </li>
-                                <li>
-                                    <Link to={"/login"} onClick={logout}>
-                                        {strings["Logout"]}
-                                    </Link>
-                                </li>
-                            </div>
-                        )}
-                    </ul>
-                </div>
+                            ) : (
+                                <>
+                                    <div className="user-profile">
+                                        <div className="user-name">
+                                            Welcome {useDetails.firstName} {useDetails.lastName}
+                                        </div>
+                                        <span className="user-email">{useDetails.emailAddress}</span>
+                                    </div>
+                                    <li className="border-line"></li>
+                                    <div style={{ marginTop: 12 }}>
+                                        <li>
+                                            <Link to={"/my-account"}>{strings["My Account"]}</Link>
+                                        </li>
+                                        <li>
+                                            <Link to={"/recent-order"}>{strings["Recent Orders"]}</Link>
+                                        </li>
+                                        <li>
+                                            <Link to={"/login"} onClick={logout}>
+                                                {strings["Logout"]}
+                                            </Link>
+                                        </li>
+                                    </div>
+                                </>
+                            )}
+                        </ul>
+                    </div>
+                )}
             </div>
-            {pathname.url !== "/checkout" && (
-                <div className="same-style cart-wrap d-none d-lg-block">
-                    <button className="icon-cart" onClick={(e) => handleClick(e)}>
-                        <i className="pe-7s-shopbag" />
-                        <span className="count-style">{cartCount}</span>
-                    </button>
-                    {/* menu cart */}
-                    <MenuCart cartData={cartData} deleteFromCart={deleteFromCart} />
-                </div>
-            )}
+            {/* {pathname.url !== "/checkout" && ( */}
+            <div className="same-style cart-wrap d-none d-lg-block">
+                <button className="icon-cart" onClick={(e) => handleClick(e)} onMouseEnter={() => setIconHover("cart")}>
+                    <i className="pe-7s-shopbag" />
+                    <span className="count-style">{cartCount}</span>
+                </button>
+                {/* menu cart */}
+                {iconHover === "cart" && <MenuCart cartData={cartData} deleteFromCart={deleteFromCart} onMouseLeave={() => setIconHover("")} />}
+            </div>
+            {/* )} */}
             <div className="same-style cart-wrap d-block d-lg-none">
                 <Link className="icon-cart" to={process.env.PUBLIC_URL + "/cart"}>
                     <i className="pe-7s-shopbag" />

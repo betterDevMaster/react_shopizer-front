@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { multilanguage } from "redux-multilanguage";
 import { connect } from "react-redux";
@@ -8,13 +8,15 @@ import { setCategoryID, setPageNumber } from "../../redux/actions/productActions
 import { setContent } from "../../redux/actions/contentAction";
 
 const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, setCategoryID, setPageNumber, setContent }) => {
-// const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, contents, setCategoryID, setContent }) => {
+    // const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, contents, setCategoryID, setContent }) => {
+    const [categoryHover, setCategoryHover] = useState(0);
+    const [subCategoryHover, setSubCategoryHover] = useState(0);
 
     const onClickCategory = (item) => {
         setCategoryID(item.id);
         setPageNumber(0);
     };
-    
+
     // const onClickContent = (item) => {
     //     setContent(item);
     // };
@@ -28,7 +30,7 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, setC
             item && (
                 <div className="parentWithChild">
                     {item.description.name}
-                    {item.children && item.children.length > 0 ? (
+                    {/* {item.children && item.children.length > 0 ? (
                         sidebarMenu ? (
                             <span>
                                 <i className="fa fa-angle-right"></i>
@@ -38,69 +40,94 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, setC
                         )
                     ) : (
                         ""
-                    )}
+                    )} */}
                 </div>
             )
         );
     };
 
     return (
-        <div className={`${sidebarMenu ? "sidebar-menu" : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`} `}>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to={"/"}>{strings["Home"]}</Link>
-                    </li>
-                    {categories &&
-                        categories.map((item, index) => {
-                            return (
-                                !!+item.visible && (
-                                    <li key={index}>
-                                        {/* {item.children.length === 0 ? ( */}
-                                            <Link
-                                                to={"/category/" + item.description.friendlyUrl}
-                                                onClick={() => onClickCategory(item)}
-                                            >
-                                                <ItemDescription item={item} sidebarMenu={sidebarMenu} />
-                                            </Link>
-                                        {/* ) : (
-                                            <ItemDescription item={item} sidebarMenu={sidebarMenu} />
-                                        )} */}
-                                        {item.children && item.children.length > 0 && (
-                                            <ul className="submenu">
-                                                {item.children.map((submenu, index) => {
-                                                    return (
-                                                        <li key={index}>
-                                                            <Link
-                                                                to={"/category/" + submenu.description.friendlyUrl}
-                                                                onClick={() => onClickCategory(submenu)}
-                                                            >
-                                                                {submenu.description.name}
-                                                            </Link>
-                                                        </li>
-                                                    );
-                                                })}
-                                            </ul>
-                                        )}
-                                    </li>
-                                )
-                            );
-                        })}
-                    {/* {contents && contents.map((content, index) => {
+        <nav className={`${sidebarMenu ? "sidebar-menu" : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`} `}>
+            <ul className="main-menu-ul">
+                {categories &&
+                    categories.map((item, index) => {
                         return (
-                            !!+content.visible &&
-                            content.description && (
-                                <li key={index}>
-                                    <Link to={contactsUrl(content.code === "contacts", content.description.friendlyUrl)} onClick={() => onClickContent(content.code)}>
-                                        {content.description.name}
+                            !!+item.visible && (
+                                <li className="main-menu-li" key={index}>
+                                    <Link
+                                        className="main-menu-li-a"
+                                        to={"/category/" + item.description.friendlyUrl}
+                                        onClick={() => onClickCategory(item)}
+                                        onMouseEnter={() => {
+                                            setCategoryHover(item.id);
+                                        }}
+                                        // onMouseLeave={() => {
+                                        //     setTimeout(() => {
+                                        //         if (subCategoryHover === 0 && categoryHover === item.id) setCategoryHover(0);
+                                        //     }, 500);
+                                        // }}
+                                    >
+                                        <ItemDescription item={item} sidebarMenu={sidebarMenu} />
                                     </Link>
+                                    {categoryHover === item.id && (
+                                        <div
+                                            className="main-menu-hover-container"
+                                            // onMouseEnter={() => setSubCategoryHover(item.id)}
+                                            onMouseLeave={() => {
+                                                setCategoryHover(0);
+                                                // setSubCategoryHover(0);
+                                            }}
+                                        >
+                                            {item.children.map((submenu, index) => {
+                                                return (
+                                                    <div className="col-xl-3 col-lg-3 col-md-3 col-3 hover-space" key={index}>
+                                                        <div className="child-container">
+                                                            <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                                                                <h4>
+                                                                    <Link
+                                                                        to={"/category/" + submenu.description.friendlyUrl}
+                                                                        onClick={() => onClickCategory(submenu)}
+                                                                    >
+                                                                        {submenu.description.name}
+                                                                    </Link>
+                                                                </h4>
+                                                            </div>
+                                                            <div className="col-xl-12 col-lg-12 col-md-12 col-12">
+                                                                <ul>
+                                                                    {submenu.children.map((subsubmenu, index) => {
+                                                                        return (
+                                                                            <li>
+                                                                                <Link
+                                                                                    to={"/category/" + subsubmenu.description.friendlyUrl}
+                                                                                    onClick={() => onClickCategory(subsubmenu)}
+                                                                                >
+                                                                                    {subsubmenu.description.name}
+                                                                                </Link>
+                                                                            </li>
+                                                                        );
+                                                                    })}
+                                                                    <li className="jss1989">
+                                                                        <Link
+                                                                            to={"/category/" + submenu.description.friendlyUrl}
+                                                                            onClick={() => onClickCategory(submenu)}
+                                                                        >
+                                                                            See everything
+                                                                        </Link>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
                                 </li>
                             )
                         );
-                    })} */}
-                </ul>
-            </nav>
-        </div>
+                    })}
+            </ul>
+        </nav>
     );
 };
 

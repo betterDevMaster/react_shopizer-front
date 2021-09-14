@@ -31,7 +31,12 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, s
                     store: process.env.REACT_APP_APP_MERCHANT,
                 };
             } else {
-                param = { productId: item.id, quantity: quantityCount, customerId: userData.id, store: process.env.REACT_APP_APP_MERCHANT };
+                param = {
+                    productId: item.id,
+                    quantity: quantityCount,
+                    customerId: userData.id,
+                    store: process.env.REACT_APP_APP_MERCHANT,
+                };
             }
 
             if (cartId) {
@@ -47,7 +52,7 @@ export const addToCart = (item, addToast, cartId, quantityCount, defaultStore, s
 
             //refresh cart
             if (response) {
-                dispatch(getCart(response.code));
+                dispatch(getCart(response));
                 dispatch(setLoader(false));
 
                 if (addToast) {
@@ -78,12 +83,14 @@ export const getCart = (cartID) => {
             }
 
             let response = await WebService.get(action);
-            dispatch({
-                type: GET_CART,
-                payload: response,
-            });
-            if (!getLocalData(GET_SHOPIZER_CART_ID)) {
-                dispatch(setShopizerCartID(response.code));
+            if (response) {
+                dispatch({
+                    type: GET_CART,
+                    payload: response,
+                });
+                if (!getLocalData(GET_SHOPIZER_CART_ID)) {
+                    dispatch(setShopizerCartID(cartID));
+                }
             }
         } catch (error) {
             console.log("Cart action response error " + error);
@@ -152,7 +159,7 @@ export const deleteFromCart = (cartID, item, defaultStore, addToast, userData) =
         try {
             let action =
                 constant.ACTION.CART +
-                constant.ACTION.DELETECART +
+                constant.ACTION.DELETEPRODUCTCART +
                 "?code=" +
                 cartID +
                 "&productId=" +
@@ -191,6 +198,8 @@ export const deleteAllFromCart = (orderID) => {
         //     autoDismiss: true
         //   });
         // }
+        // let action = constant.ACTION.CART + constant.ACTION.DELETECART + orderID;
+        // WebService.delete(action);
         dispatch({ type: DELETE_ALL_FROM_CART, payload: orderID });
     };
 };
@@ -200,6 +209,8 @@ export const cartItemStock = (item, color, size) => {
     if (item.stock) {
         return item.stock;
     } else {
-        return item.variation.filter((single) => single.color === color)[0].size.filter((single) => single.name === size)[0].stock;
+        return item.variation
+            .filter((single) => single.color === color)[0]
+            .size.filter((single) => single.name === size)[0].stock;
     }
 };

@@ -46,7 +46,6 @@ const Category = ({ setCategoryID, setPageNumber, isLoading, strings, location, 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categoryID, pageNumber]);
 
-    console.log("pageNumber; ---------- ", pageNumber, totalPage);
     const getLayout = (layout) => {
         setLayout(layout);
     };
@@ -153,7 +152,6 @@ const Category = ({ setCategoryID, setPageNumber, isLoading, strings, location, 
         } catch (error) {}
     };
 
-console.log('productDetails: ---------' ,productDetails)
     return (
         <Fragment>
             <MetaTags>
@@ -162,7 +160,7 @@ console.log('productDetails: ---------' ,productDetails)
             </MetaTags>
 
             <BreadcrumbsItem to={process.env.PUBLIC_URL + "/"}>{strings["Home"]}</BreadcrumbsItem>
-            {productDetails && productDetails.parent !== null && (
+            {productDetails && productDetails.parent && (
                 <BreadcrumbsItem onClick={() => setCategoryID(productDetails.parent.id)} to={"/category/" + productDetails.parent.code}>
                     {productDetails.parent.code}
                 </BreadcrumbsItem>

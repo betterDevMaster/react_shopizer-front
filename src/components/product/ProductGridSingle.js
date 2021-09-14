@@ -16,6 +16,7 @@ const ProductGridSingleTwo = ({
     defaultStore,
     setProductID,
     userData,
+    merchant,
 }) => {
     const [modalShow, setModalShow] = useState(false);
     const { addToast } = useToasts();
@@ -33,14 +34,25 @@ const ProductGridSingleTwo = ({
         product.description && (
             <Fragment>
                 <div className={`col-xl-3 col-md-6 col-lg-4 col-sm-6 ${sliderClassName ? sliderClassName : ""}`}>
-                    <div className={`product-wrap-2 ${spaceBottomClass ? spaceBottomClass : ""} ${colorClass ? colorClass : ""} `}>
+                    <div
+                        className={`product-wrap-2 ${spaceBottomClass ? spaceBottomClass : ""} ${
+                            colorClass ? colorClass : ""
+                        } `}
+                    >
                         <div className="product-img">
-                            <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+                            <Link
+                                to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl}
+                                onClick={() => onClickProductDetails(product.id)}
+                            >
                                 {product.images && product.images.length > 0}
                                 {/* {!product.images[0].imageUrl ? (
                                     <img src={process.env.REACT_APP_APP_HTTP_URL + product.images[0].imageUrl} alt="product-img" />
                                 ) : ( */}
-                                    <img src={process.env.REACT_APP_APP_HTTP_URL + product.images[0].imageUrl} alt="product-img" style={{ height: "270px" }} />
+                                <img
+                                    src={process.env.REACT_APP_APP_HTTP_URL + product.images[0].imageUrl}
+                                    alt="product-img"
+                                    style={{ height: "270px" }}
+                                />
                                 {/* )} */}
                             </Link>
                             <div className="product-action-2">
@@ -51,19 +63,30 @@ const ProductGridSingleTwo = ({
                                 >
                                     <i className="fa fa-cog"></i>
                                 </Link>
-                                {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 && (
-                                    <button
-                                        onClick={() => {
-                                            // if (!userData) history.push("/login");
-                                            // else
-                                            addToCart(product, addToast, cartData, 1, defaultStore, undefined, userData);
-                                        }}
-                                        className="active"
-                                        title="Add to cart"
-                                    >
-                                        <i className="fa fa-shopping-cart"></i>
-                                    </button>
-                                )}
+                                {!!+product.available &&
+                                    !!+product.canBePurchased &&
+                                    !!+product.visible &&
+                                    product.quantity > 0 && (
+                                        <button
+                                            onClick={() => {
+                                                // if (!userData) history.push("/login");
+                                                // else
+                                                addToCart(
+                                                    product,
+                                                    addToast,
+                                                    cartData,
+                                                    1,
+                                                    defaultStore,
+                                                    undefined,
+                                                    userData
+                                                );
+                                            }}
+                                            className="active"
+                                            title="Add to cart"
+                                        >
+                                            <i className="fa fa-shopping-cart"></i>
+                                        </button>
+                                    )}
                                 <button onClick={() => setModalShow(true)} title="Quick View">
                                     <i className="fa fa-eye"></i>
                                 </button>
@@ -82,10 +105,17 @@ const ProductGridSingleTwo = ({
                                 <div className="price-2">
                                     {!!+product.discounted ? (
                                         <Fragment>
-                                            <span>USD {finalDiscountedPrice}</span> <span className="old">USD {finalProductPrice}</span>
+                                            <span>
+                                                {merchant.currency} {finalDiscountedPrice}
+                                            </span>{" "}
+                                            <span className="old">
+                                                {merchant.currency} {finalProductPrice}
+                                            </span>
                                         </Fragment>
                                     ) : (
-                                        <span>USD {finalProductPrice} </span>
+                                        <span>
+                                            {merchant.currency} {finalProductPrice}{" "}
+                                        </span>
                                     )}
                                 </div>
                             </div>
@@ -122,6 +152,7 @@ ProductGridSingleTwo.propTypes = {
 const mapStateToProps = (state) => {
     return {
         defaultStore: state.merchantData.defaultStore,
+        merchant: state.merchantData.merchant,
     };
 };
 const mapDispatchToProps = (dispatch) => {

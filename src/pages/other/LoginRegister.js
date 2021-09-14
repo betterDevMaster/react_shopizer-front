@@ -171,6 +171,7 @@ const LoginRegister = ({
             setIsRemember(true);
             setLoginValue("username", getLocalData("loginEmail"));
         }
+
         getGender("M");
         getCountry(currentLanguageCode);
         setDefualtsValue();
@@ -189,7 +190,11 @@ const LoginRegister = ({
         setLoader(true);
         try {
             let action = constant.ACTION.CUSTOMER + constant.ACTION.LOGIN;
-            let param = { userName: data.username, password: data.loginPassword };
+            let param = {
+                userName: data.username,
+                password: data.loginPassword,
+                existingToken: getLocalData("GET_SHOPIZER_CART_ID") ? getLocalData("GET_SHOPIZER_CART_ID") : null,
+            };
             let response = await WebService.post(action, param);
             if (response) {
                 getCart(response.token);
@@ -201,6 +206,7 @@ const LoginRegister = ({
                 }
                 addToast("You have successfully logged in to this website", { appearance: "success", autoDismiss: true });
                 setUser(response);
+                setLocalData("uid", response.id);
                 setLocalData("token", response.token);
                 history.push("my-account");
             }
@@ -210,7 +216,6 @@ const LoginRegister = ({
             setLoader(false);
         }
     };
-
     const onConfirmPassword = (e) => {
         if (watch("password") !== e.target.value) {
             return setError(registerForm.repeatPassword.name, {

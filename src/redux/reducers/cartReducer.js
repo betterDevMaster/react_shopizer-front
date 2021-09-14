@@ -85,6 +85,7 @@ const cartReducer = (state = initState, action) => {
         const cookies = new Cookies();
         cookies.remove(cart_cookie1);
         removeLocalData(cart_cookie1);
+        removeLocalData(GET_SHOPIZER_CART_ID);
         return {
             ...state,
             cartItems: {},

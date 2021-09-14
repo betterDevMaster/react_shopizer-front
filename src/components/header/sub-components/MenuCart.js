@@ -5,11 +5,11 @@ import { useToasts } from "react-toast-notifications";
 import { isValidObject } from "../../../util/helper";
 import { connect } from "react-redux";
 import { multilanguage } from "redux-multilanguage";
-const MenuCart = ({ cartData, deleteFromCart, defaultStore, strings, userData }) => {
+const MenuCart = ({ cartData, deleteFromCart, onMouseLeave, defaultStore, strings, userData }) => {
     // let cartTotalPrice = 0;
     const { addToast } = useToasts();
     return (
-        <div className="shopping-cart-content">
+        <div className="shopping-cart-content active" onMouseLeave={() => onMouseLeave("")}>
             {isValidObject(cartData) && cartData.products.length > 0 ? (
                 <Fragment>
                     <ul>

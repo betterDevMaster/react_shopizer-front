@@ -18,9 +18,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { CardElement, Elements, ElementsConsumer } from "@stripe/react-stripe-js";
 import { useToasts } from "react-toast-notifications";
 import { setLoader } from "../../redux/actions/loaderActions";
-// import {
-//   deleteAllFromCart
-// } from "../../redux/actions/cartActions";
+import { deleteAllFromCart } from "../../redux/actions/cartActions";
 import Script from "react-load-script";
 import { multilanguage } from "redux-multilanguage";
 
@@ -301,7 +299,14 @@ const Checkout = ({
         setLoader(true);
         let cartid = getLocalData("GET_SHOPIZER_CART_ID") ? getLocalData("GET_SHOPIZER_CART_ID") : cartID;
         let action =
-            constant.ACTION.CART + constant.ACTION.GETUSERCART + "?code=" + cartid + "&store=" + defaultStore + "&lang=" + getLocalData("currentLanguageCode");
+            constant.ACTION.CART +
+            constant.ACTION.GETUSERCART +
+            "?code=" +
+            cartid +
+            "&store=" +
+            defaultStore +
+            "&lang=" +
+            getLocalData("currentLanguageCode");
         try {
             let response = await WebService.get(action);
             // console.log(JSON.stringify(response));
@@ -316,20 +321,28 @@ const Checkout = ({
                 history.push("/");
             }, 200);
         }
-        if (userData) {
-            getProfile();
-        } else {
-            setDefaultsValue();
-        }
+        getProfile();
+        setDefaultsValue();
     };
     const setDefaultsValue = () => {
         if (currentLocation.length > 0) {
-            setValue("country", currentLocation.find((i) => i.types.some((i) => i === "country")).address_components[0].short_name);
-            setValue("city", currentLocation.find((i) => i.types.some((i) => i === "locality")).address_components[0].short_name);
-            setValue("stateProvince", currentLocation.find((i) => i.types.some((i) => i === "administrative_area_level_1")).address_components[0].short_name);
+            setValue(
+                "country",
+                currentLocation.find((i) => i.types.some((i) => i === "country")).address_components[0].short_name
+            );
+            setValue(
+                "city",
+                currentLocation.find((i) => i.types.some((i) => i === "locality")).address_components[0].short_name
+            );
+            setValue(
+                "stateProvince",
+                currentLocation.find((i) => i.types.some((i) => i === "administrative_area_level_1"))
+                    .address_components[0].short_name
+            );
         }
     };
     const getProfile = async () => {
+        // let uid = getLocalData("uid") ? getLocalData("uid") : userData ? userData.id : null;
         let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + userData.id;
         try {
             let response = await WebService.get(action);
@@ -401,13 +414,25 @@ const Checkout = ({
                 if (currentLocation.length > 0) {
                     //console.log(currentLocation);
                     setTimeout(() => {
-                        getState(currentLocation.find((i) => i.types.some((i) => i === "country")).address_components[0].short_name);
-                        setValue("shipCountry", currentLocation.find((i) => i.types.some((i) => i === "country")).address_components[0].short_name);
-                        setValue("shipCity", currentLocation.find((i) => i.types.some((i) => i === "locality")).address_components[0].short_name);
+                        getState(
+                            currentLocation.find((i) => i.types.some((i) => i === "country")).address_components[0]
+                                .short_name
+                        );
+                        setValue(
+                            "shipCountry",
+                            currentLocation.find((i) => i.types.some((i) => i === "country")).address_components[0]
+                                .short_name
+                        );
+                        setValue(
+                            "shipCity",
+                            currentLocation.find((i) => i.types.some((i) => i === "locality")).address_components[0]
+                                .short_name
+                        );
                         setTimeout(() => {
                             setValue(
                                 "shipStateProvince",
-                                currentLocation.find((i) => i.types.some((i) => i === "administrative_area_level_1")).address_components[0].short_name
+                                currentLocation.find((i) => i.types.some((i) => i === "administrative_area_level_1"))
+                                    .address_components[0].short_name
                             );
                         }, 1000);
 
@@ -424,7 +449,10 @@ const Checkout = ({
         }; // To disable any eslint 'google not defined' errors
         // console.log('fsdfsdfsdfdsf')
         // Initialize Google Autocomplete
-        /*global google*/ let autocomplete = new google.maps.places.Autocomplete(document.getElementById("autocomplete"), options);
+        /*global google*/ let autocomplete = new google.maps.places.Autocomplete(
+            document.getElementById("autocomplete"),
+            options
+        );
         // console.log(autocomplete)
         // Avoid paying for data that you don't need by restricting the set of
         // place fields that are returned to just the address components and formatted
@@ -462,7 +490,11 @@ const Checkout = ({
             }
             setValue("address", array.toString());
             setTimeout(() => {
-                setValue("stateProvince", p.address_components.find((i) => i.types.some((i) => i === "administrative_area_level_1")).short_name);
+                setValue(
+                    "stateProvince",
+                    p.address_components.find((i) => i.types.some((i) => i === "administrative_area_level_1"))
+                        .short_name
+                );
             }, 2000);
 
             onChangeShipping();
@@ -475,7 +507,12 @@ const Checkout = ({
         if (isShipping) {
             param = { postalCode: watch("shipPostalCode"), countryCode: watch("shipCountry"), code: cartID };
         } else {
-            param = { postalCode: watch("postalCode"), countryCode: watch("country"), zpneCode: watch("shipStateProvince"), code: cartID };
+            param = {
+                postalCode: watch("postalCode"),
+                countryCode: watch("country"),
+                zpneCode: watch("shipStateProvince"),
+                code: cartID,
+            };
         }
         try {
             let response = await WebService.post(action, param);
@@ -483,7 +520,9 @@ const Checkout = ({
                 if (response.shippingOptions === "null" || response.shippingOptions === null) {
                     shippingQuoteChange("");
                 } else {
-                    shippingQuoteChange(response.shippingOptions[response.shippingOptions.length - 1].shippingQuoteOptionId);
+                    shippingQuoteChange(
+                        response.shippingOptions[response.shippingOptions.length - 1].shippingQuoteOptionId
+                    );
                 }
                 setShippingOptions(response.shippingOptions);
                 setSelectedOptions(response.shippingOptions[response.shippingOptions.length - 1].shippingQuoteOptionId);
@@ -512,6 +551,7 @@ const Checkout = ({
     const onSubmitOrder = async (data, elements, stripe) => {
         setLoader(true);
 
+        let cartID = getLocalData("GET_SHOPIZER_CART_ID") ? getLocalData("GET_SHOPIZER_CART_ID") : cartID;
         if (!cartID) {
             history.push("/");
         }
@@ -538,11 +578,10 @@ const Checkout = ({
     };
     const onPayment = async (data, result) => {
         let action;
-
-        // console.log(data);
         let param = {};
+        let cartid = getLocalData("GET_SHOPIZER_CART_ID") ? getLocalData("GET_SHOPIZER_CART_ID") : cartID;
         if (userData) {
-            action = constant.ACTION.AUTH + constant.ACTION.CART + cartID + "/" + constant.ACTION.CHECKOUT;
+            action = constant.ACTION.PAYMENT + constant.ACTION.CHECKOUT + cartid;
             param = {
                 shippingQuote: selectedOptions,
                 currency: merchant.currency,
@@ -550,12 +589,14 @@ const Checkout = ({
                     paymentType: "CREDITCARD",
                     transactionType: "CAPTURE",
                     paymentModule: "stripe",
-                    paymentToken: result.token,
+                    paymentToken: result,
                     amount: shippingQuote[shippingQuote.length - 1].value,
                 },
+                userData: data,
             };
         } else {
-            action = constant.ACTION.CART + cartID + "/" + constant.ACTION.CHECKOUT;
+            action = constant.ACTION.PAYMENT + constant.ACTION.CHECKOUT + cartid;
+            // action = constant.ACTION.CART + cartID + "/" + constant.ACTION.CHECKOUT;
             let customer = {};
             if (isShipping) {
                 customer = {
@@ -619,8 +660,7 @@ const Checkout = ({
                 customer: customer,
             };
         }
-        // console.log(param);
-        //
+
         try {
             let response = await WebService.post(action, param);
             // console.log(response)
@@ -759,25 +799,41 @@ const Checkout = ({
                                                 <div className="col-lg-6 col-md-6">
                                                     <div className="billing-info mb-20">
                                                         <label>{strings["First Name"]}</label>
-                                                        <input type="text" name={paymentForm.firstName.name} ref={register(paymentForm.firstName.validate)} />
+                                                        <input
+                                                            type="text"
+                                                            name={paymentForm.firstName.name}
+                                                            ref={register(paymentForm.firstName.validate)}
+                                                        />
                                                         {errors[paymentForm.firstName.name] && (
-                                                            <p className="error-msg">{errors[paymentForm.firstName.name].message}</p>
+                                                            <p className="error-msg">
+                                                                {errors[paymentForm.firstName.name].message}
+                                                            </p>
                                                         )}
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-6 col-md-6">
                                                     <div className="billing-info mb-20">
                                                         <label>{strings["Last Name"]}</label>
-                                                        <input type="text" name={paymentForm.lastName.name} ref={register(paymentForm.lastName.validate)} />
+                                                        <input
+                                                            type="text"
+                                                            name={paymentForm.lastName.name}
+                                                            ref={register(paymentForm.lastName.validate)}
+                                                        />
                                                         {errors[paymentForm.lastName.name] && (
-                                                            <p className="error-msg">{errors[paymentForm.lastName.name].message}</p>
+                                                            <p className="error-msg">
+                                                                {errors[paymentForm.lastName.name].message}
+                                                            </p>
                                                         )}
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-12">
                                                     <div className="billing-info mb-20">
                                                         <label>{strings["Company Name"]}</label>
-                                                        <input type="text" name={paymentForm.company.name} ref={register(paymentForm.company.validate)} />
+                                                        <input
+                                                            type="text"
+                                                            name={paymentForm.company.name}
+                                                            ref={register(paymentForm.company.validate)}
+                                                        />
                                                     </div>
                                                 </div>
 
@@ -801,7 +857,9 @@ const Checkout = ({
                                                             ref={register(paymentForm.address.validate)}
                                                         />
                                                         {errors[paymentForm.address.name] && (
-                                                            <p className="error-msg">{errors[paymentForm.address.name].message}</p>
+                                                            <p className="error-msg">
+                                                                {errors[paymentForm.address.name].message}
+                                                            </p>
                                                         )}
                                                     </div>
                                                 </div>
@@ -834,15 +892,25 @@ const Checkout = ({
                                                             }}
                                                         />
                                                         {errors[paymentForm.country.name] && (
-                                                            <p className="error-msg">{errors[paymentForm.country.name].message}</p>
+                                                            <p className="error-msg">
+                                                                {errors[paymentForm.country.name].message}
+                                                            </p>
                                                         )}
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-12">
                                                     <div className="billing-info mb-20">
                                                         <label>{strings["Town/City"]}</label>
-                                                        <input type="text" name={paymentForm.city.name} ref={register(paymentForm.city.validate)} />
-                                                        {errors[paymentForm.city.name] && <p className="error-msg">{errors[paymentForm.city.name].message}</p>}
+                                                        <input
+                                                            type="text"
+                                                            name={paymentForm.city.name}
+                                                            ref={register(paymentForm.city.validate)}
+                                                        />
+                                                        {errors[paymentForm.city.name] && (
+                                                            <p className="error-msg">
+                                                                {errors[paymentForm.city.name].message}
+                                                            </p>
+                                                        )}
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-6 col-md-6">
@@ -883,7 +951,9 @@ const Checkout = ({
                                                             />
                                                         )}
                                                         {errors[paymentForm.stateProvince.name] && (
-                                                            <p className="error-msg">{errors[paymentForm.stateProvince.name].message}</p>
+                                                            <p className="error-msg">
+                                                                {errors[paymentForm.stateProvince.name].message}
+                                                            </p>
                                                         )}
                                                     </div>
                                                 </div>
@@ -904,40 +974,61 @@ const Checkout = ({
                                                             }}
                                                         />
                                                         {errors[paymentForm.postalCode.name] && (
-                                                            <p className="error-msg">{errors[paymentForm.postalCode.name].message}</p>
+                                                            <p className="error-msg">
+                                                                {errors[paymentForm.postalCode.name].message}
+                                                            </p>
                                                         )}
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-6 col-md-6">
                                                     <div className="billing-info mb-20">
                                                         <label>{strings["Phone"]}</label>
-                                                        <input type="text" name={paymentForm.phone.name} ref={register(paymentForm.phone.validate)} />
+                                                        <input
+                                                            type="text"
+                                                            name={paymentForm.phone.name}
+                                                            ref={register(paymentForm.phone.validate)}
+                                                        />
                                                         {errors[paymentForm.phone.name] && (
-                                                            <p className="error-msg">{errors[paymentForm.phone.name].message}</p>
+                                                            <p className="error-msg">
+                                                                {errors[paymentForm.phone.name].message}
+                                                            </p>
                                                         )}
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-6 col-md-6">
                                                     <div className="billing-info mb-20">
                                                         <label>{strings["Email address"]}</label>
-                                                        <input type="text" name={paymentForm.email.name} ref={register(paymentForm.email.validate)} />
+                                                        <input
+                                                            type="text"
+                                                            name={paymentForm.email.name}
+                                                            ref={register(paymentForm.email.validate)}
+                                                        />
                                                         {errors[paymentForm.email.name] && (
-                                                            <p className="error-msg">{errors[paymentForm.email.name].message}</p>
+                                                            <p className="error-msg">
+                                                                {errors[paymentForm.email.name].message}
+                                                            </p>
                                                         )}
                                                     </div>
                                                 </div>
                                             </div>
                                             {!userData && (
                                                 <div className="login-toggle-btn">
-                                                    <input type="checkbox" value={isAccount} onChange={() => setIsAccount(!isAccount)} />
-                                                    <label className="ml-10 mb-20">{strings["Create an account"]}</label>
+                                                    <input
+                                                        type="checkbox"
+                                                        value={isAccount}
+                                                        onChange={() => setIsAccount(!isAccount)}
+                                                    />
+                                                    <label className="ml-10 mb-20">
+                                                        {strings["Create an account"]}
+                                                    </label>
                                                 </div>
                                             )}
                                             {isAccount && (
                                                 <div>
                                                     <p className="main-color">
-                                                        Create an account by entering the information below.If you are a returning customer please login using
-                                                        the link at the top of the page.
+                                                        Create an account by entering the information below.If you are a
+                                                        returning customer please login using the link at the top of the
+                                                        page.
                                                     </p>
                                                     <div className="col-lg-12">
                                                         <div className="billing-info mb-20">
@@ -949,7 +1040,9 @@ const Checkout = ({
                                                                 onChange={(e) => onPasswordChange(e)}
                                                             />
                                                             {errors[paymentForm.password.name] && (
-                                                                <p className="error-msg">{errors[paymentForm.password.name].message}</p>
+                                                                <p className="error-msg">
+                                                                    {errors[paymentForm.password.name].message}
+                                                                </p>
                                                             )}
                                                         </div>
                                                     </div>
@@ -963,15 +1056,23 @@ const Checkout = ({
                                                                 onChange={(e) => onConfirmPassword(e)}
                                                             />
                                                             {errors[paymentForm.repeatPassword.name] && (
-                                                                <p className="error-msg">{errors[paymentForm.repeatPassword.name].message}</p>
+                                                                <p className="error-msg">
+                                                                    {errors[paymentForm.repeatPassword.name].message}
+                                                                </p>
                                                             )}
                                                         </div>
                                                     </div>
                                                 </div>
                                             )}
                                             <div className="login-toggle-btn">
-                                                <input type="checkbox" value={isShipping} onChange={onChangeShipAddress} />
-                                                <label className="ml-10 mb-20">{strings["SHIP TO A DIFFERENT ADDRESS?"]}</label>
+                                                <input
+                                                    type="checkbox"
+                                                    value={isShipping}
+                                                    onChange={onChangeShipAddress}
+                                                />
+                                                <label className="ml-10 mb-20">
+                                                    {strings["SHIP TO A DIFFERENT ADDRESS?"]}
+                                                </label>
                                             </div>
                                             {isShipping && (
                                                 <div className="billing-info-wrap">
@@ -986,7 +1087,9 @@ const Checkout = ({
                                                                     ref={register(paymentForm.shipFirstName.validate)}
                                                                 />
                                                                 {errors[paymentForm.shipFirstName.name] && (
-                                                                    <p className="error-msg">{errors[paymentForm.shipFirstName.name].message}</p>
+                                                                    <p className="error-msg">
+                                                                        {errors[paymentForm.shipFirstName.name].message}
+                                                                    </p>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -999,7 +1102,9 @@ const Checkout = ({
                                                                     ref={register(paymentForm.shipLastName.validate)}
                                                                 />
                                                                 {errors[paymentForm.shipLastName.name] && (
-                                                                    <p className="error-msg">{errors[paymentForm.shipLastName.name].message}</p>
+                                                                    <p className="error-msg">
+                                                                        {errors[paymentForm.shipLastName.name].message}
+                                                                    </p>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -1019,13 +1124,17 @@ const Checkout = ({
                                                                 <label>{strings["Street Address"]}</label>
                                                                 <input
                                                                     className="billing-address"
-                                                                    placeholder={strings["House number and street name"]}
+                                                                    placeholder={
+                                                                        strings["House number and street name"]
+                                                                    }
                                                                     type="text"
                                                                     name={paymentForm.shipAddress.name}
                                                                     ref={register(paymentForm.shipAddress.validate)}
                                                                 />
                                                                 {errors[paymentForm.shipAddress.name] && (
-                                                                    <p className="error-msg">{errors[paymentForm.shipAddress.name].message}</p>
+                                                                    <p className="error-msg">
+                                                                        {errors[paymentForm.shipAddress.name].message}
+                                                                    </p>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -1047,10 +1156,15 @@ const Checkout = ({
                                                                                 }}
                                                                                 value={props.value}
                                                                             >
-                                                                                <option>{strings["Select a country"]}</option>
+                                                                                <option>
+                                                                                    {strings["Select a country"]}
+                                                                                </option>
                                                                                 {countryData.map((data, i) => {
                                                                                     return (
-                                                                                        <option key={i} value={data.code}>
+                                                                                        <option
+                                                                                            key={i}
+                                                                                            value={data.code}
+                                                                                        >
                                                                                             {data.name}
                                                                                         </option>
                                                                                     );
@@ -1061,7 +1175,9 @@ const Checkout = ({
                                                                 />
 
                                                                 {errors[paymentForm.shipCountry.name] && (
-                                                                    <p className="error-msg">{errors[paymentForm.shipCountry.name].message}</p>
+                                                                    <p className="error-msg">
+                                                                        {errors[paymentForm.shipCountry.name].message}
+                                                                    </p>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -1074,7 +1190,9 @@ const Checkout = ({
                                                                     ref={register(paymentForm.shipCity.validate)}
                                                                 />
                                                                 {errors[paymentForm.shipCity.name] && (
-                                                                    <p className="error-msg">{errors[paymentForm.shipCity.name].message}</p>
+                                                                    <p className="error-msg">
+                                                                        {errors[paymentForm.shipCity.name].message}
+                                                                    </p>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -1088,11 +1206,21 @@ const Checkout = ({
                                                                         rules={paymentForm.shipStateProvince.validate}
                                                                         render={(props) => {
                                                                             return (
-                                                                                <select onChange={(a) => console.log("-----" + a)} value={props.value}>
-                                                                                    <option>{strings["State / Province"]}</option>
+                                                                                <select
+                                                                                    onChange={(a) =>
+                                                                                        console.log("-----" + a)
+                                                                                    }
+                                                                                    value={props.value}
+                                                                                >
+                                                                                    <option>
+                                                                                        {strings["State / Province"]}
+                                                                                    </option>
                                                                                     {shipStateData.map((data, i) => {
                                                                                         return (
-                                                                                            <option key={i} value={data.code}>
+                                                                                            <option
+                                                                                                key={i}
+                                                                                                value={data.code}
+                                                                                            >
                                                                                                 {data.name}
                                                                                             </option>
                                                                                         );
@@ -1105,11 +1233,18 @@ const Checkout = ({
                                                                     <input
                                                                         type="text"
                                                                         name={paymentForm.shipStateProvince.name}
-                                                                        ref={register(paymentForm.shipStateProvince.validate)}
+                                                                        ref={register(
+                                                                            paymentForm.shipStateProvince.validate
+                                                                        )}
                                                                     />
                                                                 )}
                                                                 {errors[paymentForm.shipStateProvince.name] && (
-                                                                    <p className="error-msg">{errors[paymentForm.shipStateProvince.name].message}</p>
+                                                                    <p className="error-msg">
+                                                                        {
+                                                                            errors[paymentForm.shipStateProvince.name]
+                                                                                .message
+                                                                        }
+                                                                    </p>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -1130,7 +1265,12 @@ const Checkout = ({
                                                                     }}
                                                                 />
                                                                 {errors[paymentForm.shipPostalCode.name] && (
-                                                                    <p className="error-msg">{errors[paymentForm.shipPostalCode.name].message}</p>
+                                                                    <p className="error-msg">
+                                                                        {
+                                                                            errors[paymentForm.shipPostalCode.name]
+                                                                                .message
+                                                                        }
+                                                                    </p>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -1156,7 +1296,11 @@ const Checkout = ({
                                                 <div className="additional-info">
                                                     <label>{strings["Order notes"]}</label>
                                                     <textarea
-                                                        placeholder={strings["Notes about your order, e.g. special notes for delivery."]}
+                                                        placeholder={
+                                                            strings[
+                                                                "Notes about your order, e.g. special notes for delivery."
+                                                            ]
+                                                        }
                                                         name="message"
                                                         defaultValue={""}
                                                     />
@@ -1181,11 +1325,16 @@ const Checkout = ({
                                                             {cartItems.products.map((cartItem, key) => {
                                                                 return (
                                                                     <li key={key}>
-                                                                        <span className="order-middle-left" style={{ width: 220 }}>
+                                                                        <span
+                                                                            className="order-middle-left"
+                                                                            style={{ width: 220 }}
+                                                                        >
                                                                             {cartItem.description.name}
                                                                         </span>
                                                                         <span>X {cartItem.quantity}</span>
-                                                                        <span className="order-price">{cartItem.finalPrice}</span>
+                                                                        <span className="order-price">
+                                                                            {cartItem.finalPrice}
+                                                                        </span>
                                                                     </li>
                                                                 );
                                                             })}
@@ -1197,8 +1346,12 @@ const Checkout = ({
                                                                 return (
                                                                     quote.title !== "Total" && (
                                                                         <ul className="mb-20" key={i}>
-                                                                            <li className="order-total">{quote.title}</li>
-                                                                            <li>{quote.total}</li>
+                                                                            <li className="order-total">
+                                                                                {quote.title}
+                                                                            </li>
+                                                                            <li>
+                                                                                {merchant.currency} {quote.total}
+                                                                            </li>
                                                                         </ul>
                                                                     )
                                                                 );
@@ -1209,7 +1362,9 @@ const Checkout = ({
                                                             {
                                                                 <div className="shippingRow">
                                                                     <ul>
-                                                                        <li className="your-order-shipping">Shipping Fees</li>
+                                                                        <li className="your-order-shipping">
+                                                                            Shipping Fees
+                                                                        </li>
                                                                     </ul>
                                                                     <ul>
                                                                         {shippingOptions.map((value, i) => {
@@ -1218,24 +1373,42 @@ const Checkout = ({
                                                                                     <div className="login-toggle-btn">
                                                                                         <input
                                                                                             type="radio"
-                                                                                            value={value.shippingQuoteOptionId}
+                                                                                            value={
+                                                                                                value.shippingQuoteOptionId
+                                                                                            }
                                                                                             onChange={() => {
-                                                                                                setSelectedOptions(value.shippingQuoteOptionId);
-                                                                                                shippingQuoteChange(value.shippingQuoteOptionId);
+                                                                                                setSelectedOptions(
+                                                                                                    value.shippingQuoteOptionId
+                                                                                                );
+                                                                                                shippingQuoteChange(
+                                                                                                    value.shippingQuoteOptionId
+                                                                                                );
                                                                                             }}
-                                                                                            checked={selectedOptions === value.shippingQuoteOptionId}
+                                                                                            checked={
+                                                                                                selectedOptions ===
+                                                                                                value.shippingQuoteOptionId
+                                                                                            }
                                                                                         />
                                                                                         <label className="ml-10 mb-20">
-                                                                                            {value.optionName} - {value.optionPriceText}
+                                                                                            {value.optionName} -{" "}
+                                                                                            {value.optionPriceText}
                                                                                         </label>
                                                                                     </div>
                                                                                 </li>
                                                                             );
                                                                         })}
-                                                                        <li style={{ textAlign: "center", fontSize: 12, color: "grey" }}>
-                                                                            This option let you reserve you order items through the online system and pick up
-                                                                            your order by yourself at the store. this option is also offered when no other
-                                                                            shipping option is available for your region.
+                                                                        <li
+                                                                            style={{
+                                                                                textAlign: "center",
+                                                                                fontSize: 12,
+                                                                                color: "grey",
+                                                                            }}
+                                                                        >
+                                                                            This option let you reserve you order items
+                                                                            through the online system and pick up your
+                                                                            order by yourself at the store. this option
+                                                                            is also offered when no other shipping
+                                                                            option is available for your region.
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -1256,7 +1429,10 @@ const Checkout = ({
                                                             <li>
                                                                 {shippingQuote.length > 0 &&
                                                                     shippingQuote.map((quote, i) => {
-                                                                        return quote.title === "Total" && quote.total;
+                                                                        return (
+                                                                            quote.title === "Total" &&
+                                                                            merchant.currency + " " + quote.total
+                                                                        );
                                                                     })}
                                                                 {/* {cartItems.displayTotal} */}
                                                             </li>
@@ -1266,7 +1442,10 @@ const Checkout = ({
                                             </div>
                                             {process.env.REACT_APP_APP_PAYMENT_TYPE === "STRIPE" && (
                                                 <div className="payment-method mt-25">
-                                                    <Elements stripe={stripePromise} options={{ locale: currentLanguageCode }}>
+                                                    <Elements
+                                                        stripe={stripePromise}
+                                                        options={{ locale: currentLanguageCode }}
+                                                    >
                                                         <ElementsConsumer>
                                                             {({ stripe, elements }) => (
                                                                 <>
@@ -1278,9 +1457,18 @@ const Checkout = ({
                                                                         />
                                                                     </div>
                                                                     <div className="icon-container">
-                                                                        <i className="fa fa-cc-visa" style={{ color: "navy" }}></i>
-                                                                        <i className="fa fa-cc-amex" style={{ color: "blue" }}></i>
-                                                                        <i className="fa fa-cc-mastercard" style={{ color: "red" }}></i>
+                                                                        <i
+                                                                            className="fa fa-cc-visa"
+                                                                            style={{ color: "navy" }}
+                                                                        ></i>
+                                                                        <i
+                                                                            className="fa fa-cc-amex"
+                                                                            style={{ color: "blue" }}
+                                                                        ></i>
+                                                                        <i
+                                                                            className="fa fa-cc-mastercard"
+                                                                            style={{ color: "red" }}
+                                                                        ></i>
                                                                     </div>
 
                                                                     <div className="place-order mt-100">
@@ -1288,19 +1476,37 @@ const Checkout = ({
                                                                             <input
                                                                                 type="checkbox"
                                                                                 name={paymentForm.isAgree.name}
-                                                                                ref={register(paymentForm.isAgree.validate)}
+                                                                                ref={register(
+                                                                                    paymentForm.isAgree.validate
+                                                                                )}
                                                                                 onChange={onAgreement}
                                                                             />
-                                                                            <label className="ml-10 ">{strings["I agree with the terms and conditions"]}</label>
+                                                                            <label className="ml-10 ">
+                                                                                {
+                                                                                    strings[
+                                                                                        "I agree with the terms and conditions"
+                                                                                    ]
+                                                                                }
+                                                                            </label>
                                                                             {errors[paymentForm.isAgree.name] && (
-                                                                                <p className="error-msg">{errors[paymentForm.isAgree.name].message}</p>
+                                                                                <p className="error-msg">
+                                                                                    {
+                                                                                        errors[paymentForm.isAgree.name]
+                                                                                            .message
+                                                                                    }
+                                                                                </p>
                                                                             )}
                                                                         </div>
                                                                         <div>
                                                                             {watch("isAgree") && (
                                                                                 <div
                                                                                     className="agreement-info-wrap"
-                                                                                    dangerouslySetInnerHTML={{ __html: agreementData.replace(/>]]/g, "&gt;") }}
+                                                                                    dangerouslySetInnerHTML={{
+                                                                                        __html: agreementData.replace(
+                                                                                            />]]/g,
+                                                                                            "&gt;"
+                                                                                        ),
+                                                                                    }}
                                                                                 >
                                                                                     {/* <textarea
                                               readOnly={true}
@@ -1312,7 +1518,9 @@ const Checkout = ({
                                                                         </div>
                                                                         <button
                                                                             type="button"
-                                                                            onClick={handleSubmit((d) => onSubmitOrder(d, elements, stripe))}
+                                                                            onClick={handleSubmit((d) =>
+                                                                                onSubmitOrder(d, elements, stripe)
+                                                                            )}
                                                                             className="btn-hover"
                                                                         >
                                                                             {strings["Place your order"]}
@@ -1367,7 +1575,8 @@ const Checkout = ({
                                                 <i className="pe-7s-cash"></i>
                                             </div>
                                             <div className="item-empty-area__text">
-                                                {strings["No items found in checkout"]} <br /> <Link to={"/"}>{strings["Shop now"]}</Link>
+                                                {strings["No items found in checkout"]} <br />{" "}
+                                                <Link to={"/"}>{strings["Shop now"]}</Link>
                                             </div>
                                         </div>
                                     </div>
@@ -1416,7 +1625,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(getState(code));
         },
         deleteAllFromCart: (orderID) => {
-            //dispatch(deleteAllFromCart(orderID));
+            dispatch(deleteAllFromCart(orderID));
         },
     };
 };

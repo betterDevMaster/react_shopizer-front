@@ -7,7 +7,18 @@ import { setProductID } from "../../redux/actions/productActions";
 import { connect } from "react-redux";
 import StarRatings from "react-star-ratings";
 
-const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, spaceBottomClass, setProductID, defaultStore, userData, strings }) => {
+const ProductGridListSingle = ({
+    product,
+    addToCart,
+    cartItem,
+    sliderClassName,
+    spaceBottomClass,
+    setProductID,
+    defaultStore,
+    userData,
+    strings,
+    merchant,
+}) => {
     const [modalShow, setModalShow] = useState(false);
     const { addToast } = useToasts();
     const finalProductPrice = product.originalPrice;
@@ -21,7 +32,10 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
             <div className={`col-xl-4 col-sm-6 ${sliderClassName ? sliderClassName : ""}`}>
                 <div className={`product-wrap ${spaceBottomClass ? spaceBottomClass : ""}`}>
                     <div className="product-img">
-                        <Link to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+                        <Link
+                            to={process.env.PUBLIC_URL + "/product/" + product.description.friendlyUrl}
+                            onClick={() => onClickProductDetails(product.id)}
+                        >
                             <img className="default-img" src={defaultImage(product)} alt="defaultImg" />
                             {/* {product.images.length > 1 ? (
                                 <img className="hover-img-A" src={defaultImage(product)} alt="hover-img-A1" />
@@ -41,12 +55,23 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                                 </Link>
                             </div>
                             <div className="pro-same-action pro-cart">
-                                {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 ? (
+                                {!!+product.available &&
+                                !!+product.canBePurchased &&
+                                !!+product.visible &&
+                                product.quantity > 0 ? (
                                     <button
                                         onClick={() => {
                                             // if (!userData) history.push("/login");
                                             // else
-                                            addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
+                                            addToCart(
+                                                product,
+                                                addToast,
+                                                cartItem,
+                                                1,
+                                                defaultStore,
+                                                undefined,
+                                                userData
+                                            );
                                         }}
                                         title={strings["Add to cart"]}
                                     >
@@ -67,7 +92,10 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                     </div>
                     <div className="product-content text-center">
                         <h3>
-                            <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+                            <Link
+                                to={"/product/" + product.description.friendlyUrl}
+                                onClick={() => onClickProductDetails(product.id)}
+                            >
                                 {product.description.name}
                             </Link>
                         </h3>
@@ -84,10 +112,17 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                         <div className="product-price">
                             {!!+product.discounted ? (
                                 <Fragment>
-                                    <span>USD {finalDiscountedPrice}</span> <span className="old">USD {finalProductPrice}</span>
+                                    <span>
+                                        {merchant.currency} {finalDiscountedPrice}
+                                    </span>{" "}
+                                    <span className="old">
+                                        {merchant.currency} {finalProductPrice}
+                                    </span>
                                 </Fragment>
                             ) : (
-                                <span>USD {finalProductPrice} </span>
+                                <span>
+                                    {merchant.currency} {finalProductPrice}{" "}
+                                </span>
                             )}
                         </div>
                     </div>
@@ -97,8 +132,17 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                         <div className="col-xl-4 col-md-5 col-sm-6">
                             <div className="product-list-image-wrap">
                                 <div className="product-img">
-                                    <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
-                                        {product.image && <img className="default-img img-fluid" src={defaultImage(product)} alt="default-img img-fluid" />}
+                                    <Link
+                                        to={"/product/" + product.description.friendlyUrl}
+                                        onClick={() => onClickProductDetails(product.id)}
+                                    >
+                                        {product.image && (
+                                            <img
+                                                className="default-img img-fluid"
+                                                src={defaultImage(product)}
+                                                alt="default-img img-fluid"
+                                            />
+                                        )}
                                     </Link>
                                 </div>
                             </div>
@@ -106,14 +150,18 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                         <div className="col-xl-8 col-md-7 col-sm-6">
                             <div className="shop-list-content">
                                 <h3>
-                                    <Link to={"/product/" + product.description.friendlyUrl} onClick={() => onClickProductDetails(product.id)}>
+                                    <Link
+                                        to={"/product/" + product.description.friendlyUrl}
+                                        onClick={() => onClickProductDetails(product.id)}
+                                    >
                                         {product.description.name}
                                     </Link>
                                 </h3>
                                 <div className="product-list-price">
                                     {product.discounted ? (
                                         <Fragment>
-                                            <span>{finalDiscountedPrice}</span> <span className="old">{finalProductPrice}</span>
+                                            <span>{finalDiscountedPrice}</span>{" "}
+                                            <span className="old">{finalProductPrice}</span>
                                         </Fragment>
                                     ) : (
                                         <span>{finalProductPrice} </span>
@@ -134,12 +182,23 @@ const ProductGridListSingle = ({ product, addToCart, cartItem, sliderClassName, 
                                 <p dangerouslySetInnerHTML={{ __html: product.description.description }}></p>
                                 <div className="shop-list-actions d-flex align-items-center">
                                     <div className="shop-list-btn btn-hover">
-                                        {!!+product.available && !!+product.canBePurchased && !!+product.visible && product.quantity > 0 ? (
+                                        {!!+product.available &&
+                                        !!+product.canBePurchased &&
+                                        !!+product.visible &&
+                                        product.quantity > 0 ? (
                                             <button
                                                 onClick={() => {
                                                     // if (!userData) history.push("/login");
                                                     // else
-                                                    addToCart(product, addToast, cartItem, 1, defaultStore, undefined, userData);
+                                                    addToCart(
+                                                        product,
+                                                        addToast,
+                                                        cartItem,
+                                                        1,
+                                                        defaultStore,
+                                                        undefined,
+                                                        userData
+                                                    );
                                                 }}
                                                 title={strings["Add to cart"]}
                                             >
@@ -200,6 +259,7 @@ function defaultImage(product) {
 const mapStateToProps = (state) => {
     return {
         defaultStore: state.merchantData.defaultStore,
+        merchant: state.merchantData.merchant,
     };
 };
 const mapDispatchToProps = (dispatch) => {

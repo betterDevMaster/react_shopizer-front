@@ -39,14 +39,12 @@ const Header = ({
 
     useEffect(() => {
         checkServerHealth();
-
         const header = document.querySelector(".sticky-bar");
         setHeaderTop(header.offsetTop);
         window.addEventListener("scroll", handleScroll);
         return () => {
             window.removeEventListener("scroll", handleScroll);
         };
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const checkServerHealth = async () => {
@@ -131,17 +129,19 @@ const Header = ({
                             <IconGroup />
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col-xl-12 col-lg-12 d-none d-lg-block">
-                            {/* Nav menu */}
-                            <NavMenu categories={categoryData} />
-                            {/* <NavMenu categories={categoryData} contents={contentData} /> */}
+                    {/* <div className="row">
+                        <div className="col-xl-12 col-lg-12 d-none d-lg-block border-none-lr">
+                            <NavMenu categories={categoryData} contents={contentData} />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 {/* mobile menu */}
-                <MobileMenu categories={categoryData} />
+                {/* <MobileMenu categories={categoryData} /> */}
                 {/* <MobileMenu categories={categoryData} contents={contentData} /> */}
+            </div>
+            <div className={`${headerPaddingClass ? headerPaddingClass : ""} header-res-padding border-none-lr clearfix ${scroll > headerTop ? "stick" : ""}`}>
+                <NavMenu categories={categoryData} />
+                <MobileMenu categories={categoryData} />
             </div>
         </header>
     );

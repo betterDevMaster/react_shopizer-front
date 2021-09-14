@@ -101,7 +101,6 @@ const Cart = ({
     // const [shippingOptions, setShippingOptions] = useState();
     const [shippingOptions] = useState();
 
-    console.log('cartCount: ------' ,cartCount)
     useEffect(() => {
         getCartData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -163,8 +162,7 @@ const Cart = ({
     const applyPromoCode = async (data) => {
         setLoader(true);
         let action = constant.ACTION.CART + constant.ACTION.PROMO;
-        let param = {};
-        param = { promoCart: data.code, cart: cartID };
+        let param = { promoCart: data.code, cart: cartID, lang: getLocalData("currentLanguageCode"), store: defaultStore };
         try {
             let response = await WebService.post(action, param);
             if (response) {

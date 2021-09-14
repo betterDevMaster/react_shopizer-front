@@ -27,12 +27,13 @@ const BestSellerProduct = ({
     currentLanguageCode,
     userData,
     setProductID,
+    merchant,
 }) => {
     // const [featuredData, setFeaturedData] = useState([]);
     const [proudctsData, setProudctsData] = useState([]);
     const { addToast } = useToasts();
     const [preOrder, setPreorder] = useState(0);
-    let timer1 = null;
+    // let timer1 = null;
 
     useEffect(() => {
         getProductList();
@@ -41,7 +42,13 @@ const BestSellerProduct = ({
 
     const getProductList = async () => {
         setLoader(true);
-        let action = constant.ACTION.PRODUCT + constant.ACTION.BESTSELLERS + "?store=" + defaultStore + "&lang=" + currentLanguageCode;
+        let action =
+            constant.ACTION.PRODUCT +
+            constant.ACTION.BESTSELLERS +
+            "?store=" +
+            defaultStore +
+            "&lang=" +
+            currentLanguageCode;
         try {
             let response = await WebService.get(action);
             if (response) {
@@ -62,7 +69,11 @@ const BestSellerProduct = ({
     // };
 
     return (
-        <div className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${spaceBottomClass ? spaceBottomClass : ""} ${extraClass ? extraClass : ""}`}>
+        <div
+            className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${
+                spaceBottomClass ? spaceBottomClass : ""
+            } ${extraClass ? extraClass : ""}`}
+        >
             <div className={`${containerClass ? containerClass : "container"}`}>
                 <SectionTitle titleText="Bestsellers" />
                 <Carousel
@@ -123,9 +134,17 @@ const BestSellerProduct = ({
                                     >
                                         {product.images && product.images.length > 0}
                                         {!product.images[0].imageUrl ? (
-                                            <img src={process.env.REACT_APP_APP_HTTP_URL + product.images[0].imageUrl} alt="" style={{ width: "100%" }} />
+                                            <img
+                                                src={process.env.REACT_APP_APP_HTTP_URL + product.images[0].imageUrl}
+                                                alt=""
+                                                style={{ width: "100%" }}
+                                            />
                                         ) : (
-                                            <img src={process.env.REACT_APP_APP_HTTP_URL + product.images[0].imageUrl} alt="" style={{ width: "100%" }} />
+                                            <img
+                                                src={process.env.REACT_APP_APP_HTTP_URL + product.images[0].imageUrl}
+                                                alt=""
+                                                style={{ width: "100%" }}
+                                            />
                                         )}
                                     </Link>
                                 </div>
@@ -138,17 +157,30 @@ const BestSellerProduct = ({
                                     </Link>
                                     <span title="6uds | 0,42&nbsp;€/ud.">6uds | 0,42&nbsp;€/ud.</span>
                                     {!!+product.discounted ? (
-                                        <p style={{ textDecoration: "line-through" }}>USD {product.originalPrice}</p>
+                                        <p style={{ textDecoration: "line-through" }}>
+                                            {merchant.currency} {product.originalPrice}
+                                        </p>
                                     ) : (
-                                        <p>USD {product.originalPrice}</p>
+                                        <p>
+                                            {merchant.currency} {product.originalPrice}
+                                        </p>
                                     )}
                                     <div className="shop-container">
                                         <div className="shop-container-block">
                                             {!!+product.discounted && (
-                                                <a role="button" className="MuiChip-root MuiChip-clickable" href="/en/filter/eco">
+                                                <a
+                                                    role="button"
+                                                    className="MuiChip-root MuiChip-clickable"
+                                                    href="/en/filter/eco"
+                                                >
                                                     <span className="MuiChip-label">
-                                                        USD {product.finalPrice} -{" "}
-                                                        {Math.ceil(((product.originalPrice - product.finalPrice) / product.originalPrice) * 100)} %
+                                                        {merchant.currency} {product.finalPrice} -
+                                                        {Math.ceil(
+                                                            ((product.originalPrice - product.finalPrice) /
+                                                                product.originalPrice) *
+                                                                100
+                                                        )}{" "}
+                                                        %
                                                     </span>
                                                 </a>
                                             )}
@@ -160,22 +192,29 @@ const BestSellerProduct = ({
                                         <button
                                             className="shop-order-button"
                                             onClick={() => {
-                                                clearTimeout(timer1);
+                                                // clearTimeout(timer1);
 
                                                 // if (!userData) history.push("/login");
                                                 setPreorder(product.id);
-                                                timer1 = setTimeout(() => setPreorder(0), 10000);
+                                                // timer1 = setTimeout(() => setPreorder(0), 5000);
                                             }}
                                         >
-                                            <i className="fa fa-shopping-cart" style={{ fontSize: "27px", color: "#fff" }}></i>
+                                            <i
+                                                className="fa fa-shopping-cart"
+                                                style={{ fontSize: "27px", color: "#fff" }}
+                                            ></i>
                                         </button>
                                     ) : (
                                         <div className="shop-order-calc-area">
                                             <button
                                                 type="button"
                                                 onClick={() => {
-                                                    clearTimeout(timer1);
-                                                    let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === product.id) : -1;
+                                                    // clearTimeout(timer1);
+                                                    let index = isValidObject(cartData)
+                                                        ? cartData.products.findIndex(
+                                                              (order) => order.id === product.id
+                                                          )
+                                                        : -1;
                                                     if (index !== -1) {
                                                         addToCart(
                                                             product,
@@ -188,7 +227,7 @@ const BestSellerProduct = ({
                                                         );
                                                         if (cartData.products[index].quantity < 1) setPreorder(0);
                                                     } else setPreorder(0);
-                                                    timer1 = setTimeout(() => setPreorder(0), 10000);
+                                                    // timer1 = setTimeout(() => setPreorder(0), 5000);
                                                 }}
                                             >
                                                 <svg viewBox="0 0 24 24" aria-hidden="true" role="presentation">
@@ -196,15 +235,24 @@ const BestSellerProduct = ({
                                                 </svg>
                                             </button>
                                             <span>
-                                                {isValidObject(cartData) && cartData.products.findIndex((order) => order.id === product.id) !== -1
-                                                    ? cartData.products[cartData.products.findIndex((order) => order.id === product.id)].quantity
+                                                {isValidObject(cartData) &&
+                                                cartData.products.findIndex((order) => order.id === product.id) !== -1
+                                                    ? cartData.products[
+                                                          cartData.products.findIndex(
+                                                              (order) => order.id === product.id
+                                                          )
+                                                      ].quantity
                                                     : 0}
                                             </span>
                                             <button
                                                 type="button"
                                                 onClick={() => {
-                                                    clearTimeout(timer1);
-                                                    let index = isValidObject(cartData) ? cartData.products.findIndex((order) => order.id === product.id) : -1;
+                                                    // clearTimeout(timer1);
+                                                    let index = isValidObject(cartData)
+                                                        ? cartData.products.findIndex(
+                                                              (order) => order.id === product.id
+                                                          )
+                                                        : -1;
                                                     addToCart(
                                                         product,
                                                         addToast,
@@ -214,7 +262,7 @@ const BestSellerProduct = ({
                                                         undefined,
                                                         userData
                                                     );
-                                                    timer1 = setTimeout(() => setPreorder(0), 10000);
+                                                    // timer1 = setTimeout(() => setPreorder(0), 5000);
                                                 }}
                                             >
                                                 <svg viewBox="0 0 24 24" aria-hidden="true" role="presentation">
@@ -257,6 +305,7 @@ const mapStateToProps = (state) => {
         defaultStore: state.merchantData.defaultStore,
         userData: state.userData.userData,
         cartData: state.cartData.cartItems,
+        merchant: state.merchantData.merchant,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -268,7 +317,9 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(setProductID(value));
         },
         addToCart: (item, addToast, cartData, quantityCount, defaultStore, selectedProductColor, userData) => {
-            dispatch(addToCart(item, addToast, cartData.code, quantityCount, defaultStore, selectedProductColor, userData));
+            dispatch(
+                addToCart(item, addToast, cartData.code, quantityCount, defaultStore, selectedProductColor, userData)
+            );
         },
     };
 };
