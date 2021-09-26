@@ -12,11 +12,22 @@ import IdleTimer from "react-idle-timer";
 import constant from "../../util/constant";
 import WebService from "../../util/webService";
 
-const IconGroup = ({ cartData, cartCount, deleteFromCart, iconWhiteClass, userData, setUser, deleteAllFromCart, strings, getCart }) => {
+const IconGroup = ({
+    cartData,
+    cartCount,
+    deleteFromCart,
+    iconWhiteClass,
+    userData,
+    setUser,
+    deleteAllFromCart,
+    strings,
+    getCart,
+    profileData,
+}) => {
     const pathname = useRouteMatch();
     const history = useHistory();
     const timeout = 1000 * 60 * 30;
-    const [useDetails, setUseDetails] = useState({});
+    // const [useDetails, setUseDetails] = useState({});
     const [iconHover, setIconHover] = useState("");
 
     useEffect(() => {
@@ -27,25 +38,28 @@ const IconGroup = ({ cartData, cartCount, deleteFromCart, iconWhiteClass, userDa
             setLocalData("thekey", process.env.REACT_APP_APP_BASE_URL);
         }
         if (getLocalData("GET_SHOPIZER_CART_ID")) getCart(getLocalData("GET_SHOPIZER_CART_ID"));
-        if (getLocalData("uid") && getLocalData("token")) setUser({ id: getLocalData("uid"), token: getLocalData("token") });
-        getProfile();
+        if (getLocalData("uid") && getLocalData("token"))
+            setUser({ id: getLocalData("uid"), token: getLocalData("token") });
+        // getProfile();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getProfile = async () => {
-        let uid = getLocalData("uid") ? getLocalData("uid") : userData ? userData.id : null;
-        let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + uid;
-        try {
-            let response = await WebService.get(action);
-            if (response) {
-                setUseDetails(response);
-            }
-        } catch (error) {
-            setUser("");
-            setLocalData("token", "");
-            history.push("/");
-        }
-    };
+    // const getProfile = async () => {
+    //     // let uid = getLocalData("uid") ? getLocalData("uid") : userData ? userData.id : null;
+    //     if (userData) {
+    //         let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + userData.id;
+    //         try {
+    //             let response = await WebService.get(action);
+    //             if (response) {
+    //                 setUseDetails(response);
+    //             }
+    //         } catch (error) {
+    //             setUser("");
+    //             setLocalData("token", "");
+    //             history.push("/");
+    //         }
+    //     }
+    // };
 
     const handleClick = (e) => {
         e.currentTarget.nextSibling.classList.toggle("active");
@@ -76,7 +90,14 @@ const IconGroup = ({ cartData, cartCount, deleteFromCart, iconWhiteClass, userDa
 
     return (
         <div className={`header-right-wrap ${iconWhiteClass ? iconWhiteClass : ""}`}>
-            <IdleTimer element={document} onActive={onActive} onIdle={onIdle} onAction={onAction} debounce={250} timeout={timeout} />
+            <IdleTimer
+                element={document}
+                onActive={onActive}
+                onIdle={onIdle}
+                onAction={onAction}
+                debounce={250}
+                timeout={timeout}
+            />
             <div className="same-style account-setting d-none d-lg-block">
                 {/* {pathname.url !== "/checkout" && ( */}
                 <button
@@ -105,9 +126,9 @@ const IconGroup = ({ cartData, cartCount, deleteFromCart, iconWhiteClass, userDa
                                 <>
                                     <div className="user-profile">
                                         <div className="user-name">
-                                            Welcome {useDetails.firstName} {useDetails.lastName}
+                                            Welcome {profileData.firstName} {profileData.lastName}
                                         </div>
-                                        <span className="user-email">{useDetails.emailAddress}</span>
+                                        <span className="user-email">{profileData.emailAddress}</span>
                                     </div>
                                     <li className="border-line"></li>
                                     <div style={{ marginTop: 12 }}>
@@ -136,7 +157,13 @@ const IconGroup = ({ cartData, cartCount, deleteFromCart, iconWhiteClass, userDa
                     <span className="count-style">{cartCount}</span>
                 </button>
                 {/* menu cart */}
-                {iconHover === "cart" && <MenuCart cartData={cartData} deleteFromCart={deleteFromCart} onMouseLeave={() => setIconHover("")} />}
+                {iconHover === "cart" && (
+                    <MenuCart
+                        cartData={cartData}
+                        deleteFromCart={deleteFromCart}
+                        onMouseLeave={() => setIconHover("")}
+                    />
+                )}
             </div>
             {/* )} */}
             <div className="same-style cart-wrap d-block d-lg-none">

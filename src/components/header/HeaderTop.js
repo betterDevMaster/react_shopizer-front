@@ -7,7 +7,7 @@ import constant from "../../util/constant";
 // import { setCurrency } from "../../redux/actions/currencyActions";
 import LanguageCurrencyChanger from "./sub-components/LanguageCurrencyChanger";
 
-const HeaderTop = ({ strings, currentLanguageCode, dispatch, borderStyle }) => {
+const HeaderTop = ({ strings, currentLanguageCode, dispatch, borderStyle, profileData, merchant }) => {
     const [message, setMessage] = useState("");
     useEffect(() => {
         getContentMessage();
@@ -26,9 +26,14 @@ const HeaderTop = ({ strings, currentLanguageCode, dispatch, borderStyle }) => {
 
     return (
         <div className={`header-top-wap ${borderStyle === "fluid-border" ? "border-bottom" : ""}`}>
-            <LanguageCurrencyChanger currentLanguageCode={currentLanguageCode} dispatch={dispatch} />
+            <LanguageCurrencyChanger currentLanguageCode={currentLanguageCode} merchant={merchant} dispatch={dispatch} />
             <div className="header-offer">
-                <p dangerouslySetInnerHTML={{ __html: message.replace("]]>", "") }}></p>
+                {!profileData ? (
+                    <p dangerouslySetInnerHTML={{ __html: message.replace("]]>", "") }}></p>
+                ) : (
+                    <p>sdfsdf</p>
+                    // <p>{profileData.delivery.address}</p>
+                )}
             </div>
         </div>
     );
@@ -41,18 +46,14 @@ HeaderTop.propTypes = {
     strings: PropTypes.object,
 };
 
-// const mapStateToProps = state => {
-//   return {
-//     // currency: state.currencyData
-//   };
-// };
+const mapStateToProps = (state) => {
+    return {
+        userData: state.userData.userData,
+    };
+};
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     // setCurrency: currencyName => {
-//     //   dispatch(setCurrency(currencyName));
-//     // }
-//   };
-// };
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
 
-export default connect()(multilanguage(HeaderTop));
+export default connect(mapStateToProps, mapDispatchToProps)(multilanguage(HeaderTop));

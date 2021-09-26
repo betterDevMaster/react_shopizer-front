@@ -29,6 +29,7 @@ const Header = ({
     strings,
     fetchCategories,
     categoryData,
+    userData,
 }) => {
     const history = useHistory();
     const [scroll, setScroll] = useState(0);
@@ -36,6 +37,7 @@ const Header = ({
     // const [categoryData, setCategoryData] = useState([]);
     // const [contentData, setContentData] = useState([]);
     const [searchKey, setSearchKey] = useState("");
+    const [useDetails, setUseDetails] = useState({});
 
     useEffect(() => {
         checkServerHealth();
@@ -56,6 +58,7 @@ const Header = ({
                     setMerchant();
                     getCurrentLocation();
                     getCategoryHierarchy();
+                    getProfile();
                     // getContent();
                 } else {
                     history.push("/not-found");
@@ -69,7 +72,22 @@ const Header = ({
     const getCategoryHierarchy = () => {
         fetchCategories(defaultStore, currentLanguageCode);
     };
-
+    const getProfile = async () => {
+        // let uid = getLocalData("uid") ? getLocalData("uid") : userData ? userData.id : null;
+        if (userData) {
+            let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + userData.id;
+            try {
+                let response = await WebService.get(action);
+                if (response) {
+                    setUseDetails(response);
+                }
+            } catch (error) {
+                // setUser("");
+                // setLocalData("token", "");
+                history.push("/");
+            }
+        }
+    };
     // const getContent = async () => {
     //     //TODO PAGE + COUNT
     //     let action = constant.ACTION.CONTENT + constant.ACTION.PAGES + "?page=0&count=20&store=" + defaultStore + "&lang=" + currentLanguageCode;
@@ -85,24 +103,37 @@ const Header = ({
     };
 
     return (
-        <header className={`header-area clearfix ${headerBgClass ? headerBgClass : ""} ${headerPositionClass ? headerPositionClass : ""}`}>
+        <header
+            className={`header-area clearfix ${headerBgClass ? headerBgClass : ""} ${
+                headerPositionClass ? headerPositionClass : ""
+            }`}
+        >
             <div
-                className={`${headerPaddingClass ? headerPaddingClass : ""} ${top === "visible" ? "d-none d-lg-block" : "d-none"} header-top-area ${
-                    borderStyle === "fluid-border" ? "border-none" : ""
-                }`}
+                className={`${headerPaddingClass ? headerPaddingClass : ""} ${
+                    top === "visible" ? "d-none d-lg-block" : "d-none"
+                } header-top-area ${borderStyle === "fluid-border" ? "border-none" : ""}`}
             >
                 <div className={layout === "container-fluid" ? layout : "container"}>
                     {/* header top */}
-                    <HeaderTop borderStyle={borderStyle} />
+                    <HeaderTop borderStyle={borderStyle} profileData={useDetails} />
                 </div>
             </div>
 
-            <div className={`${headerPaddingClass ? headerPaddingClass : ""} sticky-bar header-res-padding clearfix ${scroll > headerTop ? "stick" : ""}`}>
+            <div
+                className={`${headerPaddingClass ? headerPaddingClass : ""} sticky-bar header-res-padding clearfix ${
+                    scroll > headerTop ? "stick" : ""
+                }`}
+            >
                 <div className={layout === "container-fluid" ? layout : "container"}>
                     <div className="row align-item-center">
                         <div className="col-xl-4 col-lg-4 col-md-4 col-4">
                             {/* header logo */}
-                            {merchant.logo != null && <Logo imageUrl={process.env.REACT_APP_APP_HTTP_URL + merchant.logo.path} logoclassName="logo" />}
+                            {merchant.logo != null && (
+                                <Logo
+                                    imageUrl={process.env.REACT_APP_APP_HTTP_URL + merchant.logo.path}
+                                    logoclassName="logo"
+                                />
+                            )}
                         </div>
                         <div className="col-xl-4 col-lg-4 col-md-4 col-4">
                             {/* Search */}
@@ -126,7 +157,7 @@ const Header = ({
                         </div>
                         <div className="col-xl-4 col-lg-4 col-md-4 col-4">
                             {/* Icon group */}
-                            <IconGroup />
+                            <IconGroup profileData={useDetails} />
                         </div>
                     </div>
                     {/* <div className="row">
@@ -139,7 +170,11 @@ const Header = ({
                 {/* <MobileMenu categories={categoryData} /> */}
                 {/* <MobileMenu categories={categoryData} contents={contentData} /> */}
             </div>
-            <div className={`${headerPaddingClass ? headerPaddingClass : ""} header-res-padding border-none-lr clearfix ${scroll > headerTop ? "stick" : ""}`}>
+            <div
+                className={`${
+                    headerPaddingClass ? headerPaddingClass : ""
+                } header-res-padding border-none-lr clearfix ${scroll > headerTop ? "stick" : ""}`}
+            >
                 <NavMenu categories={categoryData} />
                 <MobileMenu categories={categoryData} />
             </div>
@@ -163,6 +198,7 @@ const mapStateToProps = (state) => {
         currentLanguageCode: state.multilanguage.currentLanguageCode,
         defaultStore: state.merchantData.defaultStore,
         categoryData: state.categoryData.categories,
+        userData: state.userData.userData,
     };
 };
 

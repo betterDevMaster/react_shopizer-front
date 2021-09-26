@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
+import UAParser from "ua-parser-js";
 import { setProductID } from "../../redux/actions/productActions";
 import { useToasts } from "react-toast-notifications";
 import { isValidObject } from "../../util/helper";
@@ -64,15 +65,24 @@ const BestSellerProduct = ({
         setProductID(id);
     };
 
-    // const convertBase64Image = (image) => {
-    //     return "data:image/png;base64," + image;
-    // };
+    const getDeviceType = (req) => {
+        let userAgent;
+        if (req) {
+            userAgent = req.headers["user-agent"];
+        } else {
+            userAgent = navigator.userAgent;
+        }
+        const parser = new UAParser();
+        parser.setUA(userAgent);
+        const result = parser.getResult();
+        const deviceType = (result.device && result.device.type) || "desktop";
+        return deviceType;
+    };
 
     return (
         <div
-            className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${
-                spaceBottomClass ? spaceBottomClass : ""
-            } ${extraClass ? extraClass : ""}`}
+            className={`product-area ${spaceTopClass ? spaceTopClass : ""} ${spaceBottomClass ? spaceBottomClass : ""
+                } ${extraClass ? extraClass : ""}`}
         >
             <div className={`${containerClass ? containerClass : "container"}`}>
                 <SectionTitle titleText="Bestsellers" />
@@ -81,7 +91,7 @@ const BestSellerProduct = ({
                     arrows
                     autoPlaySpeed={3000}
                     centerMode={false}
-                    className="best-seller-carousel mt-4"
+                    className="best-seller-io mt-4"
                     containerclassName="container"
                     dotListclassName=""
                     draggable={false}
@@ -106,7 +116,7 @@ const BestSellerProduct = ({
                                 max: 464,
                                 min: 0,
                             },
-                            items: 1,
+                            items: 2,
                             partialVisibilityGutter: 30,
                         },
                         tablet: {
@@ -120,7 +130,7 @@ const BestSellerProduct = ({
                     }}
                     showDots={false}
                     sliderclassName=""
-                    slidesToSlide={5}
+                    slidesToSlide={getDeviceType() === 'desktop' ? 5 : 2}
                     swipeable
                 >
                     {proudctsData &&
@@ -178,7 +188,7 @@ const BestSellerProduct = ({
                                                         {Math.ceil(
                                                             ((product.originalPrice - product.finalPrice) /
                                                                 product.originalPrice) *
-                                                                100
+                                                            100
                                                         )}{" "}
                                                         %
                                                     </span>
@@ -212,8 +222,8 @@ const BestSellerProduct = ({
                                                     // clearTimeout(timer1);
                                                     let index = isValidObject(cartData)
                                                         ? cartData.products.findIndex(
-                                                              (order) => order.id === product.id
-                                                          )
+                                                            (order) => order.id === product.id
+                                                        )
                                                         : -1;
                                                     if (index !== -1) {
                                                         addToCart(
@@ -236,12 +246,12 @@ const BestSellerProduct = ({
                                             </button>
                                             <span>
                                                 {isValidObject(cartData) &&
-                                                cartData.products.findIndex((order) => order.id === product.id) !== -1
+                                                    cartData.products.findIndex((order) => order.id === product.id) !== -1
                                                     ? cartData.products[
-                                                          cartData.products.findIndex(
-                                                              (order) => order.id === product.id
-                                                          )
-                                                      ].quantity
+                                                        cartData.products.findIndex(
+                                                            (order) => order.id === product.id
+                                                        )
+                                                    ].quantity
                                                     : 0}
                                             </span>
                                             <button
@@ -250,8 +260,8 @@ const BestSellerProduct = ({
                                                     // clearTimeout(timer1);
                                                     let index = isValidObject(cartData)
                                                         ? cartData.products.findIndex(
-                                                              (order) => order.id === product.id
-                                                          )
+                                                            (order) => order.id === product.id
+                                                        )
                                                         : -1;
                                                     addToCart(
                                                         product,
