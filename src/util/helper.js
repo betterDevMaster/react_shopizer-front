@@ -1,3 +1,5 @@
+import UAParser from "ua-parser-js";
+
 export function setLocalData(key, value) {
     try {
         localStorage.setItem(key, value);
@@ -68,13 +70,23 @@ export const isLocalStorageNameSupported = () => {
     }
 };
 
-// export function getFormDataObj(obj) {
-//   let formData = new FormData()
-//   for (let i in obj) {
-//     if (obj.hasOwnProperty(i)) {
-//       let element = obj[i];
-//       formData.append(i, element)
-//     }
-//   }
-//   return formData
-// }
+export function getFormDataObj(obj) {
+    let formData = new FormData()
+    for (let i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            let element = obj[i];
+            formData.append(i, element)
+        }
+    }
+    return formData
+}
+
+export function getDeviceType() {
+    let userAgent;
+    userAgent = navigator.userAgent;
+    const parser = new UAParser();
+    parser.setUA(userAgent);
+    const result = parser.getResult();
+    const deviceType = (result.device && result.device.type) || "desktop";
+    return deviceType;
+}

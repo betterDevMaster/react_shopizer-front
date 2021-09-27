@@ -96,7 +96,7 @@ const NavMenu = ({ props, strings, menuWhiteClass, sidebarMenu, categories, setC
                                                                 <ul>
                                                                     {submenu.children.map((subsubmenu, index) => {
                                                                         return (
-                                                                            <li>
+                                                                            <li key={index}>
                                                                                 <Link
                                                                                     to={"/category/" + subsubmenu.description.friendlyUrl}
                                                                                     onClick={() => onClickCategory(subsubmenu)}

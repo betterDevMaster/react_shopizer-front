@@ -10,6 +10,7 @@ import MobileMenu from "../../components/header/MobileMenu";
 import HeaderTop from "../../components/header/HeaderTop";
 import WebService from "../../util/webService";
 import constant from "../../util/constant";
+import { getDeviceType } from "../../util/helper";
 import { setMerchant } from "../../redux/actions/storeAction";
 import { getCurrentLocation } from "../../redux/actions/userAction";
 import { fetchCategories } from "../../redux/actions/categoryActions";
@@ -102,16 +103,36 @@ const Header = ({
         setScroll(window.scrollY);
     };
 
+    const SearchArea = ({ deviceType }) => {
+        return (
+            <div className="search-area" >
+                <svg className="jss3665" fill="#9E9E9E" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M4.39168921 4.39168921c2.97774772-2.97774773 7.80563069-2.97774773 10.78337839 0 2.8287763 2.82877624 2.970295 7.32720029.4245561 10.32303559l4.8787448 4.8797602c.2440777.2440777.2440777.6398058 0 .8838835-.2218888.2218888-.5691086.2420605-.8137848.0605151l-.0700987-.0605151-4.8789968-4.8793935c-2.9958345 2.5464116-7.49478248 2.4051091-10.32379899-.4239074-2.97774773-2.9777477-2.97774773-7.80563067 0-10.78337839zm.88388347.88388347c-2.48959236 2.48959236-2.48959236 6.52601912 0 9.01561142 2.48959236 2.4895924 6.52601912 2.4895924 9.01561142 0 2.4895924-2.4895923 2.4895924-6.52601906 0-9.01561142-2.4895923-2.48959236-6.52601906-2.48959236-9.01561142 0z"></path>
+                </svg>
+                <div className="searh-input">
+                    <input
+                        autoComplete="off"
+                        name="searchQuery"
+                        placeholder={strings["Search here..."]}
+                        type="text"
+                        onChange={(e) => setSearchKey(e.target.value)}
+                    />
+                </div>
+                <Link className="search-button" to={process.env.PUBLIC_URL + "/search/" + searchKey}>
+                    <span>{strings["Search"]}</span>
+                </Link>
+            </div >
+        )
+    }
+
     return (
         <header
-            className={`header-area clearfix ${headerBgClass ? headerBgClass : ""} ${
-                headerPositionClass ? headerPositionClass : ""
-            }`}
+            className={`header-area clearfix ${headerBgClass ? headerBgClass : ""} ${headerPositionClass ? headerPositionClass : ""
+                }`}
         >
             <div
-                className={`${headerPaddingClass ? headerPaddingClass : ""} ${
-                    top === "visible" ? "d-none d-lg-block" : "d-none"
-                } header-top-area ${borderStyle === "fluid-border" ? "border-none" : ""}`}
+                className={`${headerPaddingClass ? headerPaddingClass : ""} ${top === "visible" ? "d-none d-lg-block" : "d-none"
+                    } header-top-area ${borderStyle === "fluid-border" ? "border-none" : ""}`}
             >
                 <div className={layout === "container-fluid" ? layout : "container"}>
                     {/* header top */}
@@ -120,9 +141,8 @@ const Header = ({
             </div>
 
             <div
-                className={`${headerPaddingClass ? headerPaddingClass : ""} sticky-bar header-res-padding clearfix ${
-                    scroll > headerTop ? "stick" : ""
-                }`}
+                className={`${headerPaddingClass ? headerPaddingClass : ""} sticky-bar header-res-padding clearfix ${scroll > headerTop ? "stick" : ""
+                    }`}
             >
                 <div className={layout === "container-fluid" ? layout : "container"}>
                     <div className="row align-item-center">
@@ -136,30 +156,22 @@ const Header = ({
                             )}
                         </div>
                         <div className="col-xl-4 col-lg-4 col-md-4 col-4">
-                            {/* Search */}
-                            <div className="search-area">
-                                <svg className="jss3665" fill="#9E9E9E" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M4.39168921 4.39168921c2.97774772-2.97774773 7.80563069-2.97774773 10.78337839 0 2.8287763 2.82877624 2.970295 7.32720029.4245561 10.32303559l4.8787448 4.8797602c.2440777.2440777.2440777.6398058 0 .8838835-.2218888.2218888-.5691086.2420605-.8137848.0605151l-.0700987-.0605151-4.8789968-4.8793935c-2.9958345 2.5464116-7.49478248 2.4051091-10.32379899-.4239074-2.97774773-2.9777477-2.97774773-7.80563067 0-10.78337839zm.88388347.88388347c-2.48959236 2.48959236-2.48959236 6.52601912 0 9.01561142 2.48959236 2.4895924 6.52601912 2.4895924 9.01561142 0 2.4895924-2.4895923 2.4895924-6.52601906 0-9.01561142-2.4895923-2.48959236-6.52601906-2.48959236-9.01561142 0z"></path>
-                                </svg>
-                                <div className="searh-input">
-                                    <input
-                                        autoComplete="off"
-                                        name="searchQuery"
-                                        placeholder={strings["Search here..."]}
-                                        type="text"
-                                        onChange={(e) => setSearchKey(e.target.value)}
-                                    />
-                                </div>
-                                <Link className="search-button" to={process.env.PUBLIC_URL + "/search/" + searchKey}>
-                                    <span>{strings["Search"]}</span>
-                                </Link>
-                            </div>
+                            {getDeviceType() === 'desktop' &&
+                                <SearchArea deviceType="desktop" />
+                            }
                         </div>
                         <div className="col-xl-4 col-lg-4 col-md-4 col-4">
                             {/* Icon group */}
                             <IconGroup profileData={useDetails} />
                         </div>
                     </div>
+                    {getDeviceType() === 'mobile' &&
+                        <div className="row align-item-center">
+                            <div className="col-xl-8 col-lg-8 col-md-8 col-8 mobile-search-area">
+                                <SearchArea deviceType="mobile" />
+                            </div>
+                        </div>
+                    }
                     {/* <div className="row">
                         <div className="col-xl-12 col-lg-12 d-none d-lg-block border-none-lr">
                             <NavMenu categories={categoryData} contents={contentData} />
@@ -171,11 +183,12 @@ const Header = ({
                 {/* <MobileMenu categories={categoryData} contents={contentData} /> */}
             </div>
             <div
-                className={`${
-                    headerPaddingClass ? headerPaddingClass : ""
-                } header-res-padding border-none-lr clearfix ${scroll > headerTop ? "stick" : ""}`}
+                className={`${headerPaddingClass ? headerPaddingClass : ""
+                    } border-none-lr clearfix ${scroll > headerTop ? "stick" : ""}`}
             >
-                <NavMenu categories={categoryData} />
+                {getDeviceType() === 'desktop' &&
+                    <NavMenu categories={categoryData} />
+                }
                 <MobileMenu categories={categoryData} />
             </div>
         </header>

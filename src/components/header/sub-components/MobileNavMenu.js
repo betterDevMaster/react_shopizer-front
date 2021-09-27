@@ -7,7 +7,7 @@ import { setCategoryID, setPageNumber } from "../../../redux/actions/productActi
 import { setContent } from "../../../redux/actions/contentAction";
 
 const MobileNavMenu = ({ strings, categories, setCategoryID, setPageNumber, setContent }) => {
-// const MobileNavMenu = ({ strings, categories, contents, setCategoryID, setContent }) => {
+    // const MobileNavMenu = ({ strings, categories, contents, setCategoryID, setContent }) => {
     const onClickCategory = (item) => {
         setCategoryID(item.id);
         setPageNumber(0)
@@ -43,6 +43,23 @@ const MobileNavMenu = ({ strings, categories, setCategoryID, setPageNumber, setC
                                                     <Link to={"/category/" + submenu.description.friendlyUrl} onClick={() => onClickCategory(submenu)}>
                                                         {strings[submenu.description.name] ? strings[submenu.description.name] : submenu.description.name}
                                                     </Link>
+                                                    {submenu.children.length > 0 &&
+                                                        <ul className="sub-menu">
+
+                                                            {submenu.children.map((subsubmenu, index) => {
+                                                                return (
+                                                                    <li className="menu-item-has-children-children" key={index}>
+                                                                        <Link
+                                                                            to={"/category/" + subsubmenu.description.friendlyUrl}
+                                                                            onClick={() => onClickCategory(subsubmenu)}
+                                                                        >
+                                                                            {subsubmenu.description.name}
+                                                                        </Link>
+                                                                    </li>
+                                                                );
+                                                            })}
+                                                        </ul>
+                                                    }
                                                 </li>
                                             );
                                         })}

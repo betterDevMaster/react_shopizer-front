@@ -16,7 +16,7 @@ const DeliveryDiscount = ({ spaceTopClass, spaceBottomClass, containerClass, gut
             style={bgImg ? { backgroundImage: `url(${process.env.PUBLIC_URL + bgImg})` } : {}}
         >
             <div className={`${containerClass ? containerClass : "container"}`}>
-                <div className="row mt-4 delivery-area" style={{ backgroundImage: `url(${pattern})`, backgroundPosition: 'center center'}}>
+                <div className="row delivery-area" style={{ backgroundImage: `url(${pattern})`, backgroundPosition: 'center center'}}>
                     <div className="col-md-12 description">
                         <h3>{strings['Get 3 months of free shipping by registering right now']}</h3>
                     </div>

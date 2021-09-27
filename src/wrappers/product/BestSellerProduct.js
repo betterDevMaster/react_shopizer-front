@@ -9,10 +9,9 @@ import { connect } from "react-redux";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from "react-router-dom";
-import UAParser from "ua-parser-js";
 import { setProductID } from "../../redux/actions/productActions";
 import { useToasts } from "react-toast-notifications";
-import { isValidObject } from "../../util/helper";
+import { isValidObject, getDeviceType } from "../../util/helper";
 import { addToCart } from "../../redux/actions/cartActions";
 
 const BestSellerProduct = ({
@@ -63,20 +62,6 @@ const BestSellerProduct = ({
 
     const onClickProductDetails = (id) => {
         setProductID(id);
-    };
-
-    const getDeviceType = (req) => {
-        let userAgent;
-        if (req) {
-            userAgent = req.headers["user-agent"];
-        } else {
-            userAgent = navigator.userAgent;
-        }
-        const parser = new UAParser();
-        parser.setUA(userAgent);
-        const result = parser.getResult();
-        const deviceType = (result.device && result.device.type) || "desktop";
-        return deviceType;
     };
 
     return (

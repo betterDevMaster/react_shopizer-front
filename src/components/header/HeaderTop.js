@@ -28,11 +28,10 @@ const HeaderTop = ({ strings, currentLanguageCode, dispatch, borderStyle, profil
         <div className={`header-top-wap ${borderStyle === "fluid-border" ? "border-bottom" : ""}`}>
             <LanguageCurrencyChanger currentLanguageCode={currentLanguageCode} merchant={merchant} dispatch={dispatch} />
             <div className="header-offer">
-                {!profileData ? (
+                {!profileData.hasOwnProperty('delivery') ? (
                     <p dangerouslySetInnerHTML={{ __html: message.replace("]]>", "") }}></p>
                 ) : (
-                    <p>sdfsdf</p>
-                    // <p>{profileData.delivery.address}</p>
+                    <p>{profileData.delivery.address}</p>
                 )}
             </div>
         </div>

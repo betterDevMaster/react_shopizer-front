@@ -2844,6 +2844,13 @@
                         }
                     }
                 }
+
+                // .menu-item-has-children-children {
+                //     position: relative;
+                //     padding-left: 10px;
+                //     display: block;
+
+                // }
             }
         }
     }
@@ -3001,6 +3008,9 @@
 
 .align-item-center {
     align-items: center;
+    .mobile-search-area {
+        margin-left: 16%;
+    }
 }
 
 .logoImage {
