@@ -9,7 +9,7 @@ const FooterCopyright = ({ footerLogo, spaceBottomClass, colorClass, merchant, s
             <div className="footer-logo">
                 {merchant.logo != null && (
                     <Link to={process.env.PUBLIC_URL + "/"}>
-                        <img alt="footer_logo" className="logoImage" src={process.env.REACT_APP_APP_BASE_URL + merchant.logo.path} />
+                        <img alt="footer_logo" className="logoImage" src={process.env.REACT_APP_APP_HTTP_URL + merchant.logo.path} />
                     </Link>
                 )}
             </div>
