@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { multilanguage } from "redux-multilanguage";
 const MenuCart = ({ cartData, deleteFromCart, onMouseLeave, defaultStore, strings, userData }) => {
     // let cartTotalPrice = 0;
+    console.log('cartData --------', cartData)
     const { addToast } = useToasts();
     return (
         <div className="shopping-cart-content active" onMouseLeave={() => onMouseLeave("")}>

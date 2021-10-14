@@ -342,8 +342,8 @@ const Checkout = ({
         }
     };
     const getProfile = async () => {
-        // let uid = getLocalData("uid") ? getLocalData("uid") : userData ? userData.id : null;
-        let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + userData.id;
+        let uid = getLocalData("uid") ? getLocalData("uid") : userData ? userData.id : null;
+        let action = constant.ACTION.CUSTOMER + constant.ACTION.PROFILE + "?id=" + uid;
         try {
             let response = await WebService.get(action);
             if (response) {
