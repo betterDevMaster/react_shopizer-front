@@ -571,7 +571,7 @@ const Checkout = ({
             setLoader(false);
             addToast(result.error.message, { appearance: "error", autoDismiss: true });
         } else {
-            // console.log(result);
+            console.log('result =============',result);
             onPayment(data, result.token.id);
         }
         // });
@@ -654,7 +654,7 @@ const Checkout = ({
                     paymentType: "CREDITCARD",
                     transactionType: "CAPTURE",
                     paymentModule: "stripe",
-                    paymentToken: result.token,
+                    paymentToken: result,
                     amount: shippingQuote[shippingQuote.length - 1].value,
                 },
                 customer: customer,
